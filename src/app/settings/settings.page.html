@@ -1,11 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Settings</ion-title>
+    <ion-title><ion-icon name="options-outline"></ion-icon> Settings</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
+  <ion-text color="dark" class="settingsText">
+    <h4>General Settings</h4>
+  </ion-text>
   <!--Eerste kaartje-->
   <ion-card>
   <ion-card-header>
@@ -19,6 +22,22 @@
   </ion-card-content>
 </ion-card>
 
+  <!--Eerste kaartje Licht-->
+  <ion-card color="dark">
+    <ion-card-header>
+      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+      <ion-card-title>Card Title</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      Keep close to Nature's heart... and break clear away, once in awhile,
+      and climb a mountain or spend a week in the woods. Wash your spirit clean.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-text color="dark" class="settingsText">
+    <h4>Advanced Settings</h4>
+  </ion-text>
 <!--Tweede kaartje-->
 <ion-card>
   <ion-item>
@@ -56,7 +75,23 @@
   </ion-item>
 </ion-card>
 
-<ion-button routerLink="/home" shape="round" color="primary" fill="outline">
+
+<!--Danger Zone-->
+<ion-text color="danger" class="settingsText">
+  <h4>Danger Zone</h4>
+</ion-text>
+<ion-card color="danger" fill="outline">
+  <ion-card-header>
+    <ion-card-title>Reset to default settings</ion-card-title>
+    <ion-card-subtitle><b>WARNING!</b> This will delete <b>everything</b> on the device!</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+  <ion-button shape="round" fill="inline" slot="end">RESET DEVICE</ion-button>
+  </ion-card-content>
+  
+</ion-card>
+
+<ion-button routerLink="/home" shape="round" color="dark" fill="outline">
   Home
 </ion-button>
 
