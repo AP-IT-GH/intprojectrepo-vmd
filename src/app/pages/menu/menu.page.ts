@@ -14,9 +14,18 @@ export class MenuPage implements OnInit {
       url: '/menu/general'
     },
     {
+      title: 'Temperature',
+      url: '/menu/temperature'
+    },
+    {
+      title: 'Humidity',
+      url: '/menu/humidity'
+    },
+    {
       title: 'Settings',
       url: '/menu/settings'
-    }
+    },
+    
   ];
 
   selectedPath= '';

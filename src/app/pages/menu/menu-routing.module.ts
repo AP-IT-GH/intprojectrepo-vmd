@@ -15,12 +15,20 @@ const routes: Routes = [
       {
         path: 'settings',
         loadChildren: '../settings/settings.module#SettingsPageModule'
-      }
+      },
+      {
+        path: 'temperature',
+        loadChildren: '../temperature/temperature.module#TemperaturePageModule'
+      },
+      {
+        path: 'humidity',
+        loadChildren: '../humidity/humidity.module#HumidityPageModule'
+      },
     ]
   },
   {
     path: '',
-    redirectTo: 'menu/settings'
+    redirectTo: 'menu/general'
   }
 ];
 
