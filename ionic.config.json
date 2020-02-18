@@ -1,5 +1,7 @@
 {
   "name": "intprojectrepo-vmd",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
