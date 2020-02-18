@@ -8,9 +8,9 @@ import { Chart } from "chart.js";
 })
 export class GeneralPage implements OnInit {
   
-  @ViewChild("barCanvas") barCanvas: ElementRef;
-  @ViewChild("doughnutCanvas") doughnutCanvas: ElementRef;
-  @ViewChild("lineCanvas") lineCanvas: ElementRef;
+  @ViewChild("barCanvas", {static:true}) barCanvas: ElementRef;
+  @ViewChild("doughnutCanvas", {static:true}) doughnutCanvas: ElementRef;
+  @ViewChild("lineCanvas", {static:true}) lineCanvas: ElementRef;
 
   private barChart: Chart;
   private doughnutChart: Chart;
