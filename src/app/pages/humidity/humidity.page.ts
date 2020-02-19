@@ -7,89 +7,27 @@ import { Chart } from "chart.js";
   styleUrls: ['./humidity.page.scss'],
 })
 export class HumidityPage implements OnInit {
-  
-  @ViewChild("barCanvas", {static:true}) barCanvas: ElementRef;
-  @ViewChild("doughnutCanvas", {static:true}) doughnutCanvas: ElementRef;
-  @ViewChild("lineCanvas", {static:true}) lineCanvas: ElementRef;
+  @ViewChild("lineCanvasDay", { static: true }) lineCanvasDay: ElementRef;
+  @ViewChild("lineCanvasMonth", { static: true }) lineCanvasMonth: ElementRef;
+  @ViewChild("lineCanvasHour", { static: true }) lineCanvasHour: ElementRef;
+  private lineChartDay: Chart;
+  private lineChartHour: Chart;
+  private lineChartMonth: Chart;
 
-  private barChart: Chart;
-  private doughnutChart: Chart;
-  private lineChart: Chart;
-
+  private today = new Date();
+  private ReturnDate: Date = new Date();
   constructor() { }
 
   ngOnInit() {
-    this.barChart = new Chart(this.barCanvas.nativeElement, {
-      type: "bar",
-      data: {
-        labels: ["Monday", "Teusday", "Wednesday", "Thunderday", "Saterday", "Sunday"],
-        datasets: [
-          {
-            label: "# of humidity",
-            data: [83, 63, 41, 58, 82, 28],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)"
-            ],
-            borderColor: [
-              "rgba(255,99,132,1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)"
-            ],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
-    });
 
-    this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
-      type: "doughnut",
-      data: {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)"
-            ],
-            hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#FF6384", "#36A2EB", "#FFCE56"]
-          }
-        ]
-      }
-    });
-
-    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+    this.lineChartDay = new Chart(this.lineCanvasDay.nativeElement, {
       type: "line",
       data: {
-        labels: ["01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM"],
+        labels: [this.getDate(6).toDateString(), this.getDate(5).toDateString(), this.getDate(4).toDateString(), this.getDate(3).toDateString(), this.getDate(2).toDateString(), this.getDate(1).toDateString(), this.getDate(0).toDateString()],
         datasets: [
           {
-            label: "My First dataset",
-            fill: false,
+            label: "Average Daily Humidity",
+            fill: true,
             lineTension: 0.1,
             backgroundColor: "rgba(75,192,192,0.4)",
             borderColor: "rgba(75,192,192,1)",
@@ -106,11 +44,105 @@ export class HumidityPage implements OnInit {
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: [23, 27, 25, 29, 28, 32, 35],
+            data: [79, 61, 23, 57, 21, 17, 36, 44, 56, 63, 58],
             spanGaps: false
           }
         ]
       }
     });
+
+    this.lineChartHour = new Chart(this.lineCanvasHour.nativeElement, {
+      type: "line",
+      data: {
+        labels: [(this.today.getHours()-6).toString(), (this.today.getHours()-5).toString(), (this.today.getHours()-4).toString(), (this.today.getHours()-3).toString(), (this.today.getHours()-2).toString(), (this.today.getHours()-1).toString(), this.today.getHours().toString()],
+        datasets: [
+          {
+            label: "Average Hourly Humidity",
+            fill: true,
+            lineTension: 0.1,
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: [79, 61, 23, 57, 21, 17, 36, 44, 56, 63, 58],
+            spanGaps: false
+          }
+        ]
+      }
+    });
+
+    this.lineChartMonth = new Chart(this.lineCanvasMonth.nativeElement, {
+      type: "line",
+      data: {
+        labels: [this.getMonth(this.today.getMonth()-6), this.getMonth(this.today.getMonth()-5), this.getMonth(this.today.getMonth()-4),this.getMonth(this.today.getMonth()-3), this.getMonth(this.today.getMonth()-2), this.getMonth(this.today.getMonth()-1), this.getMonth(this.today.getMonth())],
+        datasets: [
+          {
+            label: "Average Monthly Humidity",
+            fill: true,
+            lineTension: 0.1,
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: [80, 60, 22, 35, 10, 65, 85, 74, 43, 59, 27],
+            spanGaps: false
+          }
+        ]
+      }
+    });
+
+
+
   }
+  getDate(xDays: number) {
+    this.ReturnDate.setDate(this.today.getDate() - xDays);
+    let newDate = new Date(this.today.getFullYear + '-' + this.today.getMonth + '-' + this.ReturnDate)
+    return newDate;
+  }
+  getMonth(value:number){
+    switch(value){
+      case -6: return "July";
+      case -5: return "August";
+      case -4: return "September";
+      case -3: return "October";
+      case -2: return "November";
+      case -1: return "December";
+      case 0: return "January";
+      case 1: return "February";
+      case 2: return "March";
+      case 3: return "April";
+      case 4: return "May";
+      case 5: return "June";
+      case 7: return "July";
+      case 8: return "August";
+      case 9: return "September";
+      case 10: return "October";
+      case 11: return "November";
+      case 12: return "December";
+    }
+  }
+
 }
+  

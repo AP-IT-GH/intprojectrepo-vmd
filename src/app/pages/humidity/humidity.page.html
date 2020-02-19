@@ -5,32 +5,16 @@
 </ion-header>
 
 <ion-content>
-  <div class="ion-padding">
-    <ion-card>
-      <ion-card-header>
-        <strong>Weekly average humidity</strong>
-      </ion-card-header>
-      <ion-card-content>
-        <canvas #barCanvas></canvas>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <strong>Yearly average humidity</strong>
-      </ion-card-header>
-      <ion-card-content>
-        <canvas #doughnutCanvas></canvas>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <strong>Daily humidity</strong>
-      </ion-card-header>
-      <ion-card-content>
-        <canvas #lineCanvas></canvas>
-      </ion-card-content>
-    </ion-card>
-  </div>
+  <ion-card>
+    <ion-card-header>
+      <b>Humidity</b>
+    </ion-card-header>
+    <ion-card-content>
+      <canvas #lineCanvasHour></canvas>
+      <br><br>
+      <canvas #lineCanvasDay></canvas>
+      <br><br>
+      <canvas #lineCanvasMonth></canvas>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
