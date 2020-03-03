@@ -6,6 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class APIService {
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
+  get deviceinfo() {
+    return this.http.get("");
+  }
 }
+
+
