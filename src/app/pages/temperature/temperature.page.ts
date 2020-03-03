@@ -19,16 +19,15 @@ export class TemperaturePage implements OnInit {
   private lineChartMonth: Chart;
 
   private today = new Date();
-  private ReturnDate: Date = new Date();
   constructor() { }
 
   ngOnInit() {
-
     //Linechart Day
     this.lineChartDay = new Chart(this.lineCanvasDay.nativeElement, {
       type: "line",
       data: {
-        labels: [this.getDate(6).toDateString(), this.getDate(5).toDateString(), this.getDate(4).toDateString(), this.getDate(3).toDateString(), this.getDate(2).toDateString(), this.getDate(1).toDateString(), this.getDate(0).toDateString()],
+        labels: [this.getDate(6), this.getDate(5), this.getDate(4), this.getDate(3), this.getDate(2), this.getDate(1), this.getDate(0)],
+
         datasets: [
           {
             label: "Average Daily Temperature",
@@ -123,11 +122,13 @@ export class TemperaturePage implements OnInit {
 
 
   }
-  getDate(xDays: number) {
-    this.ReturnDate.setDate(this.today.getDate() - xDays);
-    let newDate = new Date(this.today.getFullYear + '-' + this.today.getMonth + '-' + this.ReturnDate)
-    return newDate;
-  }
+
+getDate(xDays:number){
+  let tempDate = new Date()
+  tempDate.setDate(tempDate.getDate() - xDays);
+  return tempDate.toDateString();
+}
+
   getMonth(value:number){
     switch(value){
       case -6: return "July";
