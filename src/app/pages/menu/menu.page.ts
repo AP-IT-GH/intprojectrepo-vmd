@@ -30,11 +30,11 @@ export class MenuPage implements OnInit {
 
   selectedPath= '';
   constructor(private router: Router) {
-    this.router.events.subscribe((event: RouterEvent)=>{
+      this.router.events.subscribe((event: RouterEvent)=>{
       this.selectedPath = event.url;
-    })
-   }
 
+    })
+  }
   ngOnInit() {
   }
 
