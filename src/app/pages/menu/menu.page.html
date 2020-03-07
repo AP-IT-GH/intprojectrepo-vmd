@@ -14,7 +14,17 @@
         </ion-item>
       </ion-menu-toggle>
       </ion-list>
+      <!-- <ion-list>
+        <ion-item>
+          <ion-icon slot="start" name="moon"></ion-icon>
+          <ion-label>Toggle Dark Theme</ion-label>
+          <ion-toggle slot="end" (click)="toggleDarkMode()"></ion-toggle>
+        </ion-item>
+      </ion-list> -->
     </ion-content>
+    <ion-footer>
+      <ion-button (click)="toggleDarkMode()">Toggle Dark Mode</ion-button>
+    </ion-footer>
   </ion-menu>
 
   <ion-router-outlet id="content" main></ion-router-outlet>

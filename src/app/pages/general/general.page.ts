@@ -1,3 +1,4 @@
+import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Chart } from "chart.js";
 
@@ -13,4 +14,5 @@ export class GeneralPage implements OnInit {
   ngOnInit() {
 
   }
+
 }

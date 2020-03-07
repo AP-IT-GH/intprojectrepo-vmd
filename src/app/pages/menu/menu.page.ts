@@ -1,3 +1,4 @@
+import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterEvent } from '@angular/router';
 
@@ -29,11 +30,17 @@ export class MenuPage implements OnInit {
   ];
 
   selectedPath= '';
-  constructor(private router: Router) {
+  constructor(private router: Router, private ThemeService: ThemeService) {
     this.router.events.subscribe((event: RouterEvent)=>{
       this.selectedPath = event.url;
     })
+
    }
+   toggleDarkMode(){
+    this.ThemeService.toggleAppTheme();
+  }
+
+
 
   ngOnInit() {
   }
