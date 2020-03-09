@@ -1,10 +1,14 @@
+<<<<<<< HEAD
 import { Platform } from '@ionic/angular';
+=======
+>>>>>>> master
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
+<<<<<<< HEAD
   darkMode = false;
 
   constructor(private plt: Platform) {
@@ -30,4 +34,8 @@ export class ThemeService {
       document.body.classList.remove("dark");
     }
    }
+=======
+
+  constructor() { }
+>>>>>>> master
 }
