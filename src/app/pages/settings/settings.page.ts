@@ -1,3 +1,4 @@
+import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
 
-  constructor() { }
+  constructor(private ThemeService: ThemeService) { }
 
   ngOnInit() {
+  }
+  toggleDarkMode(){
+    this.ThemeService.toggleAppTheme();
   }
 
 }

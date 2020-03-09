@@ -30,23 +30,9 @@ export class MenuPage implements OnInit {
   ];
 
   selectedPath= '';
-<<<<<<< HEAD
-  constructor(private router: Router, private ThemeService: ThemeService) {
-    this.router.events.subscribe((event: RouterEvent)=>{
-      this.selectedPath = event.url;
-    })
-
-   }
-   toggleDarkMode(){
-    this.ThemeService.toggleAppTheme();
-  }
-
-
-=======
   constructor(private router: Router) {
       this.router.events.subscribe((event: RouterEvent)=>{
       this.selectedPath = event.url;
->>>>>>> master
 
     })
   }
