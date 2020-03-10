@@ -8,8 +8,6 @@ import { TemperaturePageRoutingModule } from './temperature-routing.module';
 
 import { TemperaturePage } from './temperature.page';
 
-import { APIService, IDevice, DeviceData } from 'src/app/Services/api.service';
-
 @NgModule({
   imports: [
     CommonModule,

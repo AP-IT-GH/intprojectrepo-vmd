@@ -8,8 +8,6 @@ import { GeneralPageRoutingModule } from './general-routing.module';
 
 import { GeneralPage } from './general.page';
 
-import { APIService, IDevice, DeviceData } from 'src/app/Services/api.service';
-
 @NgModule({
   imports: [
     CommonModule,
