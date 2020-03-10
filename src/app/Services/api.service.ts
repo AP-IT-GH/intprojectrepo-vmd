@@ -8,9 +8,27 @@ import { Observable } from 'rxjs';
 export class APIService {
   constructor(private http: HttpClient) { }
 
-  get deviceinfo() {
-    return this.http.get("http://35.210.149.21:3000/device");
+  get deviceinfogeneral() {
+    return this.http.get(`http://35.210.149.21:3000/device`);
   }
+
+  get devicedata() {
+    return this.http.get(`http://35.210.149.21:3000/data`);
+  }
+
+    deviceinfo(Id) {
+    return this.http.get(`http://35.210.149.21:3000/device/${Id}`);
+  }
+}
+
+export interface DeviceData {
+	DeviceID: number;
+	Temperature: number;
+  Humidity: number;
+  Moisture: number;
+  Time: Date;
+  Date: Date;
+  Battery: Number;
 }
 
 export interface IDevice {

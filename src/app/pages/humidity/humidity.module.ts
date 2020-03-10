@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { HumidityPageRoutingModule } from './humidity-routing.module';
 import { HumidityPage } from './humidity.page';
+import { APIService, IDevice, DeviceData } from 'src/app/Services/api.service';
 
 @NgModule({
   imports: [
