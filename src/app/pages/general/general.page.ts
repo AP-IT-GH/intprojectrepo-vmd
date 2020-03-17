@@ -8,14 +8,21 @@ import { APIService, IDevice, IDeviceData } from 'src/app/Services/api.service';
   templateUrl: './general.page.html',
   styleUrls: ['./general.page.scss'],
 })
+
 export class GeneralPage implements OnInit {
 
   DataDevice: IDeviceData[];
+  Device: IDevice[];
+
   constructor(private APIService: APIService) { }
 
   async ngOnInit() {
 this.APIService.GetDevicedata().subscribe(DataDevice =>{
   this.DataDevice = DataDevice
+})
+
+this.APIService.GetDeviceInfogeneral().subscribe(Device =>{
+  this.Device = Device
 })
   }
 

@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content>
   <div>
-    <ion-card class="InfoDevice"  *ngFor="let app of DataDevice">
+    <ion-card *ngFor="let app of DataDevice">
       <ion-card-header>
         <ion-card-title></ion-card-title>
       </ion-card-header>
@@ -17,9 +17,9 @@
           <li>
             <p>ID:  {{app.ID}}</p>
             <p>Device ID:  {{app.Device_ID}}</p>
-            <p>Temperature:  {{app.Temperature}}</p>
-            <p>Humidity:   {{app.Humidity}}</p>
-            <p>Moisture:   {{app.Moisture}}</p>
+            <p>Temperature:  {{app.Temperature}} °C</p>
+            <p>Humidity:   {{app.Humidity}} %</p>
+            <p>Moisture:   {{app.Moisture}} %</p>
             <p>Time:   {{app.Time}}</p>
             <p>Date:   {{app.Date}}</p>
             <p>Battery:  {{app.Battery}}%</p>
