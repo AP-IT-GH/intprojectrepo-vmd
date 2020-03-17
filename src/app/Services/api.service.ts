@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +7,11 @@ import { Observable } from 'rxjs';
 export class APIService {
   constructor(private http: HttpClient) { }
 
-  get deviceinfogeneral() {
+  deviceinfogeneral() {
     return this.http.get(`http://35.210.149.21:3000/device`);
   }
 
-  get devicedata() {
+   devicedata() {
     return this.http.get(`http://35.210.149.21:3000/data`);
   }
 
@@ -20,8 +19,13 @@ export class APIService {
     return this.http.get(`http://35.210.149.21:3000/device/${Id}`);
   }
 }
-
+/*
+export interface IDataList {
+  array: [];
+}
+*/
 export interface DeviceData {
+  ID: number;
 	DeviceID: number;
 	Temperature: number;
   Humidity: number;
