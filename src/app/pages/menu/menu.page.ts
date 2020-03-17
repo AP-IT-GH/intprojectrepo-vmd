@@ -23,9 +23,14 @@ export class MenuPage implements OnInit {
       url: '/menu/humidity'
     },
     {
+      title: 'Moisture',
+      url: '/menu/moisture'
+    },
+    {
       title: 'Settings',
       url: '/menu/settings'
-    },
+    }
+
     
   ];
 

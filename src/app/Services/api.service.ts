@@ -8,25 +8,20 @@ export class APIService {
   constructor(private http: HttpClient) { }
 
   deviceinfogeneral() {
-    return this.http.get(`http://35.210.149.21:3000/device`);
+    return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/device`);
   }
 
-   devicedata() {
-    return this.http.get(`http://35.210.149.21:3000/data`);
+  GetDevicedata() {
+    return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data`);
   }
 
-    deviceinfo(Id) {
-    return this.http.get(`http://35.210.149.21:3000/device/${Id}`);
+  GetDeviceinfo(Id) {
+    return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device/${Id}`);
   }
 }
-/*
-export interface IDataList {
-  array: [];
-}
-*/
-export interface DeviceData {
+export interface IDeviceData {
   ID: number;
-	DeviceID: number;
+	Device_ID: number;
 	Temperature: number;
   Humidity: number;
   Moisture: number;

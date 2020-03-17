@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Chart } from "chart.js";
-import { APIService, IDevice, DeviceData } from 'src/app/Services/api.service';
+import { APIService, IDevice, IDeviceData } from 'src/app/Services/api.service';
 
 @Component({
   selector: 'app-humidity',

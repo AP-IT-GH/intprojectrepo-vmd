@@ -24,6 +24,10 @@ const routes: Routes = [
         path: 'humidity',
         loadChildren: '../humidity/humidity.module#HumidityPageModule'
       },
+      {
+        path: 'moisture',
+        loadChildren: '../moisture/moisture.module#MoisturePageModule'
+      }
     ]
   },
   {

@@ -8,15 +8,25 @@
 </ion-header>
 <ion-content>
   <div>
-    <ion-card>
+    <ion-card class="InfoDevice"  *ngFor="let app of DataDevice">
       <ion-card-header>
-        <ion-card-title>SleepRoom</ion-card-title>
+        <ion-card-title></ion-card-title>
       </ion-card-header>
-      <ion-card-content></ion-card-content>
-      <p>Battery Status: </p>
-      <p>36%</p>
-      <p>Current Temperature: </p>
-      <p>25 °C</p>
+      <ion-card-content>
+        <ul>
+          <li>
+            <p>ID:  {{app.ID}}</p>
+            <p>Device ID:  {{app.Device_ID}}</p>
+            <p>Temperature:  {{app.Temperature}}</p>
+            <p>Humidity:   {{app.Humidity}}</p>
+            <p>Moisture:   {{app.Moisture}}</p>
+            <p>Time:   {{app.Time}}</p>
+            <p>Date:   {{app.Date}}</p>
+            <p>Battery:  {{app.Battery}}%</p>
+
+          </li>
+        </ul>
+      </ion-card-content>
     </ion-card>
   </div>
 </ion-content>
