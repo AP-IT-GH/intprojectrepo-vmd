@@ -4,8 +4,19 @@
 
 p{
     margin-left: 50px;
+    font-size: large;
 }
 
 ion-card-title{
     text-align: center;
+}
+.data{
+    
+     display: inline-block;
+}
+.data>p{
+    margin-left: 10px;
+}
+.types{
+    display: inline-block;
 }

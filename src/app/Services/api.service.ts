@@ -18,6 +18,21 @@ export class APIService {
   GetDeviceinfo(Id) {
     return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device/${Id}`);
   }
+  GetLatestDeviceInfo(Id){
+    return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
+  }
+}
+export interface IAllDeviceData{
+  ID: number;
+	Device_ID: number;
+	Temperature: number;
+  Humidity: number;
+  Moisture: number;
+  Time: Date;
+  Date: Date;
+  Battery: Number;
+  Password: String;
+  Name: String;
 }
 export interface IDeviceData {
   ID: number;
