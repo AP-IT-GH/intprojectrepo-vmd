@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Chart } from "chart.js";
-import { APIService, IDevice } from 'src/app/Services/api.service';
+import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
+import {interval} from  'rxjs';
+import { ToastController } from '@ionic/angular';
 
 
 @Component({
@@ -19,10 +21,22 @@ export class TemperaturePage implements OnInit {
   private lineChartHour: Chart;
   private lineChartMonth: Chart;
 
-  private today = new Date();
-  constructor() { }
+  DataDevice: IAllDeviceData;
 
-  ngOnInit() {
+  private today = new Date();
+  constructor(public toastController:ToastController, private APIService: APIService) { 
+    interval(5000).subscribe(x => { // will execute every 5 seconds
+    this.GetLatestData();
+  });
+}
+
+  async ngOnInit() {
+    //limiet instellen
+    this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice=>{ //device ID moet een variabele zijn in de toekomst.
+      this.DataDevice = DataDevice;
+    })
+
+    //LINECHART BEGIN
     //Linechart Day
     this.lineChartDay = new Chart(this.lineCanvasDay.nativeElement, {
       type: "line",
@@ -152,5 +166,39 @@ getDate(xDays:number){
       case 12: return "December";
     }
   }
+
+  //instellen van een limiet: 
+  public rangeCount:number = 0;
+  public message:string ="";
+  public ExeedingLimitDate:Date[];
+  public ExeedingTempValue:number[] = [  ];
+  
+  async setTempLimit(range:number) {
+    range = this.rangeCount;
+    const toast = await this.toastController.create({
+      message: 'Limit set on ' + this.rangeCount + ' degrees.',
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  GetLatestData(){
+    this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice =>{
+      this.DataDevice = DataDevice;
+      console.log(this.DataDevice.Temperature);
+
+      if(this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Temperature != this.ExeedingTempValue[this.ReturnLastItemOfArray(this.ExeedingTempValue)]){ //en toch komen er dubbele entries in de array terecht..
+          this.ExeedingTempValue.push(this.DataDevice.Temperature);
+          console.log("It has happened! jooho " + this.ExeedingTempValue[0]);
+          console.log(this.ExeedingTempValue.length);
+      }
+  })}
+
+   ReturnLastItemOfArray(array) {
+     if(array.length -1 > 0){
+      return array[array.length - 1];
+     }
+     else return 0;
+}
 
 }
