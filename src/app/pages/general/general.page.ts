@@ -8,6 +8,7 @@ import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
   templateUrl: './general.page.html',
   styleUrls: ['./general.page.scss'],
 })
+
 export class GeneralPage implements OnInit {
 
   DataDevice: IAllDeviceData;
