@@ -19,10 +19,10 @@ export class GeneralPage implements OnInit {
   }
 
   async ngOnInit() {
-  this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice =>{
+  this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice =>{
   this.DataDevice = DataDevice;
 })}
 GetLatestData(){
-  this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice =>{
+  this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice =>{
     this.DataDevice = DataDevice;
 })}}

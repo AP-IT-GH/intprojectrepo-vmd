@@ -12,14 +12,17 @@ export class APIService {
     return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device`);
   }
 
-  GetDevicedata() {
+  GetDeviceDataAll() {
     return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data`);
+  }
+  GetDeviceDataSingle(Id){
+    return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data/${Id}`)
   }
 
   GetDeviceinfo(Id) {
     return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device/${Id}`);
   }
-  GetLatestDeviceInfo(Id){
+  GetLatestSingleDeviceInfo(Id){
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
   }
 }

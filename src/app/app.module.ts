@@ -12,6 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
 
+import 'chartjs-plugin-zoom';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

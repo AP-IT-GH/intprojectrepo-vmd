@@ -15,11 +15,12 @@
       <b>Temperature</b>
     </ion-card-header>
     <ion-card-content>
-      <canvas #lineCanvasHour></canvas>
-      <br><br>
-      <canvas #lineCanvasDay></canvas>
-      <br><br>
-      <canvas #lineCanvasMonth></canvas>
+      <canvas baseChart
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [chartType]="chartType">
+
+      </canvas>
     </ion-card-content>
   </ion-card>
 
