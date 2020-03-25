@@ -11,15 +11,17 @@ import { APIService, IDevice } from 'src/app/Services/api.service';
 export class SettingsPage implements OnInit {
 
   Device: IDevice[];
-  constructor(private ThemeService: ThemeService, private APIService : APIService) { }
-
+  constructor(private ThemeService: ThemeService, private APIService: APIService) { }
+  ResetDevice(ID: number) {
+    
+  }
   ngOnInit() {
-    this.APIService.GetDeviceInfogeneral().subscribe(Device =>{
-    this.Device = Device;
-  })
-}
+    this.APIService.GetDeviceInfogeneral().subscribe(Device => {
+      this.Device = Device;
+    })
+  }
 
-  toggleDarkMode(){
+  toggleDarkMode() {
     this.ThemeService.toggleAppTheme();
   }
 
