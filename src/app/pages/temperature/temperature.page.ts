@@ -170,8 +170,9 @@ getDate(xDays:number){
   //instellen van een limiet: 
   public rangeCount:number = 0;
   public message:string ="";
-  public ExeedingLimitDate:Date[];
+  public ExeedingLimitDate:Date[] = [ ];
   public ExeedingTempValue:number[] = [  ];
+  public firstItem:boolean = false;
   
   async setTempLimit(range:number) {
     range = this.rangeCount;
@@ -185,12 +186,12 @@ getDate(xDays:number){
   GetLatestData(){
     this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice =>{
       this.DataDevice = DataDevice;
-      console.log(this.DataDevice.Temperature);
 
-      if(this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Temperature != this.ExeedingTempValue[this.ReturnLastItemOfArray(this.ExeedingTempValue)]){ //en toch komen er dubbele entries in de array terecht..
+      if(this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Temperature != this.ExeedingTempValue[this.ReturnLastItemOfArray(this.ExeedingTempValue)]){
           this.ExeedingTempValue.push(this.DataDevice.Temperature);
+          this.ExeedingLimitDate.push(this.DataDevice.Date);
+          this.firstItem = true;
           console.log("It has happened! jooho " + this.ExeedingTempValue[0]);
-          console.log(this.ExeedingTempValue.length);
       }
   })}
 

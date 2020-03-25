@@ -40,4 +40,17 @@
     </ion-card-content>
   </ion-card>
   
+  <ion-card *ngIf='ExeedingLimitDate[0]'>
+    <ion-card-header>
+      List when temperature got exeeded
+    </ion-card-header>
+    <ion-card-content>
+      <h2 *ngFor='let item of ExeedingTempValue'>Temperature value: {{item}}</h2>
+      <p *ngFor='let Dateitem of ExeedingLimitDate'>Date: {{Dateitem | date }}</p>
+
+      <br>
+    </ion-card-content>
+  </ion-card>
+
+
 </ion-content>
