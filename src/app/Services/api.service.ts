@@ -23,6 +23,7 @@ export class APIService {
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
   }
 }
+
 export interface IAllDeviceData{
   ID: number;
 	Device_ID: number;

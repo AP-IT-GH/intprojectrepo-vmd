@@ -35,7 +35,7 @@
       <ion-card-subtitle>Change the time between each measurement. In seconds</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <ion-item>    
+      <ion-item>
         <ion-range min="1" max="20" step="1" snaps="true" color="dark" pin="true"></ion-range>
       </ion-item>
       <ion-button color="dark">Apply</ion-button>
@@ -107,6 +107,12 @@
   <ion-card color="danger">
     <ion-card-header>
       <ion-card-title>Reset to default settings</ion-card-title>
+      <ion-item>
+        <ion-label>Choose the device that you want to reset</ion-label>
+        <ion-select value="" okText="Okay" cancelText="Dismiss">
+          <ion-select-option *ngFor="let name of Device">{{name.Name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
       <ion-card-subtitle><b>WARNING!</b> This will delete <b>everything</b> on the device!</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
