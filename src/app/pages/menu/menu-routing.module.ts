@@ -10,23 +10,23 @@ const routes: Routes = [
     children: [
       {
         path: 'general',
-        loadChildren: '../general/general.module#GeneralPageModule'
+        loadChildren: () => import('../general/general.module').then(m => m.GeneralPageModule)
       },
       {
         path: 'settings',
-        loadChildren: '../settings/settings.module#SettingsPageModule'
+        loadChildren: () => import('../settings/settings.module').then(m => m.SettingsPageModule)
       },
       {
         path: 'temperature',
-        loadChildren: '../temperature/temperature.module#TemperaturePageModule'
+        loadChildren: () => import('../temperature/temperature.module').then(m => m.TemperaturePageModule)
       },
       {
         path: 'humidity',
-        loadChildren: '../humidity/humidity.module#HumidityPageModule'
+        loadChildren: () => import('../humidity/humidity.module').then(m => m.HumidityPageModule)
       },
       {
         path: 'moisture',
-        loadChildren: '../moisture/moisture.module#MoisturePageModule'
+        loadChildren: () => import('../moisture/moisture.module').then(m => m.MoisturePageModule)
       }
     ]
   },
