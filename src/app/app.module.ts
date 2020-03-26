@@ -12,12 +12,17 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
 
+//Device Storage
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [HttpClientModule,BrowserModule,FormsModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,
+    NativeStorage,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

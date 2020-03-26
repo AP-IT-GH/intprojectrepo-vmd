@@ -3,6 +3,7 @@ import { Chart } from "chart.js";
 import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
 import {interval} from  'rxjs';
 import { ToastController } from '@ionic/angular';
+import { NativeStorage } from '@ionic-native/native-storage/ngx'
 
 
 @Component({
@@ -24,7 +25,7 @@ export class TemperaturePage implements OnInit {
   DataDevice: IAllDeviceData;
 
   private today = new Date();
-  constructor(public toastController:ToastController, private APIService: APIService) { 
+  constructor(public toastController:ToastController, private APIService: APIService, private nativeStorage: NativeStorage) { 
     interval(5000).subscribe(x => { // will execute every 5 seconds
     this.GetLatestData();
   });
@@ -172,7 +173,7 @@ getDate(xDays:number){
   public message:string ="";
   public ExeedingLimitDate:Date[] = [ ];
   public ExeedingTempValue:number[] = [  ];
-  public firstItem:boolean = false;
+  public packetNumber: number = 100;
   
   async setTempLimit(range:number) {
     range = this.rangeCount;
@@ -188,9 +189,21 @@ getDate(xDays:number){
       this.DataDevice = DataDevice;
 
       if(this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Temperature != this.ExeedingTempValue[this.ReturnLastItemOfArray(this.ExeedingTempValue)]){
+          //get items from storage
+          this.nativeStorage.getItem('packetnumber').then( data => this.packetNumber = data,
+          error=> console.log(error));
+          this.nativeStorage.getItem('tempExeeding' + this.packetNumber)
+
+
           this.ExeedingTempValue.push(this.DataDevice.Temperature);
           this.ExeedingLimitDate.push(this.DataDevice.Date);
-          this.firstItem = true;
+
+          //Opslaan van data in storage van device.
+          this.nativeStorage.setItem('tempExeeding' + this.packetNumber, {property: this.ExeedingTempValue, anotherProperty: this.ExeedingLimitDate});
+          this.packetNumber--;
+          this.nativeStorage.setItem('packetnumber', this.packetNumber);
+
+
           console.log("It has happened! jooho " + this.ExeedingTempValue[0]);
       }
   })}
