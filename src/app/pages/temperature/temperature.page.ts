@@ -4,17 +4,28 @@ import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
 import {interval} from  'rxjs';
 import { ToastController } from '@ionic/angular';
 import { Label, Color } from 'ng2-charts';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-temperature',
   templateUrl: './temperature.page.html',
   styleUrls: ['./temperature.page.scss'],
+  providers: [DatePipe]
 })
 export class TemperaturePage implements OnInit {
 
   chartData: ChartDataSets[] = [{ data: [], label: 'Temperatuur'}];
-  chartLabels: Date[];
+  chartLabels: String[];
+  dateString: String;
+  day: String;
+  month: String;
+  year: String;
+  dayNumber: number;
+  monthNumber: number;
+  yearNumber: number;
+  
+
 
 
   DataDevice: IAllDeviceData;
@@ -29,7 +40,7 @@ export class TemperaturePage implements OnInit {
       text: 'Temperature for Device 1'
     },
     pan: {
-      enabled: pageYOffset,
+      enabled: true,
       mode: 'xy'
     },
     zoom: {
@@ -39,8 +50,8 @@ export class TemperaturePage implements OnInit {
   };
   chartColors: Color[] = [
     {
-      borderColor: '#000000',
-      backgroundColor: '#ff00ff'
+      borderColor: '#8a1c00',
+      backgroundColor: '#cf6f57'
     }
   ];
   chartType = 'line';
@@ -48,7 +59,7 @@ export class TemperaturePage implements OnInit {
 
 
   //* Contstructor
-  constructor(public toastController:ToastController, private APIService: APIService) { 
+  constructor(public toastController:ToastController, private APIService: APIService,public datepipe: DatePipe) { 
     this.GetAllInfoDevice();
     interval(60000).subscribe(x => { // will execute every minute
     this.GetLatestData();
@@ -80,18 +91,23 @@ export class TemperaturePage implements OnInit {
   }
 
   GetAllInfoDevice(){
+    
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
       console.log('Res: ', res)
 
       this.chartData[0].data = [];
       this.chartLabels = [];
       
+      
       for (let entry of res){
-        console.log(entry.Date.getDate);
-        this.chartLabels.push(entry.Date);
+        this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
         this.chartData[0].data.push(entry['Temperature']);
       }
     })
+}
+typeChanged(e){
+  const on = e.detail.checked;
+  this.chartType = on ? 'line' : 'bar';
 }
 
   GetLatestData(){
