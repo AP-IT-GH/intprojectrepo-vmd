@@ -30,6 +30,7 @@
     "cordova-browser": "6.0.0",
     "cordova-ios": "5.1.1",
     "cordova-plugin-nativestorage": "^2.3.2",
+    "cordova-sqlite-storage": "^5.0.0",
     "core-js": "^2.5.4",
     "rxjs": "^6.5.4",
     "tslib": "^1.10.0",
@@ -74,7 +75,8 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-nativestorage": {}
+      "cordova-plugin-nativestorage": {},
+      "cordova-sqlite-storage": {}
     },
     "platforms": [
       "ios",

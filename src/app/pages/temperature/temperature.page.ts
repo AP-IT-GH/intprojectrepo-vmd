@@ -1,9 +1,8 @@
+import { StorageService, IexeedEntry } from './../../Services/storage.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Chart } from "chart.js";
 import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
-import {interval} from  'rxjs';
-import { ToastController } from '@ionic/angular';
-import { NativeStorage } from '@ionic-native/native-storage/ngx'
+import { interval } from 'rxjs';
+import { ToastController, Platform } from '@ionic/angular';
 
 
 @Component({
@@ -13,170 +12,53 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx'
 })
 export class TemperaturePage implements OnInit {
 
-  @ViewChild("lineCanvasDay", { static: true }) lineCanvasDay: ElementRef;
-  @ViewChild("lineCanvasMonth", { static: true }) lineCanvasMonth: ElementRef;
-  @ViewChild("lineCanvasHour", { static: true }) lineCanvasHour: ElementRef;
-
-
-  private lineChartDay: Chart;
-  private lineChartHour: Chart;
-  private lineChartMonth: Chart;
+  entries: IexeedEntry[] = [];
+  newEntry: IexeedEntry = <IexeedEntry>{};
 
   DataDevice: IAllDeviceData;
 
   private today = new Date();
-  constructor(public toastController:ToastController, private APIService: APIService, private nativeStorage: NativeStorage) { 
-    interval(5000).subscribe(x => { // will execute every 5 seconds
+  constructor(public toastController: ToastController,
+    private plt: Platform,
+    private APIService: APIService,
+    private storage: StorageService) {
+      this.plt.ready().then(()=> {
+        this.loadEntries();
+      })
     this.GetLatestData();
-  });
-}
+    interval(5000).subscribe(x => { //* will execute every 5 seconds
+      this.GetLatestData();
+    });
+  }
 
   async ngOnInit() {
-    //limiet instellen
-    this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice=>{ //device ID moet een variabele zijn in de toekomst.
+    this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice => { //TODO: device ID moet een variabele zijn in de toekomst.
       this.DataDevice = DataDevice;
     })
+  }
+  //* ADD Entry
+  addEntry(entry: IexeedEntry){
+    this.newEntry.id = Date.now();
 
-    //LINECHART BEGIN
-    //Linechart Day
-    this.lineChartDay = new Chart(this.lineCanvasDay.nativeElement, {
-      type: "line",
-      data: {
-        labels: [this.getDate(6), this.getDate(5), this.getDate(4), this.getDate(3), this.getDate(2), this.getDate(1), this.getDate(0)],
-
-        datasets: [
-          {
-            label: "Average Daily Temperature",
-            fill: true,
-            lineTension: 0.1,
-            backgroundColor: "rgba(75,192,192,0.4)",
-            borderColor: "rgba(75,192,192,1)",
-            borderCapStyle: "butt",
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: "miter",
-            pointBorderColor: "rgba(75,192,192,1)",
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [30, 25, 20, 15, 10, 0, -5, -10, -15, -20, -25],
-            spanGaps: false
-          }
-        ]
-      }
-    });
-
-    //linechart Hour
-    this.lineChartHour = new Chart(this.lineCanvasHour.nativeElement, {
-      type: "line",
-      data: {
-        labels: [(this.today.getHours()-6).toString(), (this.today.getHours()-5).toString(), (this.today.getHours()-4).toString(), (this.today.getHours()-3).toString(), (this.today.getHours()-2).toString(), (this.today.getHours()-1).toString(), this.today.getHours().toString()],
-        datasets: [
-          {
-            label: "Average Hourly Temperature",
-            fill: true,
-            lineTension: 0.1,
-            backgroundColor: "rgba(75,192,192,0.4)",
-            borderColor: "rgba(75,192,192,1)",
-            borderCapStyle: "butt",
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: "miter",
-            pointBorderColor: "rgba(75,192,192,1)",
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [30, 25, 20, 15, 10, 0, -5, -10, -15, -20, -25],
-            spanGaps: false
-          }
-        ]
-      }
-    });
-
-    //linechart Month
-    this.lineChartMonth = new Chart(this.lineCanvasMonth.nativeElement, {
-      type: "line",
-      data: {
-        labels: [this.getMonth(this.today.getMonth()-6), this.getMonth(this.today.getMonth()-5), this.getMonth(this.today.getMonth()-4),this.getMonth(this.today.getMonth()-3), this.getMonth(this.today.getMonth()-2), this.getMonth(this.today.getMonth()-1), this.getMonth(this.today.getMonth())],
-        datasets: [
-          {
-            label: "Average Monthly Temperature",
-            fill: true,
-            lineTension: 0.1,
-            backgroundColor: "rgba(75,192,192,0.4)",
-            borderColor: "rgba(75,192,192,1)",
-            borderCapStyle: "butt",
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: "miter",
-            pointBorderColor: "rgba(75,192,192,1)",
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [30, 25, 20, 15, 10, 0, -5, -10, -15, -20, -25],
-            spanGaps: false
-          }
-        ]
-      }
-    });
-
-
+    this.storage.addEntry(entry).then(entry => {
+      this.newEntry = <IexeedEntry>{};
+      this.showToast('Entry Added');
+      this.loadEntries();
+    })
 
   }
-
-getDate(xDays:number){
-  let tempDate = new Date()
-  tempDate.setDate(tempDate.getDate() - xDays);
-  return tempDate.toDateString();
-}
-
-  getMonth(value:number){
-    switch(value){
-      case -6: return "July";
-      case -5: return "August";
-      case -4: return "September";
-      case -3: return "October";
-      case -2: return "November";
-      case -1: return "December";
-      case 0: return "January";
-      case 1: return "February";
-      case 2: return "March";
-      case 3: return "April";
-      case 4: return "May";
-      case 5: return "June";
-      case 7: return "July";
-      case 8: return "August";
-      case 9: return "September";
-      case 10: return "October";
-      case 11: return "November";
-      case 12: return "December";
-    }
+  //* Load Entries
+  loadEntries(){
+    this.storage.getEntries().then(entries => {
+      this.entries = entries;
+    })
   }
-
   //instellen van een limiet: 
-  public rangeCount:number = 0;
-  public message:string ="";
-  public ExeedingLimitDate:Date[] = [ ];
-  public ExeedingTempValue:number[] = [  ];
+  public rangeCount: number = 0;
+  public message: string = "";
   public packetNumber: number = 100;
-  
-  async setTempLimit(range:number) {
-    range = this.rangeCount;
+
+  async setTempLimit(range: number) {
     const toast = await this.toastController.create({
       message: 'Limit set on ' + this.rangeCount + ' degrees.',
       duration: 2000
@@ -184,35 +66,36 @@ getDate(xDays:number){
     toast.present();
   }
 
-  GetLatestData(){
-    this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice =>{
+  GetLatestData() {
+    this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice => {
       this.DataDevice = DataDevice;
 
-      if(this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Temperature != this.ExeedingTempValue[this.ReturnLastItemOfArray(this.ExeedingTempValue)]){
-          //get items from storage
-          this.nativeStorage.getItem('packetnumber').then( data => this.packetNumber = data,
-          error=> console.log(error));
-          this.nativeStorage.getItem('tempExeeding' + this.packetNumber)
+      if (this.DataDevice.Temperature > this.rangeCount
+        // this.DataDevice.Temperature != this.entries[this.entries.length-1].temperature
+        ) {
+        
+        this.newEntry.temperature = this.DataDevice.Temperature;
+        this.newEntry.date = this.DataDevice.Date;
+        this.addEntry(this.newEntry)
 
-
-          this.ExeedingTempValue.push(this.DataDevice.Temperature);
-          this.ExeedingLimitDate.push(this.DataDevice.Date);
-
-          //Opslaan van data in storage van device.
-          this.nativeStorage.setItem('tempExeeding' + this.packetNumber, {property: this.ExeedingTempValue, anotherProperty: this.ExeedingLimitDate});
-          this.packetNumber--;
-          this.nativeStorage.setItem('packetnumber', this.packetNumber);
-
-
-          console.log("It has happened! jooho " + this.ExeedingTempValue[0]);
+        console.log("It has happened! jooho " + this.entries[this.entries.length-1].temperature+" °C");
       }
-  })}
+    })
+  }
 
-   ReturnLastItemOfArray(array) {
-     if(array.length -1 > 0){
+  ReturnLastItemOfArray(array) {
+    if (array.length - 1 > 0) {
       return array[array.length - 1];
-     }
-     else return 0;
-}
+    }
+    else return 0;
+  }
 
+  //* Helper
+  async showToast(msg){
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
+  }
 }

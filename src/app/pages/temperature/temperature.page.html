@@ -9,45 +9,34 @@
 
 <ion-content>
 
-
-  <ion-card>
-    <ion-card-header>
-      <b>Temperature</b>
-    </ion-card-header>
-    <ion-card-content>
-      <canvas #lineCanvasHour></canvas>
-      <br><br>
-      <canvas #lineCanvasDay></canvas>
-      <br><br>
-      <canvas #lineCanvasMonth></canvas>
-    </ion-card-content>
-  </ion-card>
-
-
   <ion-card>
     <ion-card-header>
       <b>Limit the temperature:</b>
     </ion-card-header>
     <ion-card-content>
-      <div id="tempRange">
-    <ion-icon name="snow-outline" id="snow"></ion-icon>
-    <ion-icon name="flame-outline" id="flame"></ion-icon>
-      </div>
-      <ion-range [(ngModel)]="rangeCount" dualKnobs="false" min="0" max="100" step="1" snaps="false" color="dark" pin="true" class="Icons" id="Slider"></ion-range>
+      <ion-item>
+        <ion-range [(ngModel)]="rangeCount" dualKnobs="false" min="0" max="100"
+          step="1" snaps="false" color="dark" pin="true" class="Icons"
+          id="Slider" >
+          <ion-icon slot="start" name="snow-outline" id="snow"></ion-icon>
+          <ion-icon slot="end" name="flame-outline" id="flame"></ion-icon>
+        </ion-range>
+      </ion-item>
       <ion-button color="dark" (click)="setTempLimit(rangeCount)">Set Limit</ion-button>
-      <br>
       <p *ngIf="message.length>0">{{message}}</p>
     </ion-card-content>
   </ion-card>
-  
-  <ion-card *ngIf='ExeedingLimitDate[0]'>
+
+  <ion-card *ngIf='entries'>
     <ion-card-header>
       List when temperature got exeeded
     </ion-card-header>
     <ion-card-content>
-      <h2 *ngFor='let item of ExeedingTempValue'>Temperature value: {{item}}</h2>
-      <p *ngFor='let Dateitem of ExeedingLimitDate'>Date: {{Dateitem | date }}</p>
-
+      <h2 *ngFor='let item of entries'>
+        entryNr: {{item.id}}
+        Temperature value: {{item.temperature}}
+        Date when exeeded: {{item.date}}
+      </h2>
       <br>
     </ion-card-content>
   </ion-card>
