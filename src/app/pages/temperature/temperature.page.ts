@@ -53,10 +53,18 @@ export class TemperaturePage implements OnInit {
       this.entries = entries;
     })
   }
+  //remove Entry
+  removeEntry(ID:number){
+    this.storage.deleteEntry(ID);
+  }
+
   //instellen van een limiet: 
   public rangeCount: number = 0;
   public message: string = "";
   public packetNumber: number = 100;
+  // lastSavedDate:Date = this.entries[this.ReturnLastItemOfArray(this.entries)].date;
+  private lastSavedDate:Date;
+
 
   async setTempLimit(range: number) {
     const toast = await this.toastController.create({
@@ -69,16 +77,13 @@ export class TemperaturePage implements OnInit {
   GetLatestData() {
     this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice => {
       this.DataDevice = DataDevice;
-
-      if (this.DataDevice.Temperature > this.rangeCount
-        // this.DataDevice.Temperature != this.entries[this.entries.length-1].temperature
+      if (this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
         ) {
         
         this.newEntry.temperature = this.DataDevice.Temperature;
         this.newEntry.date = this.DataDevice.Date;
+        this.lastSavedDate = this.DataDevice.Date;
         this.addEntry(this.newEntry)
-
-        console.log("It has happened! jooho " + this.entries[this.entries.length-1].temperature+" °C");
       }
     })
   }
@@ -87,7 +92,7 @@ export class TemperaturePage implements OnInit {
     if (array.length - 1 > 0) {
       return array[array.length - 1];
     }
-    else return 0;
+    else return 0;   
   }
 
   //* Helper
