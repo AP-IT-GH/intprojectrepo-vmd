@@ -37,7 +37,7 @@ export class AppComponent {
   }
 
   private onPushReceived(payload: OSNotificationPayload) {  
-    alert('Push recevied:' + payload.body);  
+    alert('Push recieved: ' + payload.body);  
   }  
   
   private onPushOpened(payload: OSNotificationPayload) {  
