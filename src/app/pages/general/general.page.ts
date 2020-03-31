@@ -23,14 +23,14 @@ export class GeneralPage implements OnInit {
 
   async ngOnInit() {
     this._featureToggleService.autoRefreshMessage$.subscribe(message => this.AutoRequestFromDatabase = message);   
-      this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice => {
+      this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
         this.DataDevice = DataDevice;
       })
     
   }
   GetLatestData() {
     if (this.AutoRequestFromDatabase) {
-      this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice => {
+      this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
         this.DataDevice = DataDevice;
       })
     } 
