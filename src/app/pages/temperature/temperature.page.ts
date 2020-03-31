@@ -49,28 +49,25 @@ export class TemperaturePage implements OnInit {
   constructor(public toastController: ToastController,
     private plt: Platform,
     private APIService: APIService,
-    private storage: StorageService) {
+    private storage: StorageService, 
+    public datepipe: DatePipe) {
       this.plt.ready().then(()=> {
         this.loadEntries();
       })
     this.GetLatestData();
-    interval(5000).subscribe(x => { //* will execute every 5 seconds
+    interval(60000).subscribe(x => { //* will execute every 5 seconds
       this.GetLatestData();
-    });
-  }
-  //* Contstructor
-  constructor(public toastController: ToastController, private APIService: APIService, public datepipe: DatePipe) {
-    this.GetAllInfoDevice();
-    interval(60000).subscribe(x => { // will execute every minute
       this.GetAllInfoDevice();
     });
   }
 
   async ngOnInit() {
-    this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice => { //TODO: device ID moet een variabele zijn in de toekomst.
+    this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => { //TODO: device ID moet een variabele zijn in de toekomst.
       this.DataDevice = DataDevice;
     })
   }
+
+
   //* ADD Entry
   addEntry(entry: IexeedEntry){
     this.newEntry.id = Date.now();
@@ -80,8 +77,19 @@ export class TemperaturePage implements OnInit {
       this.showToast('Entry Added');
       this.loadEntries();
     })
+  }
   GetAllInfoDevice() {
+    this.APIService.GetDeviceDataSingle(1).subscribe(res => {
+      console.log('Res: ', res)
 
+      this.chartData[0].data = [];
+      this.chartLabels = [];
+
+      for (let entry of res) {
+        this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
+        this.chartData[0].data.push(entry['Temperature']);
+      }
+    });
   }
   //* Load Entries
   loadEntries(){
@@ -93,8 +101,7 @@ export class TemperaturePage implements OnInit {
   removeEntry(ID:number){
     this.storage.deleteEntry(ID);
   }
-    this.APIService.GetDeviceDataSingle(1).subscribe(res => {
-      console.log('Res: ', res)
+  
 
   //instellen van een limiet: 
   public rangeCount: number = 0;
@@ -111,11 +118,10 @@ export class TemperaturePage implements OnInit {
     });
     toast.present();
   }
-      this.chartData[0].data = [];
-      this.chartLabels = [];
+     
 
   GetLatestData() {
-    this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice => {
+    this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
       this.DataDevice = DataDevice;
       if (this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
         ) {
@@ -125,12 +131,10 @@ export class TemperaturePage implements OnInit {
         this.lastSavedDate = this.DataDevice.Date;
         this.addEntry(this.newEntry)
 
-      for (let entry of res) {
-        this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
-        this.chartData[0].data.push(entry['Temperature']);
-      }
-    })
-  }
+     
+    }
+  });
+}
 
   ReturnLastItemOfArray(array) {
     if (array.length - 1 > 0) {
@@ -138,13 +142,11 @@ export class TemperaturePage implements OnInit {
     }
     else return 0;   
   }
-    })
-  }
   typeChanged(e){
     const on = e.detail.checked;
     this.chartType = on ? 'line' : 'bar';
   }
-}
+
 
   //* Helper
   async showToast(msg){
