@@ -8,8 +8,6 @@
 </ion-header>
 
 <ion-content>
-
-
   <ion-card>
     <ion-card-header>
       <b>Temperature</b>
@@ -20,10 +18,7 @@
       [labels]="chartLabels"
       [chartType]="chartType"
       [options]="chartOptions"
-      
-      [colors]="chartColors"
       [legend]="showLegend">
-
       </canvas>
     </ion-card-content>
   </ion-card>
@@ -40,28 +35,8 @@
         <ion-label>Show Legend?</ion-label>
         <ion-toggle [(ngModel)]="showLegend"></ion-toggle>
       </ion-item>
-      <ion-item>
-        <ion-label>Background Color</ion-label>
-        <ion-input type="text" [(ngModel)]="chartColors[0].backgroundColor"></ion-input>
-      </ion-item>
     </ion-card-content>
   </ion-card>
 
-
-  <ion-card>
-    <ion-card-header>
-      <b>Limit the temperature:</b>
-    </ion-card-header>
-    <ion-card-content>
-      <div id="tempRange">
-    <ion-icon name="snow-outline" id="snow"></ion-icon>
-    <ion-icon name="flame-outline" id="flame"></ion-icon>
-      </div>
-      <ion-range [(ngModel)]="rangeCount" dualKnobs="false" min="0" max="100" step="1" snaps="false" color="dark" pin="true" class="Icons" id="Slider"></ion-range>
-      <ion-button color="dark" (click)="setTempLimit(rangeCount)">Set Limit</ion-button>
-      <br>
-      <p *ngIf="message.length>0">{{message}}</p>
-    </ion-card-content>
-  </ion-card>
   
 </ion-content>

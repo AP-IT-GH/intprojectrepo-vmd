@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button auto-hide="false"></ion-menu-button>
     </ion-buttons>
-    <ion-title>HUMIDITY</ion-title>
+    <ion-title>Humidity</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,11 +13,30 @@
       <b>Humidity</b>
     </ion-card-header>
     <ion-card-content>
-      <canvas #lineCanvasHour></canvas>
-      <br><br>
-      <canvas #lineCanvasDay></canvas>
-      <br><br>
-      <canvas #lineCanvasMonth></canvas>
+      <canvas  baseChart
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [chartType]="chartType"
+      [options]="chartOptions"
+      [legend]="showLegend">
+      </canvas>
     </ion-card-content>
   </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Settings</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Line chart?</ion-label>
+        <ion-toggle (ionChange)="typeChanged($event)" checked></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>Show Legend?</ion-label>
+        <ion-toggle [(ngModel)]="showLegend"></ion-toggle>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  
 </ion-content>
