@@ -17,6 +17,16 @@ export class GeneralPage implements OnInit {
     interval(5000).subscribe(x => { // will execute every 30 seconds
       this.GetLatestData();
     });
+    /*
+    var getal = this.Device[0].Status;
+    if( getal = 0){
+      document.getElementById('div')[0].className = "offline";
+    }
+    if( getal = 1){
+      document.getElementById('div')[0].className = "online";
+    }
+    console.log(getal);
+    */
   }
 
  async ngOnInit() {

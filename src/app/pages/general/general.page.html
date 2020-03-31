@@ -1,14 +1,3 @@
-<script>
-  var getal = Device.Status;
-  if( getal = 0){
-    document.getElementById('div')[0].className = "offline";
-  }
-  if( getal = 1){
-    document.getElementById('div')[0].className = "online";
-  }
-  console.log(getal);
-</script>
-
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -31,7 +20,7 @@
             <p>Battery:</p>
         </div>
         <div class="data">
-          <p class="offline"></p>
+          <p>{{DataDevice.Status}}</p>
           <p>{{DataDevice.Temperature}}°C</p>
           <p>{{DataDevice.Humidity}}%</p>
           <p>{{DataDevice.Moisture}}%</p>
