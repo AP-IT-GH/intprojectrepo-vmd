@@ -55,6 +55,7 @@ export class TemperaturePage implements OnInit {
         this.loadEntries();
       })
     this.GetLatestData();
+    this.GetAllInfoDevice();
     interval(60000).subscribe(x => { //* will execute every 5 seconds
       this.GetLatestData();
       this.GetAllInfoDevice();
