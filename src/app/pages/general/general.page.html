@@ -32,9 +32,9 @@
 <ion-content>
 <ion-card>
 <strong>
-<p>Status 0 : </p><p class="offline"></p>
-<p>Status 1 : </p><p class="online"></p>
-<p>Status 2 : </p><p class="sleepmodus"></p>
+<p>Status 0 (offline): </p><p class="offline"></p>
+<p>Status 1 (online): </p><p class="online"></p>
+<p>Status 2 (sleepmodus): </p><p class="sleepmodus"></p>
 </strong>
 </ion-card>
 </ion-content>
@@ -51,7 +51,7 @@
         </tr>
         <tr *ngFor="let device of Device">
           <td>{{device.Name}}</td>
-          <p>{{device.Status}}</p>
+          <td>{{device.Status}}</td>
         </tr>
       </strong>
       </table>
