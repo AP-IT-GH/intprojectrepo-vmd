@@ -1,6 +1,8 @@
 import { StorageService, IexeedEntry } from './../../Services/storage.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Chart, ChartDataSets } from "chart.js";
 import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
+import { DatePipe } from '@angular/common';
 import { interval } from 'rxjs';
 import { ToastController, Platform } from '@ionic/angular';
 
@@ -9,13 +11,39 @@ import { ToastController, Platform } from '@ionic/angular';
   selector: 'app-temperature',
   templateUrl: './temperature.page.html',
   styleUrls: ['./temperature.page.scss'],
+  providers: [DatePipe]
 })
 export class TemperaturePage implements OnInit {
 
   entries: IexeedEntry[] = [];
   newEntry: IexeedEntry = <IexeedEntry>{};
+  chartData: ChartDataSets[] = [{ data: [], label: 'Temperature', fill: false }];
+  chartLabels: String[];
 
   DataDevice: IAllDeviceData;
+  DataDeviceArray: IAllDeviceData[];
+
+  // Options the chart - Visualisation
+  chartOptions = {
+    responsive: true,
+    responsiveAnimationDuration: 1500,
+    aspectRatio: 3,
+    title: {
+      display: true,
+      text: 'Humidity for Device 1'
+    },
+    pan: {
+      enabled: true,
+      mode: 'xy'
+    },
+    zoom: {
+      enabled: true,
+      mode: 'xy'
+    }
+  };
+  chartType = 'line';
+  showLegend = false;
+
 
   private today = new Date();
   constructor(public toastController: ToastController,
@@ -28,6 +56,13 @@ export class TemperaturePage implements OnInit {
     this.GetLatestData();
     interval(5000).subscribe(x => { //* will execute every 5 seconds
       this.GetLatestData();
+    });
+  }
+  //* Contstructor
+  constructor(public toastController: ToastController, private APIService: APIService, public datepipe: DatePipe) {
+    this.GetAllInfoDevice();
+    interval(60000).subscribe(x => { // will execute every minute
+      this.GetAllInfoDevice();
     });
   }
 
@@ -45,6 +80,7 @@ export class TemperaturePage implements OnInit {
       this.showToast('Entry Added');
       this.loadEntries();
     })
+  GetAllInfoDevice() {
 
   }
   //* Load Entries
@@ -57,6 +93,8 @@ export class TemperaturePage implements OnInit {
   removeEntry(ID:number){
     this.storage.deleteEntry(ID);
   }
+    this.APIService.GetDeviceDataSingle(1).subscribe(res => {
+      console.log('Res: ', res)
 
   //instellen van een limiet: 
   public rangeCount: number = 0;
@@ -73,6 +111,8 @@ export class TemperaturePage implements OnInit {
     });
     toast.present();
   }
+      this.chartData[0].data = [];
+      this.chartLabels = [];
 
   GetLatestData() {
     this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice => {
@@ -84,6 +124,10 @@ export class TemperaturePage implements OnInit {
         this.newEntry.date = this.DataDevice.Date;
         this.lastSavedDate = this.DataDevice.Date;
         this.addEntry(this.newEntry)
+
+      for (let entry of res) {
+        this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
+        this.chartData[0].data.push(entry['Temperature']);
       }
     })
   }
@@ -94,6 +138,13 @@ export class TemperaturePage implements OnInit {
     }
     else return 0;   
   }
+    })
+  }
+  typeChanged(e){
+    const on = e.detail.checked;
+    this.chartType = on ? 'line' : 'bar';
+  }
+}
 
   //* Helper
   async showToast(msg){

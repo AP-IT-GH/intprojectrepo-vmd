@@ -8,7 +8,6 @@
 </ion-header>
 
 <ion-content>
-
   <ion-card>
     <ion-card-header>
       <b>Limit the temperature:</b>
@@ -24,12 +23,20 @@
       </ion-item>
       <ion-button color="dark" (click)="setTempLimit(rangeCount)">Set Limit</ion-button>
       <p *ngIf="message.length>0">{{message}}</p>
+      <canvas baseChart
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [chartType]="chartType"
+      [options]="chartOptions"
+      [legend]="showLegend">
+      </canvas>
     </ion-card-content>
   </ion-card>
 
   <ion-card *ngIf='entries'>
     <ion-card-header>
       List when temperature got exeeded
+      <ion-card-title>Settings</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <h2 *ngFor='let item of entries'>
@@ -38,8 +45,16 @@
         Date: {{item.date}}
       </h2>
       <br>
+      <ion-item>
+        <ion-label>Line chart?</ion-label>
+        <ion-toggle (ionChange)="typeChanged($event)" checked></ion-toggle>
+      <ion-item>
+        <ion-label>Show Legend?</ion-label>
+        <ion-toggle [(ngModel)]="showLegend"></ion-toggle>
+      </ion-item>
+      </ion-item>
     </ion-card-content>
   </ion-card>
 
-
+  
 </ion-content>

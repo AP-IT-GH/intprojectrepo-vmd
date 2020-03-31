@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -17,6 +16,9 @@ import {IonicStorageModule} from '@ionic/storage'
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
 
+import 'chartjs-plugin-zoom';
+import { DatePipe } from '@angular/common';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -24,6 +26,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
   providers: [
     StatusBar,
     NativeStorage,
+    DatePipe,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

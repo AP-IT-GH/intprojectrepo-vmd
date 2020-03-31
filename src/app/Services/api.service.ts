@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { DatePipe, formatDate } from '@angular/common';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +15,25 @@ export class APIService {
     return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device`);
   }
 
-  GetDevicedata() {
+  GetDeviceDataAll() {
     return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data`);
+  }
+  GetDeviceDataSingle(Id){
+    return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data/${Id}`)
+    .pipe(
+      map((data)=>{
+        for(let entry of data){
+          entry.Date = new Date(entry.Date);
+        }
+        return data;
+      })
+    );
   }
 
   GetDeviceinfo(Id) {
     return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device/${Id}`);
   }
-  GetLatestDeviceInfo(Id){
+  GetLatestSingleDeviceInfo(Id){
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
   }
 }

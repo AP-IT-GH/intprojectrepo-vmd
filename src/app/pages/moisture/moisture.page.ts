@@ -12,7 +12,7 @@ export class MoisturePage implements OnInit {
   constructor(private APIService: APIService) { }
 
   async ngOnInit() {
-this.APIService.GetDevicedata().subscribe(DataDevice =>{
+this.APIService.GetDeviceDataAll().subscribe(DataDevice =>{
   this.DataDevice = DataDevice
 })
   }
