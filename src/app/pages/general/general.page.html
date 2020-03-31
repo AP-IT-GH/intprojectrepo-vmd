@@ -13,12 +13,14 @@
       </ion-card-header>
       <ion-card-content>
         <div class="types">
+            <p>Status:</p>
             <p>Temperature:</p>
             <p>Humidity:</p>
             <p>Moisture:</p>
             <p>Battery:</p>
         </div>
         <div class="data">
+          <p class="offline"></p>
           <p>{{DataDevice.Temperature}}°C</p>
           <p>{{DataDevice.Humidity}}%</p>
           <p>{{DataDevice.Moisture}}%</p>
@@ -26,4 +28,23 @@
         </div>
       </ion-card-content>
     </ion-card>
+</ion-content>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Devices</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <table>
+        <strong><tr>
+          <th class="test">Device</th>
+          <th>Status</th>
+        </tr>
+        <tr *ngFor="let device of Device">
+          <td>{{device.Name}}</td>
+        </tr>
+      </strong>
+      </table>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
