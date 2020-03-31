@@ -1,3 +1,14 @@
+<script>
+  var getal = Device.Status;
+  if( getal = 0){
+    document.getElementById('div')[0].className = "offline";
+  }
+  if( getal = 1){
+    document.getElementById('div')[0].className = "online";
+  }
+  console.log(getal);
+</script>
+
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -30,6 +41,15 @@
     </ion-card>
 </ion-content>
 <ion-content>
+<ion-card>
+<strong>
+<p>Status 0 : </p><p class="offline"></p>
+<p>Status 1 : </p><p class="online"></p>
+<p>Status 2 : </p><p class="sleepmodus"></p>
+</strong>
+</ion-card>
+</ion-content>
+<ion-content>
   <ion-card>
     <ion-card-header>
       <ion-card-title>Devices</ion-card-title>
@@ -42,6 +62,7 @@
         </tr>
         <tr *ngFor="let device of Device">
           <td>{{device.Name}}</td>
+          <p>{{device.Status}}</p>
         </tr>
       </strong>
       </table>
