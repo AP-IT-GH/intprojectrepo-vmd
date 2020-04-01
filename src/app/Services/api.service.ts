@@ -48,6 +48,7 @@ export interface IAllDeviceData{
   Battery: Number;
   Password: String;
   Name: String;
+  Status: number;
 }
 
 export interface IDeviceData {
@@ -64,7 +65,8 @@ export interface IDeviceData {
 export interface IDevice {
 	ID: number;
 	Password: string;
-	Name: string;
+  Name: string;
+  Status: number;
 }
 
 
