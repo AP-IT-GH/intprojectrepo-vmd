@@ -43,6 +43,9 @@ export class GeneralPage implements OnInit {
       this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
         this.DataDevice = DataDevice;
       })
+      this.APIService.GetDeviceInfogeneral().subscribe(Device => {
+      this.Device = Device;
+    })
     
   }
   GetLatestData() {
@@ -52,10 +55,11 @@ export class GeneralPage implements OnInit {
       })
     } 
   }
+GetDeviceData(){
+  this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
+    this.DataDevice = DataDevice;
+  })
 }
-    this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice => {
-      this.DataDevice = DataDevice;
-    })
-    this.APIService.GetDeviceInfogeneral().subscribe(Device => {
-      this.Device = Device;
-    })
+}
+    
+    
