@@ -7,6 +7,7 @@ import { interval } from 'rxjs';
 import { ToastController, Platform } from '@ionic/angular';
 
 
+
 @Component({
   selector: 'app-temperature',
   templateUrl: './temperature.page.html',
@@ -54,6 +55,7 @@ export class TemperaturePage implements OnInit {
       this.plt.ready().then(()=> {
         this.loadEntries();
       })
+      
     this.GetLatestData();
     this.GetAllInfoDevice();
     interval(60000).subscribe(x => { //* will execute every 5 seconds
@@ -157,4 +159,20 @@ export class TemperaturePage implements OnInit {
     });
     toast.present();
   }
+
+  isDesktop() {
+    let platforms = this.plt.platforms();
+    if(platforms[0] == "mobile") {
+        return "mobile";
+    } 
+    if(platforms[0] == "desktop") {
+        return "desktop";
+    }
+    if(platforms[0] == "android"){
+      return "android";
+    }
+    if(platforms[0] == "ios"){
+      return "ios";
+    }
+}
 }

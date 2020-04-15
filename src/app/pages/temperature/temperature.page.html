@@ -13,13 +13,16 @@
       <b>Temperature</b>
     </ion-card-header>
     <ion-card-content>
+      <ion-item>
+
       <canvas baseChart
         [datasets]="chartData"
         [labels]="chartLabels"
         [chartType]="chartType"
         [options]="chartOptions"
-        [legend]="showLegend">
+        [legend]="showLegend" item-content>
       </canvas>
+      </ion-item>
     </ion-card-content>
   </ion-card>
 
