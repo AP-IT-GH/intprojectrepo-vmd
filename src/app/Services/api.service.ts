@@ -12,14 +12,14 @@ export class APIService {
   constructor(private http: HttpClient) { }
 
   GetDeviceInfogeneral() {
-    return this.http.get<IDevice[]>(`http://35.210.9.38:3000/device`);
+    return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device`);
   }
 
   GetDeviceDataAll() {
-    return this.http.get<IDeviceData[]>(`http://35.210.9.38:3000/data`);
+    return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data`);
   }
   GetDeviceDataSingle(Id){
-    return this.http.get<IDeviceData[]>(`http://35.210.9.38:3000/data/${Id}`)
+    return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data/${Id}`)
     .pipe(
       map((data)=>{
         for(let entry of data){
@@ -31,10 +31,10 @@ export class APIService {
   }
 
   GetDeviceinfo(Id) {
-    return this.http.get<IDevice[]>(`http://35.210.9.38:3000/device/${Id}`);
+    return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device/${Id}`);
   }
   GetLatestSingleDeviceInfo(Id){
-    return this.http.get<IAllDeviceData>(`http://35.210.9.38:3000/device/${Id}/latest`);
+    return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
   }
 }
 export interface IAllDeviceData{
