@@ -22,6 +22,10 @@ export class APIService {
   GetLatestDeviceInfo(Id){
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
   }
+
+  // SetNotification(body){
+  //   return this.http.post(`https://onesignal.com/api/v1/notifications`,)
+  // }
 }
 export interface IAllDeviceData{
   ID: number;

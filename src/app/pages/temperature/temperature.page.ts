@@ -3,6 +3,7 @@ import { Chart } from "chart.js";
 import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
 import {interval} from  'rxjs';
 import { ToastController } from '@ionic/angular';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 
 @Component({
