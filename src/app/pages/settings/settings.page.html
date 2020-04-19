@@ -87,9 +87,9 @@
       <ion-card-subtitle>Change the password of the device</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <ion-input clearInput placeholder="Old Password" type="password"></ion-input>
-      <ion-input clearInput placeholder="New Password" type="password"></ion-input>
-      <ion-button color="dark">Change password</ion-button>
+      <ion-input [(ngModel)]="oldPassword" clearInput placeholder="Old Password" type="password"></ion-input>
+      <ion-input [(ngModel)]="newPassword" clearInput placeholder="New Password" type="password"></ion-input>
+      <ion-button (click)="generateSecureKeyAndIV()" color="dark">Change password</ion-button>
     </ion-card-content>
   </ion-card>
 

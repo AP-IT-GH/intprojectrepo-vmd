@@ -15,6 +15,9 @@ import {IonicStorageModule} from '@ionic/storage'
 //Device Storage
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
+//password encryption
+//import { AES256 } from '@ionic-native/aes-256';
+
 
 import 'chartjs-plugin-zoom';
 import { DatePipe } from '@angular/common';
