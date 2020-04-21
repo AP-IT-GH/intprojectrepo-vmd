@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-var cors = require('cors');
+//var cors = require('cors');
 const app = express();
 
 // parse requests of content-type: application/json
@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //use it before all route definitions
-app.use(cors({origin: '*'}));
+//app.use(cors({origin: '*'}));
 
 // simple route
 app.get("/", (req, res) => {

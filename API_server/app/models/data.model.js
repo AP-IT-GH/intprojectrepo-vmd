@@ -107,6 +107,27 @@ Data.findLatestById = (deviceId, result) => {
   });
 };
 
+Data.updateNameById = (deviceId, deviceName, result) => {
+  sql.query(
+    "UPDATE vmdDB1.Device SET Name = '?' WHERE (ID = '?');",
+    [deviceName, deviceId],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
+      if (res.affectedRows == 0) {
+        // not found Device with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated Device: ", { id: deviceId, ...deviceName });
+      result(null, { id: deviceId, ...deviceName });
+    }
+  );
+};
 
   module.exports = Data;
