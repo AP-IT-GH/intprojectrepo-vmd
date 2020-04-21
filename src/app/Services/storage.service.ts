@@ -41,7 +41,7 @@ export class StorageService {
 
       for (let i of entries){
         if (i.id !== id){
-          tokeep.push(i);
+          tokeep.concat(i);
         }
       }
 
@@ -49,15 +49,9 @@ export class StorageService {
     })
   }
 
-  //deleteAllEntries(): Promise<IexeedEntry[]>{
-  //  this.storage.get(ENTRY_KEY).then((entries: IexeedEntry[]) =>{
-  //    entries.forEach(element => {
-  //       
-  //    })
-  //  
-  //    
-  //  });
-  // }
+  deleteAllEntries(): Promise<void>{
+    return this.storage.clear();
+  }
 }
 
  

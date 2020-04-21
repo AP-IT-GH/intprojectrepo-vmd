@@ -5,6 +5,7 @@ import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
 import { DatePipe } from '@angular/common';
 import { interval } from 'rxjs';
 import { ToastController, Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -51,7 +52,8 @@ export class TemperaturePage implements OnInit {
     private plt: Platform,
     private APIService: APIService,
     private storage: StorageService, 
-    public datepipe: DatePipe) {
+    public datepipe: DatePipe,
+    private router: Router) {
       this.plt.ready().then(()=> {
         this.loadEntries();
       })
@@ -67,16 +69,8 @@ export class TemperaturePage implements OnInit {
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => { //TODO: device ID moet een variabele zijn in de toekomst.
       this.DataDevice = DataDevice;
     })
-
-    //this.rangeCount = this.newEntry.rangeCount;
+  
   }
-
-  //ADD RangeCount
-  addRangeCount(){
-    this.rangeCountEntry.rangeCount = this.rangeCount;
-    this.loadEntries(); //in de hoop van het refreshen van de items
-  }
-
   //* ADD Entry
   addEntry(entry: IexeedEntry){
     this.newEntry.id = Date.now();
@@ -108,34 +102,24 @@ export class TemperaturePage implements OnInit {
   //remove Entry
   removeEntry(ID:number){
     this.storage.deleteEntry(ID);
+    // this.router.routeReuseStrategy.shouldReuseRoute = () => {
+    //   return false;
+    // }
+    // this.router.onSameUrlNavigation = 'reload';
+    // this.router.navigateByUrl('/menu/temperature');
   }
 
   //removeAllEntries
   removeAllEntries(){
-    for(let entry of this.entries)
-      this.removeEntry(entry.id);
+   this.storage.deleteAllEntries();
   }
   
 
   //instellen van een limiet: 
   public rangeCount: number = 50;
-  public message: string = "";
   public packetNumber: number = 100;
-  // lastSavedDate:Date = this.entries[this.ReturnLastItemOfArray(this.entries)].date;
   private lastSavedDate:Date;
-
-
-  async setTempLimit(range: number) {
-    const toast = await this.toastController.create({
-      message: 'Limit set on ' + this.rangeCount + ' degrees.',
-      duration: 2000
-    });
-
-    this.addRangeCount(); //wijs de huidige rangecount toe aan de variabele 
-    console.log(this.rangeCountEntry.rangeCount);
-    toast.present();
-  }
-     
+   
 
   GetLatestData() {
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
@@ -154,12 +138,6 @@ export class TemperaturePage implements OnInit {
   });
 }
 
-  ReturnLastItemOfArray(array) {
-    if (array.length - 1 > 0) {
-      return array[array.length - 1];
-    }
-    else return 0;   
-  }
   typeChanged(e){
     const on = e.detail.checked;
     this.chartType = on ? 'line' : 'bar';

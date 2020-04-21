@@ -3,7 +3,8 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./pages/menu/menu.module').then(m => m.MenuPageModule)},  {
+  { path: '', loadChildren: () => import('./pages/menu/menu.module').then(m => m.MenuPageModule)},
+  {
     path: 'moisture',
     loadChildren: () => import('./pages/moisture/moisture.module').then( m => m.MoisturePageModule)
   }
@@ -12,7 +13,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules})
   ],
   exports: [RouterModule]
 })

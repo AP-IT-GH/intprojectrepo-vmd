@@ -27,7 +27,7 @@ const routes: Routes = [
       {
         path: 'moisture',
         loadChildren: () => import('../moisture/moisture.module').then(m => m.MoisturePageModule)
-      }
+      },
     ]
   },
   {
