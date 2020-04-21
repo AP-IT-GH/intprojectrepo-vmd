@@ -17,6 +17,7 @@ export class TemperaturePage implements OnInit {
 
   entries: IexeedEntry[] = [];
   newEntry: IexeedEntry = <IexeedEntry>{};
+  rangeCountEntry: IexeedEntry = <IexeedEntry>{};
   chartData: ChartDataSets[] = [{ data: [], label: 'Temperature', fill: false }];
   chartLabels: String[];
 
@@ -56,18 +57,25 @@ export class TemperaturePage implements OnInit {
       })
     this.GetLatestData();
     this.GetAllInfoDevice();
-    interval(60000).subscribe(x => { //* will execute every 5 seconds
+    interval(60000).subscribe(x => { //* will execute every minute
       this.GetLatestData();
       this.GetAllInfoDevice();
     });
   }
 
-  async ngOnInit() {
+  async ngOnInit() { //TODO: selected device hier nog op toepassen
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => { //TODO: device ID moet een variabele zijn in de toekomst.
       this.DataDevice = DataDevice;
     })
+
+    //this.rangeCount = this.newEntry.rangeCount;
   }
 
+  //ADD RangeCount
+  addRangeCount(){
+    this.rangeCountEntry.rangeCount = this.rangeCount;
+    this.loadEntries(); //in de hoop van het refreshen van de items
+  }
 
   //* ADD Entry
   addEntry(entry: IexeedEntry){
@@ -81,7 +89,6 @@ export class TemperaturePage implements OnInit {
   }
   GetAllInfoDevice() {
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
-      console.log('Res: ', res)
 
       this.chartData[0].data = [];
       this.chartLabels = [];
@@ -102,10 +109,16 @@ export class TemperaturePage implements OnInit {
   removeEntry(ID:number){
     this.storage.deleteEntry(ID);
   }
+
+  //removeAllEntries
+  removeAllEntries(){
+    for(let entry of this.entries)
+      this.removeEntry(entry.id);
+  }
   
 
   //instellen van een limiet: 
-  public rangeCount: number = 0;
+  public rangeCount: number = 50;
   public message: string = "";
   public packetNumber: number = 100;
   // lastSavedDate:Date = this.entries[this.ReturnLastItemOfArray(this.entries)].date;
@@ -117,6 +130,9 @@ export class TemperaturePage implements OnInit {
       message: 'Limit set on ' + this.rangeCount + ' degrees.',
       duration: 2000
     });
+
+    this.addRangeCount(); //wijs de huidige rangecount toe aan de variabele 
+    console.log(this.rangeCountEntry.rangeCount);
     toast.present();
   }
      
@@ -129,6 +145,7 @@ export class TemperaturePage implements OnInit {
         
         this.newEntry.temperature = this.DataDevice.Temperature;
         this.newEntry.date = this.DataDevice.Date;
+        this.newEntry.time = this.DataDevice.Time;
         this.lastSavedDate = this.DataDevice.Date;
         this.addEntry(this.newEntry)
 
