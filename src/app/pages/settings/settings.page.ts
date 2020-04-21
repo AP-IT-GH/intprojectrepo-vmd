@@ -16,6 +16,8 @@ export class SettingsPage implements OnInit {
   Device: IDevice[];
   SelectedDevice: string;
   newNameforDevice:string;
+  id: number;
+
   constructor(private APIService: APIService, private ThemeService: ThemeService, private _featureToggleService:FeaturetoggleService) { }
 
   async ngOnInit() {
@@ -40,6 +42,6 @@ export class SettingsPage implements OnInit {
 
   ApplyNewName(){
     console.log(this.newNameforDevice);
+    this.APIService.UpdateNameDevice(this.id ,this.SelectedDevice);
   }
-
 }

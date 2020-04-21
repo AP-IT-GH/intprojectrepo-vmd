@@ -29,12 +29,17 @@ export class APIService {
       })
     );
   }
-
+  
   GetDeviceinfo(Id) {
     return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device/${Id}`);
   }
   GetLatestSingleDeviceInfo(Id){
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
+  }
+
+  UpdateNameDevice(Id: number, Name: string){
+    console.log('update name in service');
+    return this.http.put(`http://35.210.149.21:3000/device/11`, {'Name' : Name});
   }
 }
 export interface IAllDeviceData{
