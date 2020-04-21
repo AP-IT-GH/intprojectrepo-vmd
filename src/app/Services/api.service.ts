@@ -39,7 +39,7 @@ export class APIService {
 
   UpdateNameDevice(Id: number, Name: string){
     console.log('update name in service');
-    return this.http.put(`http://35.210.149.21:3000/device/11`, {'Name' : Name});
+    return this.http.put(`http://35.210.149.21:3000/device/name/${Id}`, {'Name' : Name});
   }
 }
 export interface IAllDeviceData{

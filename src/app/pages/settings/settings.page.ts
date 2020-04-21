@@ -42,6 +42,6 @@ export class SettingsPage implements OnInit {
 
   ApplyNewName(){
     console.log(this.newNameforDevice);
-    this.APIService.UpdateNameDevice(this.id ,this.SelectedDevice);
+    this.APIService.UpdateNameDevice(11 ,this.SelectedDevice);
   }
 }
