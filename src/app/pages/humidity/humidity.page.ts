@@ -23,8 +23,17 @@ export class HumidityPage implements OnInit {
     // Options the chart - Visualisation
     chartOptions = {
       responsive: true,
+      maintainAspectRatio: false,
       responsiveAnimationDuration: 1500,
       aspectRatio: 3,
+      layout: {
+        padding: {
+          left: 0,
+          right: 35,
+          top: 0,
+          bottom: 0
+        }
+      },
       title: {
         display: true,
         text: 'Humidity for Device 1'
@@ -40,7 +49,6 @@ export class HumidityPage implements OnInit {
     };
     chartType = 'line';
     showLegend = false;
-
   constructor(public toastController:ToastController, private APIService: APIService,public datepipe: DatePipe) { 
     this.GetAllInfoDevice();
     interval(60000).subscribe(x => { // will execute every minute
