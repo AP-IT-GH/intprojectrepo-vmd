@@ -14,6 +14,32 @@
   <ion-text color="dark" class="settingsText">
     <h4>General Settings</h4>
   </ion-text>
+<!--Select device for changing settings-->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Select Device</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-card-subtitle>Select the device where you want to change the settings from</ion-card-subtitle>
+
+      <ion-list *ngIf="Device">
+        <ion-list-header>
+          <ion-label>
+            Select device
+          </ion-label>
+        </ion-list-header>
+      
+        <ion-item>
+          <ion-label>Devices</ion-label>
+          <ion-select cancelText="Cancel" okText="Confirm" [(ngModel)]="SelectedDevice">
+            <ion-select-option value="{{chosendevice.Name}}" *ngFor="let chosendevice of Device" >{{chosendevice.Name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+    </ion-card-content>
+  </ion-card>
 
   <!--Change name of the device-->
   <ion-card>
@@ -22,23 +48,24 @@
     </ion-card-header>
 
     <ion-card-content>
-      Give your device a new name.
-      <ion-input clearInput placeholder="Enter Name Here"></ion-input>
-      <ion-button color="dark">Apply</ion-button>
+      <ion-card-subtitle>Change the name of the selected device</ion-card-subtitle>
+      <p *ngIf="SelectedDevice">Selected device: <strong>{{SelectedDevice}}</strong></p>
+      <ion-input clearInput placeholder="Enter New Name Here" [(ngModel)]="newNameforDevice"></ion-input>
+      <ion-button color="dark" (click)="ApplyNewName()">Apply</ion-button>
     </ion-card-content>
   </ion-card>
 
-  <!--Change timing interval-->
+  <!--Change Password card-->
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Change measurement interval</ion-card-title>
-      <ion-card-subtitle>Change the time between each measurement. In seconds</ion-card-subtitle>
+      <ion-card-title>Change Password</ion-card-title>
+      <ion-card-subtitle>Change the password of the device</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <ion-item>    
-        <ion-range min="1" max="20" step="1" snaps="true" color="dark" pin="true"></ion-range>
-      </ion-item>
-      <ion-button color="dark">Apply</ion-button>
+      <p *ngIf="SelectedDevice">Selected device: <strong>{{SelectedDevice}}</strong></p>
+      <ion-input clearInput placeholder="Old Password" type="password"></ion-input>
+      <ion-input clearInput placeholder="New Password" type="password"></ion-input>
+      <ion-button color="dark">Change password</ion-button>
     </ion-card-content>
   </ion-card>
 
@@ -80,24 +107,12 @@
     <h4><b>Danger Zone</b></h4>
   </ion-text>
 
-  <!--Change Password card-->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Change Password</ion-card-title>
-      <ion-card-subtitle>Change the password of the device</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-input clearInput placeholder="Old Password" type="password"></ion-input>
-      <ion-input clearInput placeholder="New Password" type="password"></ion-input>
-      <ion-button color="dark">Change password</ion-button>
-    </ion-card-content>
-  </ion-card>
-
   <!--Reset Device card-->
   <ion-card color="danger">
     <ion-card-header>
       <ion-card-title>Reset to default settings</ion-card-title>
       <ion-card-subtitle><b>WARNING!</b> This will delete <b>everything</b> on the device!</ion-card-subtitle>
+      <p *ngIf="SelectedDevice">Selected device: <strong>{{SelectedDevice}}</strong></p>
     </ion-card-header>
     <ion-card-content>
       <ion-button color="dark">RESET DEVICE</ion-button>
