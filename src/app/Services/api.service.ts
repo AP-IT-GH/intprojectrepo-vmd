@@ -29,7 +29,7 @@ export class APIService {
       })
     );
   }
-
+  
   GetDeviceinfo(Id) {
     return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device/${Id}`);
   }
