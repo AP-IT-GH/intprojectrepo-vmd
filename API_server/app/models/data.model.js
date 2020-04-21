@@ -108,10 +108,7 @@ Data.findLatestById = (deviceId, result) => {
 };
 
 Data.updateNameById = (deviceId, deviceName, result) => {
-  sql.query(
-    "UPDATE vmdDB1.Device SET Name = '?' WHERE (ID = '?');",
-    [deviceName, deviceId],
-    (err, res) => {
+  sql.query(`UPDATE vmdDB1.Device SET Name = '${deviceName}' WHERE (ID = '${deviceId}');`,(err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
