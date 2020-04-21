@@ -13,6 +13,7 @@
       <b>Humidity</b>
     </ion-card-header>
     <ion-card-content>
+      <ion-item class="chart-container" style="position: relative; height:40vh;">
       <canvas  baseChart
       [datasets]="chartData"
       [labels]="chartLabels"
@@ -20,6 +21,7 @@
       [options]="chartOptions"
       [legend]="showLegend">
       </canvas>
+      </ion-item>
     </ion-card-content>
   </ion-card>
   <ion-card>
