@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { StorageService, IexeedEntry } from './../../Services/storage.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Chart, ChartDataSets } from "chart.js";
@@ -20,6 +21,7 @@ export class TemperaturePage implements OnInit {
   newEntry: IexeedEntry = <IexeedEntry>{};
   chartData: ChartDataSets[] = [{ data: [], label: 'Temperature', fill: false }];
   chartLabels: String[];
+  metric: String = "celcius";
 
   DataDevice: IAllDeviceData;
   DataDeviceArray: IAllDeviceData[];
@@ -66,10 +68,10 @@ export class TemperaturePage implements OnInit {
       })
       
     this.GetLatestData();
-    this.GetAllInfoDevice();
+    this.GetAllInfoDevice(this.metric);
     interval(60000).subscribe(x => { //* will execute every 5 seconds
       this.GetLatestData();
-      this.GetAllInfoDevice();
+      this.GetAllInfoDevice(this.metric);
     });
   }
 
@@ -90,16 +92,23 @@ export class TemperaturePage implements OnInit {
       this.loadEntries();
     })
   }
-  GetAllInfoDevice() {
+  GetAllInfoDevice(metric: String) {
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
-      console.log('Res: ', res)
+      //console.log('Res: ', res)
 
       this.chartData[0].data = [];
       this.chartLabels = [];
 
       for (let entry of res) {
         this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
-        this.chartData[0].data.push(entry['Temperature']);
+        if (metric == "celcius") {
+          this.chartData[0].data.push(entry['Temperature']);
+        }
+        else{
+          this.chartData[0].data.push((entry['Temperature'] *1.8)+32);
+        }
+
+        
       }
     });
   }
@@ -130,9 +139,7 @@ export class TemperaturePage implements OnInit {
     });
     toast.present();
   }
-     
-
-  GetLatestData() {
+    GetLatestData() {
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
       this.DataDevice = DataDevice;
       if (this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
@@ -146,8 +153,8 @@ export class TemperaturePage implements OnInit {
      
     }
   });
-}
-
+  }
+  
   ReturnLastItemOfArray(array) {
     if (array.length - 1 > 0) {
       return array[array.length - 1];
@@ -158,8 +165,6 @@ export class TemperaturePage implements OnInit {
     const on = e.detail.checked;
     this.chartType = on ? 'line' : 'bar';
   }
-
-
   //* Helper
   async showToast(msg){
     const toast = await this.toastController.create({
@@ -183,5 +188,15 @@ export class TemperaturePage implements OnInit {
     if(platforms[0] == "ios"){
       return "ios";
     }
+}
+TempSegmentChanged(event: any){
+if(event.target.value == "celcius"){
+  this.metric = "celcius";
+  this.GetAllInfoDevice(this.metric);
+}
+else if(event.target.value == "fahrenheit"){
+  this.metric = "fahrenheit"
+  this.GetAllInfoDevice(this.metric);
+}
 }
 }
