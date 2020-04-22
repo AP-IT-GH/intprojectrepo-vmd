@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { DatePipe, formatDate } from '@angular/common';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -9,6 +10,7 @@ import { DatePipe, formatDate } from '@angular/common';
 })
 
 export class APIService {
+  testvar: IDevice;
   constructor(private http: HttpClient) { }
 
   GetDeviceInfogeneral() {
@@ -37,11 +39,20 @@ export class APIService {
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
   }
 
-  UpdateNameDevice(Id: number, Name: string){
+  UpdateNameDevice(deviceId, name) : Observable<IDevice>{
     console.log('update name in service');
-    return this.http.put(`http://35.210.149.21:3000/device/name/${Id}`, {'Name' : Name});
+    var putJson = {
+      ID: deviceId,
+      Name: name
+    }
+    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}`, putJson, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
   }
 }
+
 export interface IAllDeviceData{
   ID: number;
 	Device_ID: number;

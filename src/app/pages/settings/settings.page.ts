@@ -12,7 +12,7 @@ import { APIService, IDevice } from 'src/app/Services/api.service';
 export class SettingsPage implements OnInit {
 
   public AutoRequestToDataBase:boolean = true;
-
+  DeviceNameChange: IDevice;
   Device: IDevice[];
   SelectedDevice: string;
   newNameforDevice:string;
@@ -33,7 +33,6 @@ export class SettingsPage implements OnInit {
     this._featureToggleService.sendmessage(this.AutoRequestToDataBase);
   }
 
-
   GetDeviceData(){
     this.APIService.GetDeviceInfogeneral().subscribe(Device => {
       this.Device = Device;
@@ -42,6 +41,6 @@ export class SettingsPage implements OnInit {
 
   ApplyNewName(){
     console.log(this.newNameforDevice);
-    this.APIService.UpdateNameDevice(11 ,this.SelectedDevice);
+    this.APIService.UpdateNameDevice(11, this.newNameforDevice).subscribe(device => this.Device.push(device));
   }
 }
