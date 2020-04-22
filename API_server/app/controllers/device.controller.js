@@ -1,4 +1,4 @@
-const Data = require("../models/device.model.js");
+const Device = require("../models/device.model.js");
 
 // create new data
 exports.create = (req, res) => {
@@ -17,31 +17,31 @@ exports.create = (req, res) => {
     });
   
     // Save Data in the database
-    Data.create(data, (err, data) => {
+    Device.create(device, (err, device) => {
       if (err)
         res.status(500).send({
           message:
             err.message || "Some error occurred while creating the data."
         });
-      else res.send(data);
+      else res.send(device);
     });
   };
 
 // Retrieve all Devices from the database.
 exports.findAllDevice = (req, res) => {
-    Data.getAllDevices((err, data) => {
+    Device.getAllDevices((err, device) => {
       if (err)
         res.status(500).send({
           message:
             err.message || "Some error occurred while retrieving devices."
         });
-      else res.send(data);
+      else res.send(device);
     });
   };
 
   // Find a single Device with a deviceId
 exports.findOneDevice = (req, res) => {
-    Data.findDeviceById(req.params.deviceId, (err, data) => {
+    Device.findDeviceById(req.params.deviceId, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
@@ -52,7 +52,7 @@ exports.findOneDevice = (req, res) => {
             message: "Error retrieving device with id " + req.params.deviceId
           });
         }
-      } else res.send(data);
+      } else res.send(device);
     });
   };
 
@@ -65,10 +65,10 @@ exports.updateDeviceName = (req, res) => {
     });
   }
 
-  Data.updateNameById(
+  Device.updateNameById(
     req.params.deviceId,
     new Data(req.body),
-    (err, data) => {
+    (err, device) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
@@ -79,7 +79,7 @@ exports.updateDeviceName = (req, res) => {
             message: "Error updating device with id " + req.params.deviceId
           });
         }
-      } else res.send(data);
+      } else res.send(device);
     }
   );
 };
