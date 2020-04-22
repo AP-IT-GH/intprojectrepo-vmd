@@ -11,6 +11,13 @@ const Data = function(data) {
   this.Battery = data.Battery;
 };
 
+const Device = function(data) {
+  this.ID = data.ID;
+  this.Password = data.Password;
+  this.Name = data.Name;
+  this.Status = data.Status;
+};
+
 //Create new data
 Data.create = (newData, result) => {
   sql.query("INSERT INTO Data SET ?", newData, (err, res) => {
@@ -107,8 +114,8 @@ Data.findLatestById = (deviceId, result) => {
   });
 };
 
-Data.updateNameById = (deviceId, deviceName, result) => {
-  sql.query(`UPDATE vmdDB1.Device SET Name = '${deviceName}' WHERE (ID = '${deviceId}');`,(err, res) => {
+Data.updateNameById = (deviceId, device, result) => {
+  sql.query(`UPDATE vmdDB1.Device SET Name = '${device.Name}' WHERE (ID = '${deviceId}');`,(err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
