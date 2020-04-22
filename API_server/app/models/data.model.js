@@ -128,7 +128,7 @@ Data.updateNameById = (deviceId, device, result) => {
         return;
       }
 
-      console.log("updated Device: ", { id: deviceId, ...deviceName });
+      console.log("updated Device: ", { id: deviceId, ...Device.Name });
       result(null, { id: deviceId, ...deviceName });
     }
   );
