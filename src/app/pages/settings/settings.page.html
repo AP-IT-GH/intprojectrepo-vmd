@@ -109,14 +109,14 @@
       <ion-card-title>Reset to default settings</ion-card-title>
       <ion-item>
         <ion-label>Choose the device that you want to reset</ion-label>
-        <ion-select [(ngModel)]="ID" okText="Okay" cancelText="Dismiss">
-          <ion-select-option *ngFor="let name of Device" value="{{name.ID}}">{{name.Name}}</ion-select-option>
+        <ion-select [(ngModel)]="Device" okText="Okay" cancelText="Dismiss">
+          <ion-select-option *ngFor="let name of Device" value="{{name.Name}}">{{name.Name}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-card-subtitle><b>WARNING!</b> This will delete <b>everything</b> on the device!</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <ion-button color="dark" name="submit" >RESET DEVICE</ion-button>
+      <ion-button color="dark" (click)="HardResetDevice()" >RESET DEVICE</ion-button>
       <p></p>
     </ion-card-content>
 

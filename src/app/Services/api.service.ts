@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view/util';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +23,18 @@ export class APIService {
   }
   GetLatestDeviceInfo(Id){
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
+  }
+  UpdateResetDevice(deviceId,newPassword,newName) : Observable<IDevice>{
+    var putJson = {
+      ID: deviceId,
+      Password: newPassword,
+      Name: newName
+    }
+    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}`, putJson, {
+      headers:new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    })
   }
 }
 

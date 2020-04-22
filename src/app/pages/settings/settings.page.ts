@@ -24,5 +24,7 @@ export class SettingsPage implements OnInit {
   toggleDarkMode() {
     this.ThemeService.toggleAppTheme();
   }
-
+ HardResetDevice(){
+   //this.APIService.UpdateResetDevice()
+ }
 }
