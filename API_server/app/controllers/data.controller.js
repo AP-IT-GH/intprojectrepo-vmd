@@ -9,11 +9,11 @@ exports.create = (req, res) => {
       });
     }
 
-    const Device = new Device({
-      ID = req.body.ID,
-      Password = req.body.Password,
-      Name = req.body.Name,
-      Status = req.body.Status
+    const device = new Device({
+      ID: req.body.ID,
+      Password: req.body.Password,
+      Name: req.body.Name,
+      Status: req.body.Status
     });
 
     const data = new Data({
