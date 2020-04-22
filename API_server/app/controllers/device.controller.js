@@ -41,7 +41,7 @@ exports.findAllDevice = (req, res) => {
 
   // Find a single Device with a deviceId
 exports.findOneDevice = (req, res) => {
-    Device.findDeviceById(req.params.deviceId, (err, data) => {
+    Device.findDeviceById(req.params.deviceId, (err, device) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
