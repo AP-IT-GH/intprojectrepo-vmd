@@ -63,9 +63,9 @@
     </ion-card-header>
     <ion-card-content>
       <p *ngIf="SelectedDevice">Selected device: <strong>{{SelectedDevice}}</strong></p>
-      <ion-input clearInput placeholder="Old Password" type="password"></ion-input>
-      <ion-input clearInput placeholder="New Password" type="password"></ion-input>
-      <ion-button color="dark">Change password</ion-button>
+      <ion-input clearInput placeholder="Old Password" type="password" [(ngModel)]="oldPassword"></ion-input>
+      <ion-input clearInput placeholder="New Password" type="password" [(ngModel)]="newPassword"></ion-input>
+      <ion-button color="dark" (click)="ApplyPasswordChange()">Change password</ion-button>
     </ion-card-content>
   </ion-card>
 

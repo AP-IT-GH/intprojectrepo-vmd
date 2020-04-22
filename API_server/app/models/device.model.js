@@ -78,4 +78,25 @@ Device.updateNameById = (deviceId, device, result) => {
   );
 };
 
+Device.updatePasswordById = (deviceId, device, result) => {
+    sql.query(`UPDATE vmdDB1.Device SET Password = '${device.Password}' WHERE (ID = '${deviceId}');`,(err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(null, err);
+          return;
+        }
+  
+        if (res.affectedRows == 0) {
+          // not found Device with the id
+          result({ kind: "not_found" }, null);
+          return;
+        }
+  
+        console.log("updated Device: ", { id: deviceId, ...device.Password });
+        console.log(device.Password);
+        result(null, { id: deviceId, ...device.Password });
+      }
+    );
+  };
+
   module.exports = Device;

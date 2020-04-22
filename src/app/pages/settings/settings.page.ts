@@ -15,7 +15,9 @@ export class SettingsPage implements OnInit {
   DeviceNameChange: IDevice;
   Device: IDevice[];
   SelectedDevice: string;
-  newNameforDevice:string;
+  newNameforDevice: string;
+  oldPassword: string;
+  newPassword: string;
   id: number;
 
   constructor(private APIService: APIService, private ThemeService: ThemeService, private _featureToggleService:FeaturetoggleService) { }
@@ -42,5 +44,17 @@ export class SettingsPage implements OnInit {
   ApplyNewName(){
     console.log(this.newNameforDevice);
     this.APIService.UpdateNameDevice(11, this.newNameforDevice).subscribe(device => this.Device.push(device));
+  }
+
+  ApplyPasswordChange(){
+    console.log(this.oldPassword);
+    console.log(this.newPassword);
+    if (this.oldPassword == this.newPassword) {
+      this.APIService.UpdatePasswordDevice(11, this.newPassword).subscribe(device => this.Device.push(device));
+    }
+    else
+    {
+      console.log("Passwords do not match!");
+    }
   }
 }

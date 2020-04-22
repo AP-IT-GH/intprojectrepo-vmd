@@ -83,4 +83,32 @@ exports.updateDeviceName = (req, res) => {
     }
   );
 };
+
+// Update a devices password with the Id in the request
+exports.updateDevicePass = (req, res) => {
+    // Validate Request
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+    }
+  
+    Device.updatePasswordById(
+      req.params.deviceId,
+      new Device(req.body),
+      (err, device) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Not found device with id ${req.params.deviceId}.`
+            });
+          } else {
+            res.status(500).send({
+              message: "Error updating device password with id " + req.params.deviceId
+            });
+          }
+        } else res.send(device);
+      }
+    );
+  };
   

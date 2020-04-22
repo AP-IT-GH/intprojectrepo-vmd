@@ -52,6 +52,20 @@ export class APIService {
       })
     });
   }
+
+  UpdatePasswordDevice(deviceId, newPassword) : Observable<IDevice>{
+    console.log('update password in service');
+    var putJson = {
+      ID: deviceId,
+      Password: newPassword
+    }
+    console.log(putJson.Password)
+    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}/password`, putJson, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
 }
 
 export interface IAllDeviceData{
