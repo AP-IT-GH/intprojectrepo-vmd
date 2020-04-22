@@ -22,25 +22,26 @@
 
 module.exports = app => {
   const data = require("../controllers/data.controller.js");
+  const device = require("../controllers/device.controller.js");
 
   // Create new data
-  app.post("/data", data.create);
+  app.post("/data", device.create);
 
   // Retrieve all data
   app.get("/data", data.findAllData);
 
   // Retrieve all devices
-  app.get("/device", data.findAllDevice);
+  app.get("/device", device.findAllDevice);
 
   // Retrieve a single Customer with customerId
-  app.get("/device/:deviceId", data.findOneDevice);
+  app.get("/device/:deviceId", device.findOneDevice);
 
   // Retrieve all data from a single device
   app.get("/data/:deviceId", data.findAllDataFromOneDevice);
 
-  // Retrieve a single Customer with customerId
+  // Retrieve latest data from device
   app.get("/device/:deviceId/latest", data.findLatestData);
 
   // Update name of a device
-  app.put("/device/:deviceId", data.updateDeviceName);
+  app.put("/device/:deviceId", device.updateDeviceName);
 };
