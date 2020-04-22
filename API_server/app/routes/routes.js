@@ -41,5 +41,6 @@ module.exports = app => {
   // Retrieve a single Customer with customerId
   app.get("/device/:deviceId/latest", data.findLatestData);
 
-
+  // Update name of a device
+  app.put("/device/name/:deviceId", data.updateDeviceName);
 };
