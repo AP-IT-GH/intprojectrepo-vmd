@@ -67,7 +67,7 @@ exports.updateDeviceName = (req, res) => {
 
   Device.updateNameById(
     req.params.deviceId,
-    new Data(req.body),
+    new Device(req.body),
     (err, device) => {
       if (err) {
         if (err.kind === "not_found") {
