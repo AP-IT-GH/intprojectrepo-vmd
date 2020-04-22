@@ -9,6 +9,13 @@ exports.create = (req, res) => {
       });
     }
 
+    const Device = new Device({
+      ID = req.body.ID,
+      Password = req.body.Password,
+      Name = req.body.Name,
+      Status = req.body.Status
+    });
+
     const data = new Data({
       DeviceId: req.body.DeviceId,
       Temperature: req.body.Temperature,
@@ -116,7 +123,7 @@ exports.updateDeviceName = (req, res) => {
 
   Data.updateNameById(
     req.params.deviceId,
-    new Data(req.body),
+    new Device(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {

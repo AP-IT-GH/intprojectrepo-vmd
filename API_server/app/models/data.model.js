@@ -11,11 +11,11 @@ const Data = function(data) {
   this.Battery = data.Battery;
 };
 
-const Device = function(data) {
-  this.ID = data.ID;
-  this.Password = data.Password;
-  this.Name = data.Name;
-  this.Status = data.Status;
+const Device = function(device) {
+  this.ID = device.ID;
+  this.Password = device.Password;
+  this.Name = device.Name;
+  this.Status = device.Status;
 };
 
 //Create new data
@@ -128,8 +128,9 @@ Data.updateNameById = (deviceId, device, result) => {
         return;
       }
 
-      console.log("updated Device: ", { id: deviceId, ...Device.Name });
-      result(null, { id: deviceId, ...deviceName });
+      console.log("updated Device: ", { id: deviceId, ...device.Name });
+      console.log(device.Name);
+      result(null, { id: deviceId, ...device.Name });
     }
   );
 };

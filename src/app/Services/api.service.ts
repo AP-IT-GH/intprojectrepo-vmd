@@ -45,6 +45,7 @@ export class APIService {
       ID: deviceId,
       Name: name
     }
+    console.log(putJson.Name)
     return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}`, putJson, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
