@@ -47,4 +47,8 @@ module.exports = app => {
 
   // Update password of a device
   app.put("/device/:deviceId/password", device.updateDevicePass);
+
+  // Update factory settings to a device
+  app.put("/device/:deviceId", device.updateDevice);
+  
 };

@@ -16,9 +16,12 @@ export class SettingsPage implements OnInit {
   DeviceNameChange: IDevice;
   Device: IDevice[];
   SelectedDevice: string;
+  Selected: string;
   newNameforDevice: string;
   oldPassword: string;
   newPassword: string;
+  defaultPasswordOfDevice: string = "admin"
+  defaultNameOfDevice: string = "admin"
   id: number;
 
   constructor(private APIService: APIService, private ThemeService: ThemeService, private _featureToggleService:FeaturetoggleService) { }
@@ -60,6 +63,6 @@ export class SettingsPage implements OnInit {
     }
   }
  HardResetDevice(){
-   //this.APIService.UpdateResetDevice()
+   this.APIService.UpdateResetDevice(11,this.defaultNameOfDevice,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
  }
 }

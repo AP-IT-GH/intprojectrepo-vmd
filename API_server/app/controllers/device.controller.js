@@ -112,3 +112,30 @@ exports.updateDevicePass = (req, res) => {
     );
   };
   
+  // Update a device to factory settings with the Id in the request
+exports.updateDevice = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  Device.updateDeviceById(
+    req.params.deviceId,
+    new Device(req.body),
+    (err, device) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found device with id ${req.params.deviceId}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating factory settings of the device with id " + req.params.deviceId
+          });
+        }
+      } else res.send(device);
+    }
+  );
+};

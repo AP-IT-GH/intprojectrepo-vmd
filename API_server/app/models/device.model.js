@@ -99,4 +99,25 @@ Device.updatePasswordById = (deviceId, device, result) => {
     );
   };
 
+Device.updateFactorySettings = (deviceId, device, result) => {
+  sql.query(`UPDATE vmdDB1.Device SET Password = '${device.Password}', Name ='${device.Password}' WHERE (ID = '${deviceId}');`,(err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Device with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated Device: ", { id: deviceId, ...device.Password, ...device.Name });
+      console.log(device.Password && device.Name);
+      result(null, { id: deviceId, ...device.Password, ...device.Name });
+    }
+  );
+};
+
   module.exports = Device;
