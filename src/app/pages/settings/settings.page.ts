@@ -1,6 +1,8 @@
 import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit } from '@angular/core';
+import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
 import { APIService, IDevice } from 'src/app/Services/api.service';
+
 
 @Component({
   selector: 'app-settings',
@@ -10,12 +12,18 @@ import { APIService, IDevice } from 'src/app/Services/api.service';
 
 export class SettingsPage implements OnInit {
 
+  public AutoRequestToDataBase:boolean = true;
+  DeviceNameChange: IDevice;
   Device: IDevice[];
-  constructor(private ThemeService: ThemeService, private APIService: APIService) { }
-  ResetDevice(ID: number) {
-    
-  }
-  ngOnInit() {
+  SelectedDevice: string;
+  newNameforDevice: string;
+  oldPassword: string;
+  newPassword: string;
+  id: number;
+
+  constructor(private APIService: APIService, private ThemeService: ThemeService, private _featureToggleService:FeaturetoggleService) { }
+
+  async ngOnInit() {
     this.APIService.GetDeviceInfogeneral().subscribe(Device => {
       this.Device = Device;
     })
@@ -23,6 +31,33 @@ export class SettingsPage implements OnInit {
 
   toggleDarkMode() {
     this.ThemeService.toggleAppTheme();
+  }
+
+  public checkForChanges(){
+    this._featureToggleService.sendmessage(this.AutoRequestToDataBase);
+  }
+
+  GetDeviceData(){
+    this.APIService.GetDeviceInfogeneral().subscribe(Device => {
+      this.Device = Device;
+    })
+  }
+
+  ApplyNewName(){
+    console.log(this.newNameforDevice);
+    this.APIService.UpdateNameDevice(11, this.newNameforDevice).subscribe(device => this.Device.push(device));
+  }
+
+  ApplyPasswordChange(){
+    console.log(this.oldPassword);
+    console.log(this.newPassword);
+    if (this.oldPassword == this.newPassword) {
+      this.APIService.UpdatePasswordDevice(11, this.newPassword).subscribe(device => this.Device.push(device));
+    }
+    else
+    {
+      console.log("Passwords do not match!");
+    }
   }
  HardResetDevice(){
    //this.APIService.UpdateResetDevice()

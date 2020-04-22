@@ -1,28 +1,70 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { DatePipe, formatDate } from '@angular/common';
 import { Observable } from 'rxjs';
-import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view/util';
+
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class APIService {
+  testvar: IDevice;
   constructor(private http: HttpClient) { }
 
   GetDeviceInfogeneral() {
     return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device`);
   }
 
-  GetDevicedata() {
+  GetDeviceDataAll() {
     return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data`);
   }
-
+  GetDeviceDataSingle(Id){
+    return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data/${Id}`)
+    .pipe(
+      map((data)=>{
+        for(let entry of data){
+          entry.Date = new Date(entry.Date);
+        }
+        return data;
+      })
+    );
+  }
+  
   GetDeviceinfo(Id) {
     return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device/${Id}`);
   }
-  GetLatestDeviceInfo(Id){
+  GetLatestSingleDeviceInfo(Id){
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
+  }
+
+  UpdateNameDevice(deviceId, name) : Observable<IDevice>{
+    console.log('update name in service');
+    var putJson = {
+      ID: deviceId,
+      Name: name
+    }
+    console.log(putJson.Name)
+    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}`, putJson, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  UpdatePasswordDevice(deviceId, newPassword) : Observable<IDevice>{
+    console.log('update password in service');
+    var putJson = {
+      ID: deviceId,
+      Password: newPassword
+    }
+    console.log(putJson.Password)
+    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}/password`, putJson, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
   }
   UpdateResetDevice(deviceId,newPassword,newName) : Observable<IDevice>{
     var putJson = {
@@ -49,6 +91,7 @@ export interface IAllDeviceData{
   Battery: Number;
   Password: String;
   Name: String;
+  Status: number;
 }
 
 export interface IDeviceData {
@@ -65,7 +108,8 @@ export interface IDeviceData {
 export interface IDevice {
 	ID: number;
 	Password: string;
-	Name: string;
+  Name: string;
+  Status: number;
 }
 
 
