@@ -100,7 +100,7 @@ Device.updatePasswordById = (deviceId, device, result) => {
   };
 
 Device.updateFactorySettings = (deviceId, device, result) => {
-  sql.query(`UPDATE vmdDB1.Device SET Password = '${device.Password}', Name ='${device.Password}' WHERE (ID = '${deviceId}');`,(err, res) => {
+  sql.query(`UPDATE vmdDB1.Device SET Password = '${device.Password}', Name ='${device.Name}' WHERE (ID = '${deviceId}');`,(err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);

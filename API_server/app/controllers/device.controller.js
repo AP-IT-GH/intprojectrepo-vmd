@@ -113,7 +113,7 @@ exports.updateDevicePass = (req, res) => {
   };
   
   // Update a device to factory settings with the Id in the request
-exports.updateDevice = (req, res) => {
+exports.updateDeviceFactory = (req, res) => {
   // Validate Request
   if (!req.body) {
     res.status(400).send({
@@ -121,7 +121,7 @@ exports.updateDevice = (req, res) => {
     });
   }
 
-  Device.updateDeviceById(
+  Device.updateFactorySettings(
     req.params.deviceId,
     new Device(req.body),
     (err, device) => {
