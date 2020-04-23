@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+
 
 @Component({
   selector: 'app-finddevice',
@@ -7,12 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FinddevicePage implements OnInit {
 
-  SelectedBluetoothDevice: String;
-  BluetoothDevices: string[];
-  ssid: string;
   password: string;
-
-  constructor() { }
+  ssid: string;
+  BluetoothDevices: string[];
+  SelectedBluetoothDevice: String;
+  constructor(private bluetoothserial: BluetoothSerial) { }
 
   ngOnInit() {
   }
