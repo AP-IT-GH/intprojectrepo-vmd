@@ -1,7 +1,7 @@
 import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit } from '@angular/core';
 import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
-import { APIService, IDevice } from 'src/app/Services/api.service';
+import { APIService, IDevice, IPassword } from 'src/app/Services/api.service';
 import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
@@ -15,10 +15,13 @@ export class SettingsPage implements OnInit {
   public AutoRequestToDataBase:boolean = true;
   DeviceNameChange: IDevice;
   Device: IDevice[];
-  SelectedDevice: string;
+
+  SelectedDevice: number;
+  SelectedDeviceName: string;
   Selected: string;
   newNameforDevice: string;
   oldPassword: string;
+  oldPasswordInDB: IPassword;
   newPassword: string;
   defaultPasswordOfDevice: string = "admin"
   defaultNameOfDevice: string = "admin"
@@ -30,6 +33,16 @@ export class SettingsPage implements OnInit {
     this.APIService.GetDeviceInfogeneral().subscribe(Device => {
       this.Device = Device;
     })
+  }
+
+  GetDeviceNameFromID() {
+    for (let index = 0; index < this.Device.length; index++) {
+      if (this.Device[index].ID == this.SelectedDevice) {
+        this.SelectedDeviceName = this.Device[index].Name;
+        break;
+      }
+    }
+    return this.SelectedDeviceName;
   }
 
   toggleDarkMode() {
@@ -48,22 +61,24 @@ export class SettingsPage implements OnInit {
 
   ApplyNewName(){
     console.log(this.newNameforDevice);
-    this.APIService.UpdateNameDevice(11, this.newNameforDevice).subscribe(device => this.Device.push(device));
+    this.APIService.UpdateNameDevice(this.SelectedDevice, this.newNameforDevice).subscribe(device => this.Device.push(device));
   }
 
   ApplyPasswordChange(){
-    console.log(this.oldPassword);
-    console.log(this.newPassword);
-    
-    if (this.oldPassword == this.newPassword) {
-      this.APIService.UpdatePasswordDevice(11, this.md5.appendStr(this.newPassword).end()).subscribe(device => this.Device.push(device));
+    this.APIService.GetDevicePassword(this.SelectedDevice).subscribe(Password => {
+      this.oldPasswordInDB = Password;
+    })
+
+    if (this.oldPassword == this.oldPasswordInDB.Password) {
+      this.APIService.UpdatePasswordDevice(this.SelectedDevice, this.md5.appendStr(this.newPassword).end()).subscribe(device => this.Device.push(device));
     }
     else
     {
       console.log("Passwords do not match!");
     }
   }
+
  HardResetDevice(){
-   this.APIService.UpdateResetDevice(11,this.defaultNameOfDevice,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
+   this.APIService.UpdateResetDevice(this.SelectedDevice,this.defaultNameOfDevice,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
  }
 }

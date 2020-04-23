@@ -51,4 +51,6 @@ module.exports = app => {
   // Update factory settings to a device
   app.put("/device/:deviceId", device.updateDeviceFactory);
   
+  // get password of a device
+  app.get("/device/:deviceId/password", device.getDevicePass);
 };
