@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FinddevicePage implements OnInit {
 
+  SelectedBluetoothDevice: String;
+  BluetoothDevices: string[];
+  ssid: string;
+  password: string;
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  SendCredentials(){
+    
+  }
 }
