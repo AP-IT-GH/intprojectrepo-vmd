@@ -15,6 +15,10 @@ import {IonicStorageModule} from '@ionic/storage'
 //Device Storage
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
+//bluetooth
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+
+
 
 import 'chartjs-plugin-zoom';
 import { DatePipe } from '@angular/common';
@@ -27,6 +31,7 @@ import { DatePipe } from '@angular/common';
     StatusBar,
     NativeStorage,
     DatePipe,
+    BluetoothSerial,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
