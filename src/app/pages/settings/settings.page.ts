@@ -2,7 +2,7 @@ import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit } from '@angular/core';
 import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
 import { APIService, IDevice } from 'src/app/Services/api.service';
-
+import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'app-settings',
@@ -11,7 +11,7 @@ import { APIService, IDevice } from 'src/app/Services/api.service';
 })
 
 export class SettingsPage implements OnInit {
-
+  md5 = new Md5();
   public AutoRequestToDataBase:boolean = true;
   DeviceNameChange: IDevice;
   Device: IDevice[];
@@ -54,8 +54,9 @@ export class SettingsPage implements OnInit {
   ApplyPasswordChange(){
     console.log(this.oldPassword);
     console.log(this.newPassword);
+    
     if (this.oldPassword == this.newPassword) {
-      this.APIService.UpdatePasswordDevice(11, this.newPassword).subscribe(device => this.Device.push(device));
+      this.APIService.UpdatePasswordDevice(11, this.md5.appendStr(this.newPassword).end()).subscribe(device => this.Device.push(device));
     }
     else
     {
