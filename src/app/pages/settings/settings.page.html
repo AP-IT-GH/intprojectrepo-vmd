@@ -10,6 +10,20 @@
 </ion-header>
 
 <ion-content>
+<ion-text color="dark" class="settingsText">
+  <h4>Pre Settings</h4>
+</ion-text>
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>
+      Enter Bluetooth page to put in your WiFi credentials
+    </ion-card-title>
+  </ion-card-header>
+  
+  <ion-card-content *ngFor="let p of pageWifi">
+    <ion-button [routerLink]="p.url" [class.active-item]="selectedPath===p.url" color="dark">{{p.title}}</ion-button>
+  </ion-card-content>
+</ion-card>
 
   <ion-text color="dark" class="settingsText">
     <h4>General Settings</h4>

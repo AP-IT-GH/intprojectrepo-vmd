@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
 import { APIService, IDevice } from 'src/app/Services/api.service';
 import {Md5} from 'ts-md5/dist/md5';
+import { Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -23,8 +24,17 @@ export class SettingsPage implements OnInit {
   defaultPasswordOfDevice: string = "admin"
   defaultNameOfDevice: string = "admin"
   id: number;
+  pageWifi = [{
+    title: 'Wifi Credentials Page',
+    url: '/menu/finddevice'
+  }]
+  selectedPath= '';
 
-  constructor(private APIService: APIService, private ThemeService: ThemeService, private _featureToggleService:FeaturetoggleService) { }
+  constructor(private APIService: APIService, private ThemeService: ThemeService, private _featureToggleService:FeaturetoggleService, private router: Router) { 
+    this.router.events.subscribe((event: RouterEvent)=>{
+      this.selectedPath = event.url;
+    })
+  }
 
   async ngOnInit() {
     this.APIService.GetDeviceInfogeneral().subscribe(Device => {
