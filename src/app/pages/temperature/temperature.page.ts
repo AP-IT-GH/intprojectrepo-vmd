@@ -3,7 +3,9 @@ import { Chart } from "chart.js";
 import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
 import {interval} from  'rxjs';
 import { ToastController } from '@ionic/angular';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { HttpClient } from '@angular/common/http';
+import * as _ from "lodash";
+// import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 
 @Component({
@@ -12,6 +14,8 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
   styleUrls: ['./temperature.page.scss'],
 })
 export class TemperaturePage implements OnInit {
+
+  random : number = 0;
 
   @ViewChild("lineCanvasDay", { static: true }) lineCanvasDay: ElementRef;
   @ViewChild("lineCanvasMonth", { static: true }) lineCanvasMonth: ElementRef;
@@ -25,17 +29,60 @@ export class TemperaturePage implements OnInit {
   DataDevice: IAllDeviceData;
 
   private today = new Date();
-  constructor(public toastController:ToastController, private APIService: APIService) { 
+  constructor(public toastController:ToastController, private APIService: APIService,private httpClient:HttpClient) { 
     interval(5000).subscribe(x => { // will execute every 5 seconds
     this.GetLatestData();
   });
 }
+
+  // TestNotification = () => {
+    
+  //   if (this.random > 8){
+  //     // alert('Random is groter dan 8')
+  //     sendNotification(message, this.httpClient);
+  //   }
+  //   var sendNotification = function(data, httpClient:HttpClient){
+  //     // var headers = {
+  //     //   "Content-Type": "application/json; charset=utf-8",
+  //     //   "Authorization": "Basic YTcxMDBmYmEtYjgzOS00MjI5LWFjZjItMzRjN2ZhZjA1NWNh"
+  //     // };
+
+  //     const httpOptions = {
+  //       headers: new HttpHeaders({
+  //         "Content-Type": "application/json; charset=utf-8",
+  //         "Authorization": "Basic YmM4MjIzNGUtMDk4Ni00YjdhLTgyYWMtOGRhMjI0OWJjZGQ5"
+  //       })
+  //     };
+  //     console.log(httpClient.post<any>("https://onesignal.com/api/v1/notifications", data, httpOptions));
+  //   };
+
+    
+  // }
 
   async ngOnInit() {
     //limiet instellen
     this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice=>{ //device ID moet een variabele zijn in de toekomst.
       this.DataDevice = DataDevice;
     })
+
+    var message = {
+      app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
+      contents: {"en": "The random number is higher than 8."}, //placeholder text
+      included_segments: ["All"]
+    };
+
+    interval(5000).subscribe(x => {
+      this.random = _.random(1,10);
+      if (this.random > 8){
+        this.APIService.SendNotification(message).subscribe(data => {
+          console.log('Het lukt');
+          console.log(data);
+        },
+        err => {
+          alert(err);
+        });
+      }
+    });
 
     //LINECHART BEGIN
     //Linechart Day
@@ -192,6 +239,7 @@ getDate(xDays:number){
           this.ExeedingTempValue.push(this.DataDevice.Temperature);
           console.log("It has happened! jooho " + this.ExeedingTempValue[0]);
           console.log(this.ExeedingTempValue.length);
+
       }
   })}
 
