@@ -5,7 +5,6 @@ import {interval} from  'rxjs';
 import { ToastController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import * as _ from "lodash";
-// import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 
 @Component({
@@ -34,30 +33,6 @@ export class TemperaturePage implements OnInit {
     this.GetLatestData();
   });
 }
-
-  // TestNotification = () => {
-    
-  //   if (this.random > 8){
-  //     // alert('Random is groter dan 8')
-  //     sendNotification(message, this.httpClient);
-  //   }
-  //   var sendNotification = function(data, httpClient:HttpClient){
-  //     // var headers = {
-  //     //   "Content-Type": "application/json; charset=utf-8",
-  //     //   "Authorization": "Basic YTcxMDBmYmEtYjgzOS00MjI5LWFjZjItMzRjN2ZhZjA1NWNh"
-  //     // };
-
-  //     const httpOptions = {
-  //       headers: new HttpHeaders({
-  //         "Content-Type": "application/json; charset=utf-8",
-  //         "Authorization": "Basic YmM4MjIzNGUtMDk4Ni00YjdhLTgyYWMtOGRhMjI0OWJjZGQ5"
-  //       })
-  //     };
-  //     console.log(httpClient.post<any>("https://onesignal.com/api/v1/notifications", data, httpOptions));
-  //   };
-
-    
-  // }
 
   async ngOnInit() {
     //limiet instellen
