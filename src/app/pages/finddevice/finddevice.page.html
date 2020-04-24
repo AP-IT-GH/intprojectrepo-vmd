@@ -4,6 +4,7 @@
   </ion-buttons>
   <ion-toolbar>
     <ion-title>Find Device</ion-title>
+    <ion-button (click)="getAllBluetoothDevices()" slot="end"><ion-icon name="Bluetooth"></ion-icon> Search</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +18,7 @@
   <ion-card-content>
     <ion-card-subtitle>Select the device where you want to change the settings from</ion-card-subtitle>
 
-    <ion-list *ngIf="BluetoothDevices">
+    <ion-list>
       <ion-list-header>
         <ion-label>
           Select device
@@ -26,11 +27,14 @@
     
       <ion-item>
         <ion-label>Devices</ion-label>
+
         <ion-select cancelText="Cancel" okText="Confirm" [(ngModel)]="SelectedBluetoothDevice">
-          <ion-select-option value="" *ngFor="let chosendevice of BluetoothDevices" >{{chosendevice.Name}}</ion-select-option>
+          <ion-select-option value="{{chosendevice.id}}" *ngFor="let chosendevice of FoundDevices" >{{chosendevice.name || 'Unnamed'}} {{chosendevice.id}}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-list>
+
+
   </ion-card-content>
 </ion-card>
 
