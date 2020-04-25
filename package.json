@@ -89,7 +89,7 @@
       "cordova-plugin-nativestorage": {},
       "cordova-sqlite-storage": {},
       "cordova-plugin-bluetooth-serial": {},
-      "cordova-plugin-ble-central": {}
+      "cordova-plugin-ble-central": {},
       "onesignal-cordova-plugin": {}
     },
     "platforms": [

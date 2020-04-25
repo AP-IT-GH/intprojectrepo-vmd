@@ -49,6 +49,7 @@ export class HumidityPage implements OnInit {
     };
     chartType = 'line';
     showLegend = false;
+    
   constructor(public toastController:ToastController, private APIService: APIService,public datepipe: DatePipe) { 
     this.GetAllInfoDevice();
     interval(60000).subscribe(x => { // will execute every minute

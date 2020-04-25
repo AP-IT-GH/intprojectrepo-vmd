@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { MoisturePageRoutingModule } from './moisture-routing.module';
 
 import { MoisturePage } from './moisture.page';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    ChartsModule,
     MoisturePageRoutingModule
   ],
   declarations: [MoisturePage]
