@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { DatePipe, formatDate } from '@angular/common';
-import { Observable } from 'rxjs';
 import { DatePipe, formatDate, Time } from '@angular/common';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
