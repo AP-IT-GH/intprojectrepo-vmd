@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { DatePipe, formatDate } from '@angular/common';
 import { Observable } from 'rxjs';
+import { DatePipe, formatDate, Time } from '@angular/common';
 
 
 @Injectable({
@@ -86,7 +87,7 @@ export interface IAllDeviceData{
 	Temperature: number;
   Humidity: number;
   Moisture: number;
-  Time: Date;
+  Time: Time;
   Date: Date;
   Battery: Number;
   Password: String;
@@ -100,7 +101,7 @@ export interface IDeviceData {
 	Temperature: number;
   Humidity: number;
   Moisture: number;
-  Time: Date;
+  Time: Time;
   Date: Date;
   Battery: Number;
 }

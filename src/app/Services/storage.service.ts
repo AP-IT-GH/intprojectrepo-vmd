@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { Time } from '@angular/common';
 
 const ENTRY_KEY = 'Temp-entries';
 
@@ -40,17 +41,25 @@ export class StorageService {
 
       for (let i of entries){
         if (i.id !== id){
-          tokeep.push(i);
+          tokeep.concat(i);
         }
       }
 
       return this.storage.set(ENTRY_KEY, tokeep);
     })
   }
+
+  deleteAllEntries(): Promise<void>{
+    return this.storage.clear();
+  }
 }
+
+ 
 
 export interface IexeedEntry {
   id: number,
   temperature: number,
-  date: Date
+  date: Date,
+  time: Time,
+  rangeCount: number
 }
