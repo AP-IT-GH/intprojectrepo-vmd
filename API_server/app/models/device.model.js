@@ -120,4 +120,23 @@ Device.updateFactorySettings = (deviceId, device, result) => {
   );
 };
 
+//retrieve password from specifi device with id
+Device.findPassById = (deviceId, result) => {
+  sql.query(`SELECT Device.Password FROM vmdDB1.Device WHERE ID = ${deviceId};`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found device: ", res[0]);
+      result(null, res[0]);
+      return;
+    }
+
+    // not found device with the id
+    result({ kind: "not_found" }, null);
+  });
+};
   module.exports = Device;

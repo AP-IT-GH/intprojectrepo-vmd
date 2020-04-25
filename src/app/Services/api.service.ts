@@ -10,7 +10,6 @@ import { Observable } from 'rxjs';
 })
 
 export class APIService {
-  testvar: IDevice;
   constructor(private http: HttpClient) { }
 
   GetDeviceInfogeneral() {
@@ -35,8 +34,13 @@ export class APIService {
   GetDeviceinfo(Id) {
     return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device/${Id}`);
   }
+
   GetLatestSingleDeviceInfo(Id){
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
+  }
+
+  GetDevicePassword(Id) {
+    return this.http.get<IPassword>(`http://35.210.149.21:3000/device/${Id}/password`);
   }
 
   UpdateNameDevice(deviceId, name) : Observable<IDevice>{
@@ -112,5 +116,8 @@ export interface IDevice {
   Status: number;
 }
 
+export interface IPassword {
+	Password: string;
+}
 
 
