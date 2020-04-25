@@ -20,4 +20,20 @@
       <canvas #lineCanvasMonth></canvas>
     </ion-card-content>
   </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <b>Limit the humidity:</b>
+    </ion-card-header>
+    <ion-card-content>
+      <div id="humidRange">
+    <ion-icon name="sunny-outline" id="sun"></ion-icon>
+    <ion-icon name="water-outline" id="water"></ion-icon>
+      </div>
+      <ion-range [(ngModel)]="rangeCount" dualKnobs="false" min="0" max="100" step="1" snaps="false" color="dark" pin="true" class="Icons" id="Slider"></ion-range>
+      <ion-button color="dark" (click)="setHumidLimit(rangeCount)">Set Limit</ion-button>
+      <br>
+      <p *ngIf="message.length>0">{{message}}</p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
