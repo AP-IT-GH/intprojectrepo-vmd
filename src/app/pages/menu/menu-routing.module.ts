@@ -27,6 +27,10 @@ const routes: Routes = [
       {
         path: 'moisture',
         loadChildren: () => import('../moisture/moisture.module').then(m => m.MoisturePageModule)
+      },
+      {
+        path: 'finddevice',
+        loadChildren: () => import('../finddevice/finddevice.module').then(m => m.FinddevicePageModule)
       }
     ]
   },

@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { DatePipe, formatDate } from '@angular/common';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -9,6 +10,7 @@ import { DatePipe, formatDate } from '@angular/common';
 })
 
 export class APIService {
+  testvar: IDevice;
   constructor(private http: HttpClient) { }
 
   GetDeviceInfogeneral() {
@@ -36,7 +38,48 @@ export class APIService {
   GetLatestSingleDeviceInfo(Id){
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
   }
+
+  UpdateNameDevice(deviceId, name) : Observable<IDevice>{
+    console.log('update name in service');
+    var putJson = {
+      ID: deviceId,
+      Name: name
+    }
+    console.log(putJson.Name)
+    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}`, putJson, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  UpdatePasswordDevice(deviceId, newPassword) : Observable<IDevice>{
+    console.log('update password in service');
+    var putJson = {
+      ID: deviceId,
+      Password: newPassword
+    }
+    console.log(putJson.Password)
+    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}/password`, putJson, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+  UpdateResetDevice(deviceId,newPassword,newName) : Observable<IDevice>{
+    var putJson = {
+      ID: deviceId,
+      Password: newPassword,
+      Name: newName
+    }
+    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}`, putJson, {
+      headers:new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    })
+  }
 }
+
 export interface IAllDeviceData{
   ID: number;
 	Device_ID: number;

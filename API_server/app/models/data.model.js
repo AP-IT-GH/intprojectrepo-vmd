@@ -11,20 +11,6 @@ const Data = function(data) {
   this.Battery = data.Battery;
 };
 
-//Create new data
-Data.create = (newData, result) => {
-  sql.query("INSERT INTO Data SET ?", newData, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
-
-    console.log("created data: ", { id: res.insertId, ...newData });
-    result(null, { id: res.insertId, ...newData });
-  });
-};
-
 //Retrieve all data
 Data.getAllData = result => {
   sql.query("SELECT * FROM vmdDB1.Data;", (err, res) => {
@@ -50,40 +36,6 @@ Data.findDataById = (deviceId, result) => {
 
     console.log("DataTable: ", res);
     result(null, res);
-  });
-};
-
-//Retrieve all devices
-Data.getAllDevices = result => {
-  sql.query("SELECT * FROM vmdDB1.Device;", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    console.log("DeviceTable: ", res);
-    result(null, res);
-  });
-};
-
-//retrieve single device with id
-Data.findDeviceById = (deviceId, result) => {
-  sql.query(`SELECT * FROM vmdDB1.Device where ID = ${deviceId}`, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
-
-    if (res.length) {
-      console.log("found device: ", res[0]);
-      result(null, res[0]);
-      return;
-    }
-
-    // not found device with the id
-    result({ kind: "not_found" }, null);
   });
 };
 

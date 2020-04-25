@@ -42,35 +42,6 @@ exports.findAllData = (req, res) => {
     });
   };
 
-  // Retrieve all Devices from the database.
-exports.findAllDevice = (req, res) => {
-    Data.getAllDevices((err, data) => {
-      if (err)
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving devices."
-        });
-      else res.send(data);
-    });
-  };
-
-  // Find a single Device with a deviceId
-exports.findOneDevice = (req, res) => {
-    Data.findDeviceById(req.params.deviceId, (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found device with id ${req.params.deviceId}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error retrieving device with id " + req.params.deviceId
-          });
-        }
-      } else res.send(data);
-    });
-  };
-
 //retrieve all data from a single device
 exports.findAllDataFromOneDevice = (req, res) => {
   Data.findDataById(req.params.deviceId, (err, data) => {
