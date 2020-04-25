@@ -39,6 +39,16 @@ export class APIService {
     return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
   }
 
+  SendNotification(data){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json; charset=utf-8",
+        "Authorization": "Basic YmM4MjIzNGUtMDk4Ni00YjdhLTgyYWMtOGRhMjI0OWJjZGQ5"
+      })
+    };
+    return this.http.post<any>("https://onesignal.com/api/v1/notifications", data, httpOptions);
+  }
+
   GetDevicePassword(Id) {
     return this.http.get<IPassword>(`http://35.210.149.21:3000/device/${Id}/password`);
   }

@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
+import { OneSignal } from '@ionic-native/onesignal/ngx'
 import {IonicStorageModule} from '@ionic/storage'
 
 //Device Storage
@@ -34,7 +35,8 @@ import { DatePipe } from '@angular/common';
     BLE,
     BluetoothSerial,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    OneSignal
   ],
   bootstrap: [AppComponent]
 })

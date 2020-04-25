@@ -3,6 +3,7 @@ import { StorageService, IexeedEntry } from './../../Services/storage.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Chart, ChartDataSets } from "chart.js";
 import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
+import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { interval } from 'rxjs';
 import { ToastController, Platform } from '@ionic/angular';
@@ -88,6 +89,23 @@ export class TemperaturePage implements OnInit {
   addEntry(entry: IexeedEntry){
     this.newEntry.id = Date.now();
 
+    var message = {
+      app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
+      contents: {"en": "The random number is higher than 8."}, //placeholder text
+    };
+      included_segments: ["All"]
+
+    interval(5000).subscribe(x => {
+      if (this.random > 8){
+        this.APIService.SendNotification(message).subscribe(data => {
+          console.log('Het lukt');
+          console.log(data);
+        },
+        err => {
+          alert(err);
+        });
+      }
+    });
     this.storage.addEntry(entry).then(entry => {
       this.newEntry = <IexeedEntry>{};
       this.showToast('Entry Added');
@@ -178,20 +196,24 @@ export class TemperaturePage implements OnInit {
     toast.present();
   }
 
-  isDesktop() {
-    let platforms = this.plt.platforms();
-    if(platforms[0] == "mobile") {
-        return "mobile";
-    } 
-    if(platforms[0] == "desktop") {
-        return "desktop";
-    }
-    if(platforms[0] == "android"){
-      return "android";
-    }
-    if(platforms[0] == "ios"){
-      return "ios";
-    }
+  GetLatestData(){
+    this.APIService.GetLatestDeviceInfo(1).subscribe(DataDevice =>{
+      this.DataDevice = DataDevice;
+      console.log(this.DataDevice.Temperature);
+
+      if(this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Temperature != this.ExeedingTempValue[this.ReturnLastItemOfArray(this.ExeedingTempValue)]){ //en toch komen er dubbele entries in de array terecht..
+          this.ExeedingTempValue.push(this.DataDevice.Temperature);
+          console.log("It has happened! jooho " + this.ExeedingTempValue[0]);
+          console.log(this.ExeedingTempValue.length);
+
+      }
+  })}
+
+   ReturnLastItemOfArray(array) {
+     if(array.length -1 > 0){
+      return array[array.length - 1];
+     }
+     else return 0;
 }
 TempSegmentChanged(event: any){
 if(event.target.value == "celcius"){
