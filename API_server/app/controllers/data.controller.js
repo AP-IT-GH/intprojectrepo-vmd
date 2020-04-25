@@ -1,5 +1,25 @@
 const Data = require("../models/data.model.js");
 
+// create new data
+exports.create = (req, res) => {
+  // Validate request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  // Save Data in the database
+  Data.create(data, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the data."
+      });
+    else res.send(data);
+  });
+};
+
 // Retrieve all Data from the database.
 exports.findAllData = (req, res) => {
     Data.getAllData((err, data) => {
@@ -44,6 +64,34 @@ exports.findLatestData = (req, res) => {
       }
     } else res.send(data);
   })
+};
+
+ // Update date from a device to factory settings with the Id in the request
+ exports.updateDeviceFactory2 = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  Data.updateFactorySettings2(
+    req.params.dataId,
+    new Data(req.body),
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found device with id ${req.params.dataId}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating factory settings of the device with id " + req.params.dataId
+          });
+        }
+      } else res.send(data);
+    }
+  );
 };
 
 

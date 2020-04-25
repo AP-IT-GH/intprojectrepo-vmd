@@ -59,4 +59,27 @@ Data.findLatestById = (deviceId, result) => {
   });
 };
 
+Data.updateFactorySettings2 = (dataId, data, result) => {
+  sql.query(`UPDATE vmdDB1.Data SET Temperature = '${data.Temperature}', Humidity ='${data.Humidity}', Moisture ='${data.Moisture}' WHERE (Device_ID = '${dataId}');`,(err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Device with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated Data: ", { id: deviceId, ...data.Temperature, ...data.Humidity, ...data.Moisture });
+      console.log(data.Temperature);
+      console.log(data.Humidity);
+      console.log(data.Moisture)
+      result(null, { id: dataId, ...data.Temperature, ...data.Humidity, ...data.Moisture });
+    }
+  );
+};
+
 module.exports = Data;

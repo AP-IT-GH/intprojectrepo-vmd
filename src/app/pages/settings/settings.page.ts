@@ -1,8 +1,8 @@
 import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit } from '@angular/core';
 import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
-import { APIService, IDevice, IPassword } from 'src/app/Services/api.service';
-import {Md5} from 'ts-md5/dist/md5';
+import { APIService, IDevice, IPassword, IDeviceData } from 'src/app/Services/api.service';
+// import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'app-settings',
@@ -11,10 +11,11 @@ import {Md5} from 'ts-md5/dist/md5';
 })
 
 export class SettingsPage implements OnInit {
-  md5 = new Md5();
+ // md5 = new Md5();
   public AutoRequestToDataBase:boolean = true;
   DeviceNameChange: IDevice;
   Device: IDevice[];
+  Data: IDeviceData[]
 
   SelectedDevice: number;
   SelectedDeviceName: string;
@@ -23,8 +24,11 @@ export class SettingsPage implements OnInit {
   oldPassword: string;
   oldPasswordInDB: IPassword;
   newPassword: string;
-  defaultPasswordOfDevice: string = "admin"
-  defaultNameOfDevice: string = "admin"
+  defaultPasswordOfDevice: string = "admin";
+  defaultNameOfDevice: string = "admin";
+  Temperature: number = 0;
+  Humidity: number = 0;
+  Moisture: number = 0;
   id: number;
 
   constructor(private APIService: APIService, private ThemeService: ThemeService, private _featureToggleService:FeaturetoggleService) { }
@@ -32,6 +36,9 @@ export class SettingsPage implements OnInit {
   async ngOnInit() {
     this.APIService.GetDeviceInfogeneral().subscribe(Device => {
       this.Device = Device;
+    })
+    this.APIService.GetDeviceDataAll().subscribe(Data => {
+      this.Data = Data;
     })
   }
 
@@ -70,7 +77,7 @@ export class SettingsPage implements OnInit {
     })
 
     if (this.oldPassword == this.oldPasswordInDB.Password) {
-      this.APIService.UpdatePasswordDevice(this.SelectedDevice, this.md5.appendStr(this.newPassword).end()).subscribe(device => this.Device.push(device));
+    //  this.APIService.UpdatePasswordDevice(this.SelectedDevice, this.md5.appendStr(this.newPassword).end()).subscribe(device => this.Device.push(device));
     }
     else
     {
@@ -79,6 +86,20 @@ export class SettingsPage implements OnInit {
   }
 
  HardResetDevice(){
-   this.APIService.UpdateResetDevice(this.SelectedDevice,this.defaultNameOfDevice,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
+    console.log(this.defaultNameOfDevice);
+    console.log(this.defaultPasswordOfDevice);
+   this.APIService.UpdateReset1(this.SelectedDevice,this.defaultNameOfDevice,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
+ }
+
+ HardResetData(){
+  console.log(this.Temperature);
+  console.log(this.Humidity);
+  console.log(this.Moisture);
+  this.APIService.UpdateReset2(this.SelectedDevice,this.Temperature,this.Humidity,this.Moisture).subscribe(data => this.Data.push(data));
+ }
+
+ HardResetEverything(){
+   this.HardResetDevice();
+   this.HardResetData();  
  }
 }
