@@ -59,7 +59,6 @@ export class TemperaturePage implements OnInit {
   showLegend = false;
 
 
-  private today = new Date();
   constructor(public toastController: ToastController,
     private plt: Platform,
     private APIService: APIService,

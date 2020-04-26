@@ -13,12 +13,11 @@ import { interval } from 'rxjs';
   styleUrls: ['./moisture.page.scss'],
 })
 export class MoisturePage implements OnInit {
-  entries: IexeedEntry[] = [];
-  newEntry: IexeedEntry = <IexeedEntry>{};
+  moistEntries: IexeedEntry[] = [];
+  newMoistEntry: IexeedEntry = <IexeedEntry>{};
   rangeCountEntry: IexeedEntry = <IexeedEntry>{};
-  chartData: ChartDataSets[] = [{ data: [], label: 'Temperature', fill: false }];
+  chartData: ChartDataSets[] = [{ data: [], label: 'Moisture', fill: false }];
   chartLabels: String[];
-  metric: String = "celcius";
 
   DataDevice: IAllDeviceData;
   DataDeviceArray: IAllDeviceData[];
@@ -38,7 +37,7 @@ export class MoisturePage implements OnInit {
     },
     title: {
       display: true,
-      text: 'Humidity for Device 1'
+      text: 'Moisture for Device 1'
     },
     pan: {
       enabled: true,
@@ -53,95 +52,116 @@ export class MoisturePage implements OnInit {
   showLegend = false;
 
 
-  private today = new Date();
-  constructor(private storage: StorageService, public toastController:ToastController, private APIService: APIService,public datepipe: DatePipe) { 
-    this.GetAllInfoDevice();
-    interval(60000).subscribe(x => { // will execute every minute
-    this.GetAllInfoDevice();
-  });
-  }
+  constructor(public toastController:ToastController,
+    private plt: Platform,
+    private APIService: APIService,
+    private storage: StorageService,
+    public datepipe: DatePipe) { 
+      this.plt.ready().then(() => {
+        this.loadMoistEntries();
+      })
+
+      this.GetLatestData();
+      this.GetAllInfoDevice();
+      interval(60000).subscribe(x => { // will execute every minute
+        this.GetLatestData();
+        this.GetAllInfoDevice();
+      });
+    }
 
   async ngOnInit() { //TODO: selected device hier nog op toepassen
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => { //TODO: device ID moet een variabele zijn in de toekomst.
       this.DataDevice = DataDevice;
     })
   }
-    //* Load Entries
-    loadEntries() {
-      this.storage.getEntries().then(entries => {
-        this.entries = entries;
-      })
-    }
-    GetAllInfoDevice() {
 
-      this.APIService.GetDeviceDataSingle(1).subscribe(res => {
-        console.log('Res: ', res)
-  
-        this.chartData[0].data = [];
-        this.chartLabels = [];
-  
-  
-        for (let entry of res) {
-          this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
-          this.chartData[0].data.push(entry['Humidity']);
-        }
-      })
-    }
-    GetLatestData() {
-      this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
-        this.DataDevice = DataDevice;
-        if (this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
-        ) {
-  
-          this.newEntry.temperature = this.DataDevice.Temperature;
-          this.newEntry.date = this.DataDevice.Date;
-          this.newEntry.time = this.DataDevice.Time;
-          this.lastSavedDate = this.DataDevice.Date;
-          this.addEntry(this.newEntry)
-  
-          //* Notification
-          var message = {
-            app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
-            contents: { "en": "The random number is higher than 8." }, //placeholder text
-            included_segments: ["All"]
-          };
-  
-          this.APIService.SendNotification(message).subscribe(data => {
-            console.log('Het lukt');
-            console.log(data);
-          },
-            err => {
-              alert(err);
-            });
-  
-        }
-      });
-    }
-    //* ADD Entry
-    addEntry(entry: IexeedEntry) {
-    this.newEntry.id = Date.now();
-    this.storage.addEntry(entry).then(entry => {
-      this.newEntry = <IexeedEntry>{};
-      this.showToast('Entry Added');
-      this.loadEntries();
+  // Add Entry
+  addMoistEntry(moistEntry: IexeedEntry) {
+    this.newMoistEntry.id = Date.now();
+    this.storage.addEntry(moistEntry).then(entry => {
+      this.newMoistEntry = <IexeedEntry>{};
+      this.showToast('Moisture Entry Added');
+      this.loadMoistEntries();
     })
-    }
-    typeChanged(e) {
-      const on = e.detail.checked;
-      this.chartType = on ? 'line' : 'bar';
-    }
-    //* Helper
-    async showToast(msg) {
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: 2000
-    });
-    toast.present();
-    }
+  }
+  
+  // Load Entries
+  loadMoistEntries() {
+    this.storage.getEntries().then(moistEntries => {
+      this.moistEntries = moistEntries;
+    })
+  }
+
+  //Remove Entry
+  removeMoistEntry(ID: number) {
+    this.storage.deleteEntry(ID);
+  }
+
+  //Remove All Entries
+  removeAllMoistEntries(){
+    this.storage.deleteAllEntries();
+  }
+
+  GetAllInfoDevice() {
+    this.APIService.GetDeviceDataSingle(1).subscribe(res => {
+      console.log('Res: ', res)
+  
+      this.chartData[0].data = [];
+      this.chartLabels = [];
+  
+  
+      for (let entry of res) {
+        this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
+        this.chartData[0].data.push(entry['Moisture']);
+      }
+    })
+  }
+
+  typeChanged(e) {
+    const on = e.detail.checked;
+    this.chartType = on ? 'line' : 'bar';
+  }
 
   //instellen van een limiet: 
   public rangeCount: number = 50;
   public packetNumber: number = 100;
   private lastSavedDate: Date;
 
+  GetLatestData() {
+    this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
+      this.DataDevice = DataDevice;
+      if (this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
+      ) {
+  
+        this.newMoistEntry.temperature = this.DataDevice.Temperature;
+        this.newMoistEntry.date = this.DataDevice.Date;
+        this.newMoistEntry.time = this.DataDevice.Time;
+        this.lastSavedDate = this.DataDevice.Date;
+        this.addMoistEntry(this.newMoistEntry)
+  
+        //* Notification
+        var message = {
+          app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
+          contents: { "en": "The moisture level is higher than your given moisture level!" }, //placeholder text
+          included_segments: ["All"]
+        };
+  
+        this.APIService.SendNotification(message).subscribe(data => {
+          console.log('The moisture level is higher than your given moisture level!');
+          console.log(data);
+        },
+        err => {
+          alert(err);
+        });
+      }
+    });
+  }
+    
+  async showToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
+  }
 }

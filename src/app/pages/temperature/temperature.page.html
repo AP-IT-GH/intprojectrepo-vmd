@@ -52,7 +52,7 @@
 
   <ion-card>
     <ion-card-header>
-      <b>Limit the temperature:</b>
+      <b>Limit the temperature value:</b>
     </ion-card-header>
     <ion-card-content>
       <ion-item>
@@ -68,7 +68,7 @@
 
   <ion-card *ngIf='tempEntries'>
     <ion-card-header>
-      List when temperature got exeeded
+      List when temperature value got exceeded
     </ion-card-header>
     <ion-card-content>
 
@@ -90,6 +90,4 @@
       <ion-button color="dark" (click)="removeAllTempEntries()">Remove All Temperature Entries</ion-button>
     </ion-card-content>
   </ion-card>
-
-
 </ion-content>
