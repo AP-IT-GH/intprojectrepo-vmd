@@ -1,13 +1,10 @@
-import { map } from 'rxjs/operators';
 import { StorageService, IexeedEntry } from './../../Services/storage.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Chart, ChartDataSets } from "chart.js";
+import { Component, OnInit } from '@angular/core';
+import { ChartDataSets } from "chart.js";
 import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
 import { DatePipe } from '@angular/common';
 import { interval } from 'rxjs';
 import { ToastController, Platform } from '@ionic/angular';
-import { Router } from '@angular/router';
-
 
 
 @Component({
@@ -58,13 +55,11 @@ export class TemperaturePage implements OnInit {
   chartType = 'line';
   showLegend = false;
 
-
   constructor(public toastController: ToastController,
     private plt: Platform,
     private APIService: APIService,
     private storage: StorageService,
-    public datepipe: DatePipe,
-    private router: Router) {
+    public datepipe: DatePipe) {
     this.plt.ready().then(() => {
       this.loadTempEntries();
     })
@@ -82,6 +77,7 @@ export class TemperaturePage implements OnInit {
       this.DataDevice = DataDevice;
     })
   }
+
   //* ADD Entry
   addTempEntry(tempEntry: IexeedEntry) {
     this.newTempEntry.id = Date.now();
@@ -91,9 +87,10 @@ export class TemperaturePage implements OnInit {
       this.loadTempEntries();
     })
   }
+
   GetAllInfoDevice(metric: String) {
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
-      //console.log('Res: ', res)
+      console.log('Res: ', res)
 
       this.chartData[0].data = [];
       this.chartLabels = [];
@@ -109,33 +106,28 @@ export class TemperaturePage implements OnInit {
       }
     });
   }
-  //* Load Entries
+
+  // Load Entries
   loadTempEntries() {
     this.storage.getEntries().then(tempEntries => {
       this.tempEntries = tempEntries;
     })
   }
-  //remove Entry
+
+  // Remove Entry
   removeTempEntry(ID: number) {
     this.storage.deleteEntry(ID);
-    // this.router.routeReuseStrategy.shouldReuseRoute = () => {
-    //   return false;
-    // }
-    // this.router.onSameUrlNavigation = 'reload';
-    // this.router.navigateByUrl('/menu/temperature');
   }
 
-  //removeAllEntries
+  // Remove All Entries
   removeAllTempEntries() {
     this.storage.deleteAllEntries();
   }
-
 
   //instellen van een limiet: 
   public rangeCount: number = 50;
   public packetNumber: number = 100;
   private lastSavedDate: Date;
-
 
   GetLatestData() {
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
@@ -160,23 +152,18 @@ export class TemperaturePage implements OnInit {
           console.log('The temperature is higher than your given temperature!');
           console.log(data);
         },
-        err => {
-          alert(err);
-        });
+          err => {
+            alert(err);
+          });
       }
     });
   }
 
-  ReturnLastItemOfArray(array) {
-    if (array.length - 1 > 0) {
-      return array[array.length - 1];
-    }
-    else return 0;
-  }
   typeChanged(e) {
     const on = e.detail.checked;
     this.chartType = on ? 'line' : 'bar';
   }
+
   //* Helper
   async showToast(msg) {
     const toast = await this.toastController.create({

@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { IexeedEntry, StorageService } from './../../Services/storage.service';
-import { Chart, ChartDataSets } from "chart.js";
-import { APIService, IDeviceData, IAllDeviceData } from 'src/app/Services/api.service';
+import { ChartDataSets } from "chart.js";
+import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
 import { ToastController, Platform } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
 import { interval } from 'rxjs';
+
 
 @Component({
   selector: 'app-moisture',
   templateUrl: './moisture.page.html',
   styleUrls: ['./moisture.page.scss'],
+  providers: [DatePipe]
 })
 export class MoisturePage implements OnInit {
   moistEntries: IexeedEntry[] = [];
@@ -21,6 +22,7 @@ export class MoisturePage implements OnInit {
 
   DataDevice: IAllDeviceData;
   DataDeviceArray: IAllDeviceData[];
+
   // Options the chart - Visualisation
   chartOptions = {
     responsive: true,

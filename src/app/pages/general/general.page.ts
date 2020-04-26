@@ -1,5 +1,4 @@
-import { ThemeService } from './../../services/theme.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { APIService, IAllDeviceData, IDevice } from 'src/app/Services/api.service';
 import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
@@ -39,27 +38,28 @@ export class GeneralPage implements OnInit {
   }
 
   async ngOnInit() {
-    this._featureToggleService.autoRefreshMessage$.subscribe(message => this.AutoRequestFromDatabase = message);   
-      this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
-        this.DataDevice = DataDevice;
-      })
-      this.APIService.GetDeviceInfogeneral().subscribe(Device => {
+    this._featureToggleService.autoRefreshMessage$.subscribe(message => this.AutoRequestFromDatabase = message);
+    this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
+      this.DataDevice = DataDevice;
+    })
+    this.APIService.GetDeviceInfogeneral().subscribe(Device => {
       this.Device = Device;
     })
-    
   }
+
   GetLatestData() {
     if (this.AutoRequestFromDatabase) {
       this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
         this.DataDevice = DataDevice;
       })
-    } 
+    }
   }
-GetDeviceData(){
-  this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
-    this.DataDevice = DataDevice;
-  })
+
+  GetDeviceData() {
+    this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
+      this.DataDevice = DataDevice;
+    })
+  }
 }
-}
-    
-    
+
+

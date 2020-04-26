@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
 import { OneSignal } from '@ionic-native/onesignal/ngx'
-import {IonicStorageModule} from '@ionic/storage'
+import { IonicStorageModule } from '@ionic/storage'
 
 //Device Storage
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
@@ -27,7 +27,7 @@ import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [HttpClientModule,BrowserModule,FormsModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot()],
+  imports: [HttpClientModule, BrowserModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot()],
   providers: [
     StatusBar,
     NativeStorage,
@@ -40,4 +40,4 @@ import { DatePipe } from '@angular/common';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
