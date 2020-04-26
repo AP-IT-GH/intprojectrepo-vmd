@@ -38,8 +38,9 @@
       <ion-label>Show Legend?</ion-label>
       <ion-toggle [(ngModel)]="showLegend"></ion-toggle>
     </ion-item>
+
     <ion-item class="metric-select">
-      <ion-segment value="celcius" mode="ios" (ionChange)="TempSegmentChanged($event)">
+      <ion-segment value="celcius" mode="md" (ionChange)="TempSegmentChanged($event)">
         <ion-segment-button value="celcius">
           <ion-label>C°</ion-label>
         </ion-segment-button>
