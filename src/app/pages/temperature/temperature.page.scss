@@ -7,3 +7,8 @@
 .metric-select{
     width: 20%;
 }
+@media(max-width: 400px){
+.metric-select{
+    width: 100%;
+}
+}
