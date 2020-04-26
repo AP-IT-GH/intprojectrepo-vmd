@@ -59,6 +59,7 @@ export class StorageService {
 export interface IexeedEntry {
   id: number,
   temperature: number,
+  humidity: number,
   date: Date,
   time: Time,
   rangeCount: number
