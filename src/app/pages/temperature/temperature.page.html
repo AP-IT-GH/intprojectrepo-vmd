@@ -15,13 +15,9 @@
     <ion-card-content>
       <ion-item class="chart-container" style="position: relative; height:40vh;">
 
-      <canvas baseChart
-        [datasets]="chartData"
-        [labels]="chartLabels"
-        [chartType]="chartType"
-        [options]="chartOptions"
-        [legend]="showLegend" item-content>
-      </canvas>
+        <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [chartType]="chartType" [options]="chartOptions"
+          [legend]="showLegend" item-content>
+        </canvas>
       </ion-item>
     </ion-card-content>
   </ion-card>
@@ -56,9 +52,8 @@
     </ion-card-header>
     <ion-card-content>
       <ion-item>
-        <ion-range [(ngModel)]="rangeCount" dualKnobs="false" min="0" max="100"
-          step="1" snaps="false" color="dark" pin="true" class="Icons"
-          id="Slider">
+        <ion-range [(ngModel)]="rangeCount" dualKnobs="false" min="0" max="100" step="1" snaps="false" color="dark"
+          pin="true" class="Icons" id="Slider">
           <ion-icon slot="start" name="snow-outline" id="snow"></ion-icon>
           <ion-icon slot="end" name="flame-outline" id="flame"></ion-icon>
         </ion-range>
@@ -80,7 +75,9 @@
             <ion-label>Time: {{item.time}} </ion-label>
           </ion-item>
           <ion-item-options side="end">
-            <ion-item-option (click)="removeTempEntry(item.id)"> <ion-icon name="close-circle-outline"></ion-icon></ion-item-option>
+            <ion-item-option (click)="removeTempEntry(item.id)">
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
       </ion-list>

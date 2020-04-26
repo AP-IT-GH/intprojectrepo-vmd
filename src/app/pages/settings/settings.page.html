@@ -10,25 +10,25 @@
 </ion-header>
 
 <ion-content>
-<ion-text color="dark" class="settingsText">
-  <h4>Pre Settings</h4>
-</ion-text>
-<ion-card>
-  <ion-card-header>
-    <ion-card-title>
-      Enter Bluetooth page to put in your WiFi credentials
-    </ion-card-title>
-  </ion-card-header>
-  
-  <ion-card-content *ngFor="let p of pageWifi">
-    <ion-button [routerLink]="p.url" [class.active-item]="selectedPath===p.url" color="dark">{{p.title}}</ion-button>
-  </ion-card-content>
-</ion-card>
+  <ion-text color="dark" class="settingsText">
+    <h4>Pre Settings</h4>
+  </ion-text>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Enter Bluetooth page to put in your WiFi credentials
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content *ngFor="let p of pageWifi">
+      <ion-button [routerLink]="p.url" [class.active-item]="selectedPath===p.url" color="dark">{{p.title}}</ion-button>
+    </ion-card-content>
+  </ion-card>
 
   <ion-text color="dark" class="settingsText">
     <h4>General Settings</h4>
   </ion-text>
-<!--Select device for changing settings-->
+  <!--Select device for changing settings-->
   <ion-card>
     <ion-card-header>
       <ion-card-title>Select Device</ion-card-title>
@@ -43,11 +43,12 @@
             Select device
           </ion-label>
         </ion-list-header>
-      
+
         <ion-item>
           <ion-label>Devices</ion-label>
-          <ion-select  cancelText="Cancel" okText="Confirm" [(ngModel)]="SelectedDevice">
-            <ion-select-option value="{{chosendevice.ID}}" *ngFor="let chosendevice of Device">{{chosendevice.Name}}</ion-select-option>
+          <ion-select cancelText="Cancel" okText="Confirm" [(ngModel)]="SelectedDevice">
+            <ion-select-option value="{{chosendevice.ID}}" *ngFor="let chosendevice of Device">{{chosendevice.Name}}
+            </ion-select-option>
           </ion-select>
         </ion-item>
       </ion-list>
@@ -89,16 +90,16 @@
   <!--Tweede kaartje-->
   <ion-card>
     <ion-card-header>
-    <ion-card-title>Enable or disable features</ion-card-title>      
-  </ion-card-header>
-  <ion-card-content>
-    <ion-item>
-      <ion-label>Send automatic requests to the database</ion-label>
-      <ion-toggle [(ngModel)]="AutoRequestToDataBase" disabled="false"></ion-toggle>
-    </ion-item>
+      <ion-card-title>Enable or disable features</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Send automatic requests to the database</ion-label>
+        <ion-toggle [(ngModel)]="AutoRequestToDataBase" disabled="false"></ion-toggle>
+      </ion-item>
 
-    <ion-button (click)='checkForChanges()' color="dark">Apply changes</ion-button>
-  </ion-card-content>
+      <ion-button (click)='checkForChanges()' color="dark">Apply changes</ion-button>
+    </ion-card-content>
   </ion-card>
 
   <!--Derde kaartje-->
@@ -113,7 +114,7 @@
 
   </ion-card>
 
- 
+
 
 
   <!--Danger Zone-->
@@ -135,7 +136,7 @@
       <p *ngIf="Selected">Selected device: <strong>{{Selected}}</strong></p>
     </ion-card-header>
     <ion-card-content>
-      <ion-button color="dark" (click)="HardResetDevice()" >RESET DEVICE</ion-button>
+      <ion-button color="dark" (click)="HardResetDevice()">RESET DEVICE</ion-button>
       <p></p>
     </ion-card-content>
 

@@ -1,4 +1,3 @@
-import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterEvent } from '@angular/router';
 
@@ -30,18 +29,14 @@ export class MenuPage implements OnInit {
       title: 'Settings',
       url: '/menu/settings'
     }
-
-    
   ];
 
-  selectedPath= '';
+  selectedPath = '';
   constructor(private router: Router) {
-      this.router.events.subscribe((event: RouterEvent)=>{
+    this.router.events.subscribe((event: RouterEvent) => {
       this.selectedPath = event.url;
-
     })
   }
   ngOnInit() {
   }
-
 }
