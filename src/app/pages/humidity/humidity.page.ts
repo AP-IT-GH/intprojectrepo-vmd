@@ -151,7 +151,7 @@ export class HumidityPage implements OnInit {
         };
 
         this.APIService.SendNotification(message).subscribe(data => {
-          console.log('The humidity is higher level than your given humidity level!');
+          console.log('The humidity level is higher than your given humidity level!');
           console.log(data);
         },
         err => {
