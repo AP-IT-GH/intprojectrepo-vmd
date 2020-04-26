@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Chart, ChartDataSets } from "chart.js";
+import { Component, OnInit } from '@angular/core';
+import { ChartDataSets } from "chart.js";
 import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
 import { ToastController, Platform } from '@ionic/angular';
 import { interval } from 'rxjs';
@@ -18,58 +18,58 @@ export class HumidityPage implements OnInit {
   humidEntries: IexeedEntry[] = [];
   newHumidEntry: IexeedEntry = <IexeedEntry>{};
   rangeCountEntry: IexeedEntry = <IexeedEntry>{};
-  chartData: ChartDataSets[] = [{ data: [], label: 'Humidity', fill: false}];
+  chartData: ChartDataSets[] = [{ data: [], label: 'Humidity', fill: false }];
   chartLabels: String[];
 
   DataDevice: IAllDeviceData;
-  DataDeviceArray : IAllDeviceData[];
+  DataDeviceArray: IAllDeviceData[];
 
-    // Options the chart - Visualisation
-    chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      responsiveAnimationDuration: 1500,
-      aspectRatio: 3,
-      layout: {
-        padding: {
-          left: 0,
-          right: 35,
-          top: 0,
-          bottom: 0
-        }
-      },
-      title: {
-        display: true,
-        text: 'Humidity for Device 1'
-      },
-      pan: {
-        enabled: true,
-        mode: 'xy'
-      },
-      zoom: {
-        enabled: true,
-        mode: 'xy'
+  // Options the chart - Visualisation
+  chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    responsiveAnimationDuration: 1500,
+    aspectRatio: 3,
+    layout: {
+      padding: {
+        left: 0,
+        right: 35,
+        top: 0,
+        bottom: 0
       }
-    };
-    chartType = 'line';
-    showLegend = false;
-    
-  constructor(public toastController:ToastController,
+    },
+    title: {
+      display: true,
+      text: 'Humidity for Device 1'
+    },
+    pan: {
+      enabled: true,
+      mode: 'xy'
+    },
+    zoom: {
+      enabled: true,
+      mode: 'xy'
+    }
+  };
+  chartType = 'line';
+  showLegend = false;
+
+  constructor(public toastController: ToastController,
     private plt: Platform,
     private APIService: APIService,
     private storage: StorageService,
-    public datepipe: DatePipe) { 
-      this.plt.ready().then(() => {
-        this.loadHumidEntries();
-      })
+    public datepipe: DatePipe) {
+    this.plt.ready().then(() => {
+      this.loadHumidEntries();
+    })
 
+    this.GetLatestData();
+    this.GetAllInfoDevice();
+    interval(60000).subscribe(x => { // will execute every minute
       this.GetLatestData();
       this.GetAllInfoDevice();
-      interval(60000).subscribe(x => { // will execute every minute
-        this.GetLatestData();
-        this.GetAllInfoDevice();
-      });
-    }
+    });
+  }
 
   async ngOnInit() {
     //limiet instellen
@@ -89,7 +89,7 @@ export class HumidityPage implements OnInit {
   }
 
   //Load Entries
-  loadHumidEntries(){
+  loadHumidEntries() {
     this.storage.getEntries().then(humidEntries => {
       this.humidEntries = humidEntries;
     })
@@ -101,18 +101,16 @@ export class HumidityPage implements OnInit {
   }
 
   //Remove All Entries
-  removeAllHumidEntries(){
+  removeAllHumidEntries() {
     this.storage.deleteAllEntries();
   }
 
   GetAllInfoDevice() {
-
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
       console.log('Res: ', res)
 
       this.chartData[0].data = [];
       this.chartLabels = [];
-
 
       for (let entry of res) {
         this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
@@ -120,8 +118,8 @@ export class HumidityPage implements OnInit {
       }
     })
   }
-  
-  typeChanged(e){
+
+  typeChanged(e) {
     const on = e.detail.checked;
     this.chartType = on ? 'line' : 'bar';
   }
@@ -146,17 +144,17 @@ export class HumidityPage implements OnInit {
         //* Notification
         var message = {
           app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
-          contents: { "en": "The humidity is higher than your given humidity!" }, //placeholder text
+          contents: { "en": "The humidity level is higher than your given humidity level!" }, //placeholder text
           included_segments: ["All"]
         };
 
         this.APIService.SendNotification(message).subscribe(data => {
-          console.log('The humidity is higher than your given humidity!');
+          console.log('The humidity level is higher than your given humidity level!');
           console.log(data);
         },
-        err => {
-          alert(err);
-        });
+          err => {
+            alert(err);
+          });
       }
     });
   }
@@ -169,4 +167,3 @@ export class HumidityPage implements OnInit {
     toast.present();
   }
 }
-  

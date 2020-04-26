@@ -10,15 +10,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
-import { OneSignal } from '@ionic-native/onesignal/ngx'
-import {IonicStorageModule} from '@ionic/storage'
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { IonicStorageModule } from '@ionic/storage';
 
 //Device Storage
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
 //bluetooth
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import { BLE } from '@ionic-native/ble/ngx'
+import { BLE } from '@ionic-native/ble/ngx';
 
 
 import 'chartjs-plugin-zoom';
@@ -27,7 +27,7 @@ import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [HttpClientModule,BrowserModule,FormsModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot()],
+  imports: [HttpClientModule, BrowserModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot()],
   providers: [
     StatusBar,
     NativeStorage,
@@ -40,4 +40,4 @@ import { DatePipe } from '@angular/common';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

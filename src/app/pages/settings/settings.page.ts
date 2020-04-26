@@ -2,7 +2,7 @@ import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit } from '@angular/core';
 import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
 import { APIService, IDevice, IPassword } from 'src/app/Services/api.service';
-import {Md5} from 'ts-md5/dist/md5';
+import { Md5 } from 'ts-md5/dist/md5';
 import { Router, RouterEvent } from '@angular/router';
 
 @Component({
@@ -13,7 +13,7 @@ import { Router, RouterEvent } from '@angular/router';
 
 export class SettingsPage implements OnInit {
   md5 = new Md5();
-  public AutoRequestToDataBase:boolean = true;
+  public AutoRequestToDataBase: boolean = true;
   DeviceNameChange: IDevice;
   Device: IDevice[];
 
@@ -31,10 +31,10 @@ export class SettingsPage implements OnInit {
     title: 'Wifi Credentials Page',
     url: '/menu/finddevice'
   }]
-  selectedPath= '';
+  selectedPath = '';
 
-  constructor(private APIService: APIService, private ThemeService: ThemeService, private _featureToggleService:FeaturetoggleService, private router: Router) { 
-    this.router.events.subscribe((event: RouterEvent)=>{
+  constructor(private APIService: APIService, private ThemeService: ThemeService, private _featureToggleService: FeaturetoggleService, private router: Router) {
+    this.router.events.subscribe((event: RouterEvent) => {
       this.selectedPath = event.url;
     })
   }
@@ -59,22 +59,22 @@ export class SettingsPage implements OnInit {
     this.ThemeService.toggleAppTheme();
   }
 
-  public checkForChanges(){
+  public checkForChanges() {
     this._featureToggleService.sendmessage(this.AutoRequestToDataBase);
   }
 
-  GetDeviceData(){
+  GetDeviceData() {
     this.APIService.GetDeviceInfogeneral().subscribe(Device => {
       this.Device = Device;
     })
   }
 
-  ApplyNewName(){
+  ApplyNewName() {
     console.log(this.newNameforDevice);
     this.APIService.UpdateNameDevice(this.SelectedDevice, this.newNameforDevice).subscribe(device => this.Device.push(device));
   }
 
-  ApplyPasswordChange(){
+  ApplyPasswordChange() {
     this.APIService.GetDevicePassword(this.SelectedDevice).subscribe(Password => {
       this.oldPasswordInDB = Password;
     })
@@ -82,13 +82,12 @@ export class SettingsPage implements OnInit {
     if (this.oldPassword == this.oldPasswordInDB.Password) {
       this.APIService.UpdatePasswordDevice(this.SelectedDevice, this.md5.appendStr(this.newPassword).end()).subscribe(device => this.Device.push(device));
     }
-    else
-    {
+    else {
       console.log("Passwords do not match!");
     }
   }
 
- HardResetDevice(){
-   this.APIService.UpdateResetDevice(this.SelectedDevice,this.defaultNameOfDevice,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
- }
+  HardResetDevice() {
+    this.APIService.UpdateResetDevice(this.SelectedDevice, this.defaultNameOfDevice, this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
+  }
 }

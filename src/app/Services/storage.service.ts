@@ -8,39 +8,36 @@ const ENTRY_KEY = 'Temp-entries';
   providedIn: 'root'
 })
 export class StorageService {
-
-
-
   constructor(private storage: Storage) { }
   //* Create/add entry
-  addEntry(entry: IexeedEntry): Promise<any>{
-    return this.storage.get(ENTRY_KEY).then((entries: IexeedEntry[])=>{
-      if(entries){
+  addEntry(entry: IexeedEntry): Promise<any> {
+    return this.storage.get(ENTRY_KEY).then((entries: IexeedEntry[]) => {
+      if (entries) {
         entries.push(entry);
         return this.storage.set(ENTRY_KEY, entries);
       }
-      else{
+      else {
         return this.storage.set(ENTRY_KEY, [entry]);
       }
     })
-
   }
+
   //* get entries
   getEntries(): Promise<IexeedEntry[]> {
     return this.storage.get(ENTRY_KEY);
   }
 
   //* Delete entries
-  deleteEntry(id: number): Promise<IexeedEntry>{
-    return this.storage.get(ENTRY_KEY).then((entries: IexeedEntry[])=>{
-      if(!entries || entries.length === 0){
+  deleteEntry(id: number): Promise<IexeedEntry> {
+    return this.storage.get(ENTRY_KEY).then((entries: IexeedEntry[]) => {
+      if (!entries || entries.length === 0) {
         return null;
       }
 
-      let tokeep: IexeedEntry[]= [];
+      let tokeep: IexeedEntry[] = [];
 
-      for (let i of entries){
-        if (i.id !== id){
+      for (let i of entries) {
+        if (i.id !== id) {
           tokeep.concat(i);
         }
       }
@@ -49,12 +46,10 @@ export class StorageService {
     })
   }
 
-  deleteAllEntries(): Promise<void>{
+  deleteAllEntries(): Promise<void> {
     return this.storage.clear();
   }
 }
-
- 
 
 export interface IexeedEntry {
   id: number,
