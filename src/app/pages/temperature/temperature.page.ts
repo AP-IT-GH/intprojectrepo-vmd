@@ -144,7 +144,7 @@ export class TemperaturePage implements OnInit {
         //* Notification
         var message = {
           app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
-          contents: { "en": "The temperature is higher than your given temperature!" }, //placeholder text
+          contents: { "en": "The temperature of " + DataDevice.Name + " is higher than your given temperature!" }, //placeholder text
           included_segments: ["All"]
         };
 
