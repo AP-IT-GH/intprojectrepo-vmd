@@ -3,7 +3,6 @@ import { StorageService, IexeedEntry } from './../../Services/storage.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Chart, ChartDataSets } from "chart.js";
 import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
-import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { interval } from 'rxjs';
 import { ToastController, Platform } from '@ionic/angular';
@@ -19,8 +18,8 @@ import { Router } from '@angular/router';
 })
 export class TemperaturePage implements OnInit {
 
-  entries: IexeedEntry[] = [];
-  newEntry: IexeedEntry = <IexeedEntry>{};
+  tempEntries: IexeedEntry[] = [];
+  newTempEntry: IexeedEntry = <IexeedEntry>{};
   rangeCountEntry: IexeedEntry = <IexeedEntry>{};
   chartData: ChartDataSets[] = [{ data: [], label: 'Temperature', fill: false }];
   chartLabels: String[];
@@ -45,7 +44,7 @@ export class TemperaturePage implements OnInit {
     },
     title: {
       display: true,
-      text: 'Humidity for Device 1'
+      text: 'Temperature for Device 1'
     },
     pan: {
       enabled: true,
@@ -68,7 +67,7 @@ export class TemperaturePage implements OnInit {
     public datepipe: DatePipe,
     private router: Router) {
     this.plt.ready().then(() => {
-      this.loadEntries();
+      this.loadTempEntries();
     })
 
     this.GetLatestData();
@@ -83,15 +82,14 @@ export class TemperaturePage implements OnInit {
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => { //TODO: device ID moet een variabele zijn in de toekomst.
       this.DataDevice = DataDevice;
     })
-
   }
   //* ADD Entry
-  addEntry(entry: IexeedEntry) {
-    this.newEntry.id = Date.now();
-    this.storage.addEntry(entry).then(entry => {
-      this.newEntry = <IexeedEntry>{};
-      this.showToast('Entry Added');
-      this.loadEntries();
+  addTempEntry(tempEntry: IexeedEntry) {
+    this.newTempEntry.id = Date.now();
+    this.storage.addEntry(tempEntry).then(entry => {
+      this.newTempEntry = <IexeedEntry>{};
+      this.showToast('Temperature Entry Added');
+      this.loadTempEntries();
     })
   }
   GetAllInfoDevice(metric: String) {
@@ -109,19 +107,17 @@ export class TemperaturePage implements OnInit {
         else {
           this.chartData[0].data.push((entry['Temperature'] * 1.8) + 32);
         }
-
-
       }
     });
   }
   //* Load Entries
-  loadEntries() {
-    this.storage.getEntries().then(entries => {
-      this.entries = entries;
+  loadTempEntries() {
+    this.storage.getEntries().then(tempEntries => {
+      this.tempEntries = tempEntries;
     })
   }
   //remove Entry
-  removeEntry(ID: number) {
+  removeTempEntry(ID: number) {
     this.storage.deleteEntry(ID);
     // this.router.routeReuseStrategy.shouldReuseRoute = () => {
     //   return false;
@@ -131,7 +127,7 @@ export class TemperaturePage implements OnInit {
   }
 
   //removeAllEntries
-  removeAllEntries() {
+  removeAllTempEntries() {
     this.storage.deleteAllEntries();
   }
 
@@ -148,27 +144,26 @@ export class TemperaturePage implements OnInit {
       if (this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
       ) {
 
-        this.newEntry.temperature = this.DataDevice.Temperature;
-        this.newEntry.date = this.DataDevice.Date;
-        this.newEntry.time = this.DataDevice.Time;
+        this.newTempEntry.temperature = this.DataDevice.Temperature;
+        this.newTempEntry.date = this.DataDevice.Date;
+        this.newTempEntry.time = this.DataDevice.Time;
         this.lastSavedDate = this.DataDevice.Date;
-        this.addEntry(this.newEntry)
+        this.addTempEntry(this.newTempEntry)
 
         //* Notification
         var message = {
           app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
-          contents: { "en": "The random number is higher than 8." }, //placeholder text
+          contents: { "en": "The temperature is higher than your given temperature!" }, //placeholder text
           included_segments: ["All"]
         };
 
         this.APIService.SendNotification(message).subscribe(data => {
-          console.log('Het lukt');
+          console.log('The temperature is higher than your given temperature!');
           console.log(data);
         },
-          err => {
-            alert(err);
-          });
-
+        err => {
+          alert(err);
+        });
       }
     });
   }
