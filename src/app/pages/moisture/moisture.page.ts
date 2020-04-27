@@ -144,12 +144,12 @@ export class MoisturePage implements OnInit {
         //* Notification
         var message = {
           app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
-          contents: { "en": "The moisture level is higher than your given moisture level!" }, //placeholder text
+          contents: { "en": "The moisture level of '" + DataDevice.Name + "' is higher than your given moisture level! The humidity level is now " + DataDevice.Moisture },
           included_segments: ["All"]
         };
   
         this.APIService.SendNotification(message).subscribe(data => {
-          console.log('The moisture level is higher than your given moisture level!');
+          console.log('Notification sent');
           console.log(data);
         },
         err => {

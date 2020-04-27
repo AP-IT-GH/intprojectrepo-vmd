@@ -144,12 +144,12 @@ export class TemperaturePage implements OnInit {
         //* Notification
         var message = {
           app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
-          contents: { "en": "The temperature of " + DataDevice.Name + " is higher than your given temperature!" }, //placeholder text
+          contents: { "en": "The temperature of '" + DataDevice.Name + "' is higher than your given temperature! The temperature value is now " + DataDevice.Temperature },
           included_segments: ["All"]
         };
 
         this.APIService.SendNotification(message).subscribe(data => {
-          console.log('The temperature is higher than your given temperature!');
+          console.log('Notification sent');
           console.log(data);
         },
           err => {
