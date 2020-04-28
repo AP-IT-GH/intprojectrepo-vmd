@@ -132,7 +132,7 @@ export class HumidityPage implements OnInit {
   GetLatestData() {
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
       this.DataDevice = DataDevice;
-      if (this.DataDevice.Temperature == this.rangeCount && this.DataDevice.Date != this.lastSavedDate
+      if (this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
       ) {
 
         this.newHumidEntry.temperature = this.DataDevice.Temperature;
