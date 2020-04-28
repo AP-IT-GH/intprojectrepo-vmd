@@ -87,11 +87,15 @@ export class SettingsPage implements OnInit {
     }
   }
 
- HardResetDevice(){
+ HardResetDeviceName(){
     console.log(this.defaultNameOfDevice);
-    console.log(this.defaultPasswordOfDevice);
-   this.APIService.UpdateReset1(this.Selected,this.defaultNameOfDevice,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
+   this.APIService.UpdateResetName(this.Selected,this.defaultNameOfDevice).subscribe(device => this.Device.push(device));
  }
+
+ HardResetDevicePassword(){
+  console.log(this.defaultPasswordOfDevice);
+ this.APIService.UpdateResetPassword(this.Selected,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
+}
 
  HardResetData(){
   console.log(this.Temperature);
@@ -101,7 +105,8 @@ export class SettingsPage implements OnInit {
  }
 
  HardResetEverything(){
-   this.HardResetDevice();
+   this.HardResetDeviceName();
+   this.HardResetDevicePassword();
    this.HardResetData();  
  }
 }
