@@ -93,36 +93,5 @@ export class FinddevicePage implements OnInit {
     this.bluetoothSerial.disconnect();
   }
   
-  deviceConnected() {
-    this.bluetoothSerial.isConnected().then(success => {
-      alert('Connected Successfullly');
-      this.bluetoothSerial.write('hello world');
-    }, error => {
-      alert('error' + JSON.stringify(error));
-    });
-  }
-  
-  async disconnect() {
-    const alert = await this.alertController.create({
-      header: 'Disconnect?',
-      message: 'Do you want to Disconnect?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Disconnect',
-          handler: () => {
-            this.bluetoothSerial.disconnect();
-          }
-        }
-      ]
-    });
-    await alert.present();
-  }
  }
 
