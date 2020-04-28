@@ -16,7 +16,7 @@ export class FinddevicePage implements OnInit {
   ssid: string;
 
   //bluetooth variables
-  BluetoothDevice:any;
+  BluetoothDevice: any;
   public FoundDevices: any = [];
 
   pairedDevices: any;
@@ -77,13 +77,13 @@ export class FinddevicePage implements OnInit {
   //connecting + sending data
   deviceConnected() {
     this.bluetoothSerial.isConnected().then(success => {
-      
-      if(this.password && this.ssid)
-      {
+
+      if (this.password && this.ssid) {
         this.bluetoothSerial.write("ssid " + this.ssid);
         this.bluetoothSerial.write("pin " + this.password);
-      } else { alert("Ssid or password cannot be blank!") }
-      
+        this.disconnect();
+      } else { alert("Ssid or password cannot be blank!"); this.disconnect(); }
+
     }, error => {
       alert('error' + JSON.stringify(error));
     });
@@ -92,6 +92,6 @@ export class FinddevicePage implements OnInit {
   async disconnect() {
     this.bluetoothSerial.disconnect();
   }
-  
- }
+
+}
 
