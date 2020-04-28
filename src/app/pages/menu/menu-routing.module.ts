@@ -30,6 +30,10 @@ const routes: Routes = [
       {
         path: 'finddevice',
         loadChildren: () => import('../finddevice/finddevice.module').then(m => m.FinddevicePageModule)
+      },
+      {
+        path: 'dewpoint',
+        loadChildren: () => import('../dewpoint/dewpoint.module').then(m => m.DewpointPageModule)
       }
     ]
   },

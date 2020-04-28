@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: 'moisture',
     loadChildren: () => import('./pages/moisture/moisture.module').then( m => m.MoisturePageModule)
+  },  {
+    path: 'dewpoint',
+    loadChildren: () => import('./pages/dewpoint/dewpoint.module').then( m => m.DewpointPageModule)
   }
+
 
   ];
 

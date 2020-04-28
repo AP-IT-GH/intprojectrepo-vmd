@@ -14,12 +14,19 @@ export class ThemeService {
       prefersDark.addListener(e => {
         this.setAppTheme(e.matches);
       })
+
+
     })
   }
 
-  toggleAppTheme() {
-    this.darkMode = !this.darkMode;
-    this.setAppTheme(this.darkMode);
+
+
+  toggleAppTheme(buttonState: boolean) {
+    if (buttonState) {
+      this.setAppTheme(true);
+    }else{
+      this.setAppTheme(false);
+    }
   }
 
   setAppTheme(dark) {

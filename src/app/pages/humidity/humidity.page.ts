@@ -20,11 +20,19 @@ export class HumidityPage implements OnInit {
   rangeCountEntry: IexeedEntry = <IexeedEntry>{};
   chartData: ChartDataSets[] = [{ data: [], label: 'Humidity', fill: false }];
   chartLabels: String[];
+  metric: String = "celcius";
 
-  tempRes: IDeviceData[] = [];
+  humRes: IDeviceData[] = [];
   newRes: IDeviceData[] = [];
   DataDevice: IAllDeviceData;
   DataDeviceArray: IAllDeviceData[];
+  hourArray: String[];
+  gemiddeldeArray: number[] = [];
+  dataHours: String[] = [];
+  humArray: number[] = [];
+
+  humAantal: number = 0;
+  totalHumValue: number = 0;
 
   // Options the chart - Visualisation
   chartOptions = {
@@ -55,6 +63,7 @@ export class HumidityPage implements OnInit {
   };
   chartType = 'line';
   showLegend = false;
+  showHourView = false;
 
   constructor(public toastController: ToastController,
     private plt: Platform,
@@ -66,10 +75,10 @@ export class HumidityPage implements OnInit {
     })
 
     this.GetLatestData();
-    this.GetAllInfoDevice();
+    this.GetAllInfoDevice(this.metric);
     interval(60000).subscribe(x => { // will execute every minute
       this.GetLatestData();
-      this.GetAllInfoDevice();
+      this.GetAllInfoDevice(this.metric);
     });
   }
 
@@ -107,26 +116,77 @@ export class HumidityPage implements OnInit {
     this.storage.deleteAllEntries();
   }
 
-  GetAllInfoDevice() {
+  GetAllInfoDevice(metric: String) {
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
       //console.log('Res: ', res)
 
       this.newRes = [];
       for (let d = 0; d < 40; d++) {
-        this.tempRes.push(res.pop());
+        this.humRes.push(res.pop());
       }
       for (let d = 0; d < 40; d++) {
-        this.newRes.push(this.tempRes.pop());
+        this.newRes.push(this.humRes.pop());
       }
 
       this.chartData[0].data = [];
       this.chartLabels = [];
 
       for (let entry of this.newRes) {
-        this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
-        this.chartData[0].data.push(entry['Humidity']);
+        //If user does not choose for 24h view
+        //console.log(entry.Time);
+        if (!this.showHourView) {
+          this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
+          //gets double digit hour out of time object
+          this.hourArray = (entry.Time.toString().split(":", 1));
+          this.dataHours.push(this.hourArray[0]);
+          //console.log(this.hourArray[0]);
+        }
+        
+        if (metric == "celcius") {
+          this.chartData[0].data.push(entry['Humidity']);
+          this.humArray.push(entry['Humidity']);
+        }
+        else {
+          this.chartData[0].data.push((entry['Humidity'] * 1.8) + 32);
+        }
+        
       }
-    })
+
+      //If user chooses for 24h view
+      if (this.showHourView) {
+        //removes zero's before single digit hours
+        for (let i = 0; i < this.dataHours.length; i++) {
+          if(this.dataHours[i].slice(0,1) == "0"){
+          this.dataHours[i] = this.dataHours[i].slice(1,2);
+          }
+        }
+
+      this.gemiddeldeArray = [];
+      for (let i = 0; i < 24; i++) {
+        for (let y = 0; y < this.humArray.length; y++) {
+          if (this.dataHours[y] == i.toString()) {
+            this.humAantal++;
+            this.totalHumValue += this.humArray[y];
+          }
+          
+        }
+        this.gemiddeldeArray.push(this.totalHumValue / this.humAantal);
+          this.humAantal = 0;
+          this.totalHumValue = 0;
+        
+      }
+      console.log(this.gemiddeldeArray);
+      
+      this.chartData[0].data = [];
+      this.chartLabels = [];
+    for (let i = 0; i < this.gemiddeldeArray.length; i++) {
+      this.chartData[0].data.push(this.gemiddeldeArray[i]);
+      
+      this.chartLabels.push(i + "h")
+      }
+      
+    }
+    });
   }
 
   typeChanged(e) {
@@ -135,17 +195,17 @@ export class HumidityPage implements OnInit {
   }
 
   //instellen van een limiet: 
-  public rangeCount: number = 50;
+  public rangeCount: number = 80;
   public packetNumber: number = 100;
   private lastSavedDate: Date;
 
   GetLatestData() {
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
       this.DataDevice = DataDevice;
-      if (this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
+      if (this.DataDevice.Humidity > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
       ) {
 
-        this.newHumidEntry.temperature = this.DataDevice.Temperature;
+        this.newHumidEntry.humidity = this.DataDevice.Humidity;
         this.newHumidEntry.date = this.DataDevice.Date;
         this.newHumidEntry.time = this.DataDevice.Time;
         this.lastSavedDate = this.DataDevice.Date;
@@ -167,6 +227,9 @@ export class HumidityPage implements OnInit {
           });
       }
     });
+  }
+  viewChanged(e) {
+    this.GetAllInfoDevice(this.metric);
   }
 
   async showToast(msg) {

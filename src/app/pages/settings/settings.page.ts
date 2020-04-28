@@ -1,3 +1,4 @@
+import { StorageService, IBoolDarkMode } from 'src/app/Services/storage.service';
 import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit } from '@angular/core';
 import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
@@ -19,6 +20,9 @@ export class SettingsPage implements OnInit {
   Device: IDevice[];
   DeviceAll: IDevice[];
   Data: IDeviceData[]
+
+  stateDarkMode: IBoolDarkMode[] = [];
+  darkModeButtonState: boolean;
 
   SelectedDevice: number;
   SelectedDeviceName: string;
@@ -69,8 +73,9 @@ export class SettingsPage implements OnInit {
     return this.SelectedDeviceName;
   }
 
-  toggleDarkMode() {
-    this.ThemeService.toggleAppTheme();
+  toggleDarkMode(e) {
+    this.darkModeButtonState = e.detail.checked;
+    this.ThemeService.toggleAppTheme(this.darkModeButtonState);
   }
 
   public checkForChanges() {

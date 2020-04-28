@@ -26,6 +26,10 @@ export class MenuPage implements OnInit {
       url: '/menu/moisture'
     },
     {
+      title: 'Dew Point',
+      url: '/menu/dewpoint'
+    },
+    {
       title: 'Settings',
       url: '/menu/settings'
     }
