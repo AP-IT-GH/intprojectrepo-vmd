@@ -12,35 +12,25 @@ import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
 export class GeneralPage implements OnInit {
 
   private AutoRequestFromDatabase: boolean;
-  //index = 1;
-  //className: string = '';
   DataDevice: IAllDeviceData;
   Device: IDevice[];
+  Status: string;
+
   constructor(private APIService: APIService, private _featureToggleService: FeaturetoggleService) {
     interval(5000).subscribe(x => { // will execute every 30 seconds
       this.GetLatestData();
     });
-    /*
-    while (this.index > -1) {
-      var getal = this.Device[this.index].Status;
-      if (getal = 0) {
-        this.className = 'offline';
-      }
-      else if (getal = 1) {
-        this.className = 'online';
-      }
-      else if (getal = 2) {
-        this.className = 'sleepmodus';
-      }
-      this.index++;
-    }
-    */
   }
 
   async ngOnInit() {
     this._featureToggleService.autoRefreshMessage$.subscribe(message => this.AutoRequestFromDatabase = message);
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
       this.DataDevice = DataDevice;
+      if (this.DataDevice.Status == 1) {
+        this.Status = "online";
+      } else if (this.DataDevice.Status == 0) {
+        this.Status = "offline";
+      }
     })
     this.APIService.GetDeviceInfogeneral().subscribe(Device => {
       this.Device = Device;
@@ -51,14 +41,14 @@ export class GeneralPage implements OnInit {
     if (this.AutoRequestFromDatabase) {
       this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
         this.DataDevice = DataDevice;
+        if (this.DataDevice.Status == 1) {
+          this.Status = "online";
+        } else if (this.DataDevice.Status == 0) {
+          this.Status = "offline";
+        }
       })
+    
     }
-  }
-
-  GetDeviceData() {
-    this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
-      this.DataDevice = DataDevice;
-    })
   }
 }
 
