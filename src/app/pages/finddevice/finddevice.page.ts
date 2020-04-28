@@ -1,9 +1,6 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import { BLE } from '@ionic-native/ble/ngx';
-import { async } from '@angular/core/testing';
-import { SubjectSubscriber } from 'rxjs/internal/Subject';
-import { AlertController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-finddevice',
@@ -23,7 +20,7 @@ export class FinddevicePage implements OnInit {
   unpairedDevices: any;
   gettingDevices: boolean;
 
-  constructor(private bluetoothSerial: BluetoothSerial, private ble: BLE, private ngZone: NgZone) {
+  constructor(private bluetoothSerial: BluetoothSerial) {
   }
 
   ngOnInit() {
@@ -74,15 +71,25 @@ export class FinddevicePage implements OnInit {
     this.bluetoothSerial.connect(id).subscribe(this.success, this.fail);
   }
 
+  private delay(ms: number){
+    return new Promise(resolve => setTimeout(resolve,ms));
+  }
+
   //connecting + sending data
-  deviceConnected() {
-    this.bluetoothSerial.isConnected().then(success => {
+   async deviceConnected() {
+    this.bluetoothSerial.isConnected().then(async success => {
 
       if (this.password && this.ssid) {
-        this.bluetoothSerial.write("ssid " + this.ssid);
-        this.bluetoothSerial.write("pin " + this.password);
+        this.bluetoothSerial.write("ssid " + this.ssid); 
+        await this.delay(2000);
+        this.bluetoothSerial.write("pin " + this.password);       
+        //this.bluetoothSerial.write("pin " + this.password);
+        await this.delay(2000);
         this.disconnect();
       } else { alert("Ssid or password cannot be blank!"); this.disconnect(); }
+
+
+
 
     }, error => {
       alert('error' + JSON.stringify(error));
