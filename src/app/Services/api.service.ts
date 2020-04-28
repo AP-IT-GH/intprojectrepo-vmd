@@ -11,17 +11,18 @@ import { Observable } from 'rxjs';
 
 export class APIService {
   constructor(private http: HttpClient) { }
+  APIUrl: string = "35.210.149.21:3000";
 
   GetDeviceInfogeneral() {
-    return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device`);
+    return this.http.get<IDevice[]>(`http://${this.APIUrl}/device`);
   }
 
   GetDeviceDataAll() {
-    return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data`);
+    return this.http.get<IDeviceData[]>(`http://${this.APIUrl}/data`);
   }
 
   GetDeviceDataSingle(Id) {
-    return this.http.get<IDeviceData[]>(`http://35.210.149.21:3000/data/${Id}`)
+    return this.http.get<IDeviceData[]>(`http://${this.APIUrl}/data/${Id}`)
       .pipe(
         map((data) => {
           for (let entry of data) {
@@ -33,11 +34,11 @@ export class APIService {
   }
 
   GetDeviceinfo(Id) {
-    return this.http.get<IDevice[]>(`http://35.210.149.21:3000/device/${Id}`);
+    return this.http.get<IDevice[]>(`http://${this.APIUrl}/device/${Id}`);
   }
 
   GetLatestSingleDeviceInfo(Id) {
-    return this.http.get<IAllDeviceData>(`http://35.210.149.21:3000/device/${Id}/latest`);
+    return this.http.get<IAllDeviceData>(`http://${this.APIUrl}/device/${Id}/latest`);
   }
 
   SendNotification(data) {
@@ -51,7 +52,7 @@ export class APIService {
   }
 
   GetDevicePassword(Id) {
-    return this.http.get<IPassword>(`http://35.210.149.21:3000/device/${Id}/password`);
+    return this.http.get<IPassword>(`http://${this.APIUrl}/device/${Id}/password`);
   }
 
   UpdateNameDevice(deviceId, name): Observable<IDevice> {
@@ -61,7 +62,7 @@ export class APIService {
       Name: name
     }
     console.log(putJson.Name)
-    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}`, putJson, {
+    return this.http.put<IDevice>(`http://${this.APIUrl}/device/${deviceId}`, putJson, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -75,7 +76,7 @@ export class APIService {
       Password: newPassword
     }
     console.log(putJson.Password)
-    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}/password`, putJson, {
+    return this.http.put<IDevice>(`http://${this.APIUrl}/device/${deviceId}/password`, putJson, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -89,7 +90,7 @@ export class APIService {
       Name: newName
     }
     console.log(putJson.Name)
-    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}`, putJson, {
+    return this.http.put<IDevice>(`http://${this.APIUrl}/device/${deviceId}`, putJson, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -97,7 +98,7 @@ export class APIService {
   }
 
   DeleteAllData(deviceId) : Observable<string>{
-    return this.http.delete<string>(`http://35.210.149.21:3000/data/${deviceId}`);
+    return this.http.delete<string>(`http://${this.APIUrl}/data/${deviceId}`);
   }
 
   UpdateResetPassword(deviceId,newPassword) : Observable<IDevice>{
@@ -107,7 +108,7 @@ export class APIService {
       Password: newPassword,
     }
     console.log(putJson.Password)
-    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}/password`, putJson, {
+    return this.http.put<IDevice>(`http://${this.APIUrl}/device/${deviceId}/password`, putJson, {
       headers:new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -125,7 +126,7 @@ UpdateReset2(dataId,newTemperature,newHumidity,newMoisture) : Observable<IDevice
   console.log(putJson.Temperature)
   console.log(putJson.Humidity)
   console.log(putJson.Moisture)
-  return this.http.put<IDeviceData>(`http://35.210.149.21:3000/data/1`, putJson, {
+  return this.http.put<IDeviceData>(`http://${this.APIUrl}/data/1`, putJson, {
     headers:new HttpHeaders({
       'Content-Type': 'application/json'
     })

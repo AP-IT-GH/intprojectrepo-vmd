@@ -4,6 +4,7 @@ import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
 import { APIService, IDevice, IPassword, IDeviceData } from 'src/app/Services/api.service';
 import {Md5} from 'ts-md5/dist/md5';
 import { Router, RouterEvent } from '@angular/router';
+import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-settings',
@@ -40,7 +41,10 @@ export class SettingsPage implements OnInit {
   }]
   selectedPath = '';
 
-  constructor(private APIService: APIService, private ThemeService: ThemeService, private _featureToggleService: FeaturetoggleService, private router: Router) {
+  constructor(private APIService: APIService, 
+    private ThemeService: ThemeService, 
+    private _featureToggleService: FeaturetoggleService, 
+    private router: Router) {
     this.router.events.subscribe((event: RouterEvent) => {
       this.selectedPath = event.url;
     })
@@ -91,9 +95,12 @@ export class SettingsPage implements OnInit {
 
     if (this.oldPassword == this.oldPasswordInDB.Password) {
       this.APIService.UpdatePasswordDevice(this.SelectedDevice, this.md5.appendStr(this.newPassword).end()).subscribe(device => this.Device.push(device));
+      this.oldPassword = "";
+      this.newPassword = "";
+      alert("Password changed!");
     }
     else {
-      console.log("Passwords do not match!");
+      alert("Old password is incorrect!");
     }
   }
 

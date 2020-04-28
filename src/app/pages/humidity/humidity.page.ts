@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets } from "chart.js";
-import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
+import { APIService, IAllDeviceData, IDeviceData } from 'src/app/Services/api.service';
 import { ToastController, Platform } from '@ionic/angular';
 import { interval } from 'rxjs';
 import { DatePipe } from '@angular/common';
@@ -21,6 +21,8 @@ export class HumidityPage implements OnInit {
   chartData: ChartDataSets[] = [{ data: [], label: 'Humidity', fill: false }];
   chartLabels: String[];
 
+  tempRes: IDeviceData[] = [];
+  newRes: IDeviceData[] = [];
   DataDevice: IAllDeviceData;
   DataDeviceArray: IAllDeviceData[];
 
@@ -109,10 +111,18 @@ export class HumidityPage implements OnInit {
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
       //console.log('Res: ', res)
 
+      this.newRes = [];
+      for (let d = 0; d < 40; d++) {
+        this.tempRes.push(res.pop());
+      }
+      for (let d = 0; d < 40; d++) {
+        this.newRes.push(this.tempRes.pop());
+      }
+
       this.chartData[0].data = [];
       this.chartLabels = [];
 
-      for (let entry of res) {
+      for (let entry of this.newRes) {
         this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
         this.chartData[0].data.push(entry['Humidity']);
       }
