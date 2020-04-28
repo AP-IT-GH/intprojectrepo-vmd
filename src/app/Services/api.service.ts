@@ -96,6 +96,10 @@ export class APIService {
     })
   }
 
+  DeleteAllData(deviceId) : Observable<string>{
+    return this.http.delete<string>(`http://35.210.149.21:3000/data/${deviceId}`);
+  }
+
   UpdateResetPassword(deviceId,newPassword) : Observable<IDevice>{
     console.log('update default password in service');
     var putJson = {

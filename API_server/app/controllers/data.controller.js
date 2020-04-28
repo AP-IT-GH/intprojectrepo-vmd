@@ -103,4 +103,21 @@ exports.updateDeviceName = (req, res) => {
     }
   );
 };
+
+// Delete all data from a specific device with the ID
+exports.deleteDeviceData = (req, res) => {
+  Data.removeData(req.params.deviceId, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Device with id ${req.params.deviceId}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete Data with deviceId " + req.params.deviceId
+        });
+      }
+    } else res.send({ message: `Data was deleted successfully!` });
+  });
+};
   

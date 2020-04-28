@@ -23,6 +23,7 @@ export class SettingsPage implements OnInit {
   SelectedDeviceName: string;
   Selected: number;
   SelectedName: string;
+  deleteResult: string;
   newNameforDevice: string;
   oldPassword: string;
   oldPasswordInDB: IPassword;
@@ -107,10 +108,7 @@ export class SettingsPage implements OnInit {
 }
 
  HardResetData(){
-  console.log(this.Temperature);
-  console.log(this.Humidity);
-  console.log(this.Moisture);
-  this.APIService.UpdateReset2(this.Selected,this.Temperature,this.Humidity,this.Moisture).subscribe(data => this.Data.push(data));
+  this.APIService.DeleteAllData(this.Selected).subscribe(result => {this.deleteResult = result});
  }
 
  HardResetEverything(){
