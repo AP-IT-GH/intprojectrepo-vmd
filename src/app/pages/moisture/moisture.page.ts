@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IexeedEntry, StorageService } from './../../Services/storage.service';
 import { ChartDataSets } from "chart.js";
-import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
+import { APIService, IAllDeviceData, IDeviceData } from 'src/app/Services/api.service';
 import { ToastController, Platform } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
 import { interval } from 'rxjs';
@@ -19,6 +19,8 @@ export class MoisturePage implements OnInit {
   rangeCountEntry: IexeedEntry = <IexeedEntry>{};
   chartData: ChartDataSets[] = [{ data: [], label: 'Moisture', fill: false }];
   chartLabels: String[];
+  moisRes: IDeviceData[] = [];
+  newRes: IDeviceData[] = [];
 
   DataDevice: IAllDeviceData;
   DataDeviceArray: IAllDeviceData[];
@@ -106,13 +108,21 @@ export class MoisturePage implements OnInit {
 
   GetAllInfoDevice() {
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
-      console.log('Res: ', res)
+      //console.log('Res: ', res)
   
+      this.newRes = [];
+      for (let d = 0; d < 40; d++) {
+        this.moisRes.push(res.pop());
+      }
+      for (let d = 0; d < 40; d++) {
+        this.newRes.push(this.moisRes.pop());
+      }
+
       this.chartData[0].data = [];
       this.chartLabels = [];
   
   
-      for (let entry of res) {
+      for (let entry of this.newRes) {
         this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
         this.chartData[0].data.push(entry['Moisture']);
       }
