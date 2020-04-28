@@ -20,6 +20,7 @@ export class TemperaturePage implements OnInit {
   rangeCountEntry: IexeedEntry = <IexeedEntry>{};
   chartData: ChartDataSets[] = [{ data: [], label: 'Temperature', fill: false }];
   chartLabels: String[];
+  BatLowerFlag: boolean = false;
   metric: String = "celcius";
 
   DataDevice: IAllDeviceData;
@@ -91,11 +92,12 @@ export class TemperaturePage implements OnInit {
   GetAllInfoDevice(metric: String) {
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
       console.log('Res: ', res)
-
+      
       this.chartData[0].data = [];
       this.chartLabels = [];
 
       for (let entry of res) {
+        if(entry.Battery)
         this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
         if (metric == "celcius") {
           this.chartData[0].data.push(entry['Temperature']);
@@ -155,6 +157,27 @@ export class TemperaturePage implements OnInit {
           err => {
             alert(err);
           });
+      }
+      if (DataDevice.Battery > 20) {
+        this.BatLowerFlag = false;
+      }
+      if (DataDevice.Battery < 20 && this.BatLowerFlag == false) {
+        this.BatLowerFlag = true;
+                //* Notification
+                var message = {
+                  app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
+                  contents: { "en": "The Battery level of '" + DataDevice.Name + "' is under 20%" },
+                  included_segments: ["All"]
+                };
+        
+                this.APIService.SendNotification(message).subscribe(data => {
+                  console.log('Notification sent');
+                  console.log(data);
+                },
+                  err => {
+                    alert(err);
+                  });
+        
       }
     });
   }
