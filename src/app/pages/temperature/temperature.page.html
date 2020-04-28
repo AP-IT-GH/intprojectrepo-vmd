@@ -36,7 +36,7 @@
     </ion-item>
     <ion-item>
       <ion-label>24h View?</ion-label>
-      <ion-toggle [(ngModel)]="showHourView"></ion-toggle>
+      <ion-toggle [(ngModel)]="showHourView" (ionChange)="viewChanged($event)"></ion-toggle>
     </ion-item>
 
     <ion-item class="metric-select">

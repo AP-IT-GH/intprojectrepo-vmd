@@ -82,18 +82,51 @@ export class APIService {
     });
   }
 
-  UpdateResetDevice(deviceId, newPassword, newName): Observable<IDevice> {
+  UpdateResetName(deviceId,newName) : Observable<IDevice>{
+    console.log('update default device name in service');
     var putJson = {
       ID: deviceId,
-      Password: newPassword,
       Name: newName
     }
+    console.log(putJson.Name)
     return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}`, putJson, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     })
   }
+
+  UpdateResetPassword(deviceId,newPassword) : Observable<IDevice>{
+    console.log('update default password in service');
+    var putJson = {
+      ID: deviceId,
+      Password: newPassword,
+    }
+    console.log(putJson.Password)
+    return this.http.put<IDevice>(`http://35.210.149.21:3000/device/${deviceId}/password`, putJson, {
+      headers:new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    })
+  }
+
+UpdateReset2(dataId,newTemperature,newHumidity,newMoisture) : Observable<IDeviceData>{
+  console.log('update reset temperature , humditity and moisture in service');
+  var putJson = {
+    ID: dataId,
+    Temperature: newTemperature,
+    Humidity: newHumidity,
+    Moisture: newMoisture
+  }
+  console.log(putJson.Temperature)
+  console.log(putJson.Humidity)
+  console.log(putJson.Moisture)
+  return this.http.put<IDeviceData>(`http://35.210.149.21:3000/data/1`, putJson, {
+    headers:new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  })
+}
 }
 
 export interface IAllDeviceData {

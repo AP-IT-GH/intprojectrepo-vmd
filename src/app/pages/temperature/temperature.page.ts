@@ -1,7 +1,7 @@
 import { StorageService, IexeedEntry } from './../../Services/storage.service';
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets } from "chart.js";
-import { APIService, IAllDeviceData } from 'src/app/Services/api.service';
+import { APIService, IAllDeviceData, IDeviceData } from 'src/app/Services/api.service';
 import { DatePipe } from '@angular/common';
 import { interval } from 'rxjs';
 import { ToastController, Platform } from '@ionic/angular';
@@ -28,7 +28,8 @@ export class TemperaturePage implements OnInit {
   metric: String = "celcius";
   tempAantal: number = 0;
   totalTempValue: number = 0;
-
+  tempRes: IDeviceData[] = [];
+  newRes: IDeviceData[] = [];
   DataDevice: IAllDeviceData;
   DataDeviceArray: IAllDeviceData[];
 
@@ -98,12 +99,18 @@ export class TemperaturePage implements OnInit {
 
   GetAllInfoDevice(metric: String) {
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
-      //console.log('Res: ', res)
-
+      this.newRes = [];
+      for (let d = 0; d < 40; d++) {
+        this.tempRes.push(res.pop());
+      }
+      for (let d = 0; d < 40; d++) {
+        this.newRes.push(this.tempRes.pop());
+      }
       this.chartData[0].data = [];
       this.chartLabels = [];
-
-      for (let entry of res) {
+      
+      for (let entry of this.newRes) {
+        //If user does not choose for 24h view
         //console.log(entry.Time);
         if (!this.showHourView) {
           this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
@@ -120,15 +127,19 @@ export class TemperaturePage implements OnInit {
         else {
           this.chartData[0].data.push((entry['Temperature'] * 1.8) + 32);
         }
+        
       }
       
-      //removes zero's before single digit hours
-      for (let i = 0; i < this.dataHours.length; i++) {
-        if(this.dataHours[i].slice(0,1) == "0"){
-        this.dataHours[i] = this.dataHours[i].slice(1,2);
+      //If user chooses for 24h view
+      if (this.showHourView) {
+        //removes zero's before single digit hours
+        for (let i = 0; i < this.dataHours.length; i++) {
+          if(this.dataHours[i].slice(0,1) == "0"){
+          this.dataHours[i] = this.dataHours[i].slice(1,2);
+          }
         }
-      }
 
+      this.gemiddeldeArray = [];
       for (let i = 0; i < 24; i++) {
         for (let y = 0; y < this.tempArray.length; y++) {
           if (this.dataHours[y] == i.toString()) {
@@ -149,7 +160,9 @@ export class TemperaturePage implements OnInit {
     for (let i = 0; i < this.gemiddeldeArray.length; i++) {
       this.chartData[0].data.push(this.gemiddeldeArray[i]);
       
-      this.chartLabels.push(this.dataHours[i] + "h")
+      this.chartLabels.push(i + "h")
+      }
+      
     }
 
     });
@@ -231,6 +244,10 @@ export class TemperaturePage implements OnInit {
   typeChanged(e) {
     const on = e.detail.checked;
     this.chartType = on ? 'line' : 'bar';
+  }
+
+  viewChanged(e) {
+    this.GetAllInfoDevice(this.metric);
   }
 
   //* Helper

@@ -1,8 +1,8 @@
 import { ThemeService } from './../../services/theme.service';
 import { Component, OnInit } from '@angular/core';
 import { FeaturetoggleService } from 'src/app/Services/featuretoggle.service';
-import { APIService, IDevice, IPassword } from 'src/app/Services/api.service';
-import { Md5 } from 'ts-md5/dist/md5';
+import { APIService, IDevice, IPassword, IDeviceData } from 'src/app/Services/api.service';
+import {Md5} from 'ts-md5/dist/md5';
 import { Router, RouterEvent } from '@angular/router';
 
 @Component({
@@ -16,16 +16,22 @@ export class SettingsPage implements OnInit {
   public AutoRequestToDataBase: boolean = true;
   DeviceNameChange: IDevice;
   Device: IDevice[];
+  DeviceAll: IDevice[];
+  Data: IDeviceData[]
 
   SelectedDevice: number;
   SelectedDeviceName: string;
-  Selected: string;
+  Selected: number;
+  SelectedName: string;
   newNameforDevice: string;
   oldPassword: string;
   oldPasswordInDB: IPassword;
   newPassword: string;
-  defaultPasswordOfDevice: string = "admin"
-  defaultNameOfDevice: string = "admin"
+  defaultPasswordOfDevice: string = "admin";
+  defaultNameOfDevice: string = "admin";
+  Temperature: number = 0;
+  Humidity: number = 0;
+  Moisture: number = 0;
   id: number;
   pageWifi = [{
     title: 'Wifi Credentials Page',
@@ -42,6 +48,9 @@ export class SettingsPage implements OnInit {
   async ngOnInit() {
     this.APIService.GetDeviceInfogeneral().subscribe(Device => {
       this.Device = Device;
+    })
+    this.APIService.GetDeviceDataAll().subscribe(Data => {
+      this.Data = Data;
     })
   }
 
@@ -87,7 +96,26 @@ export class SettingsPage implements OnInit {
     }
   }
 
-  HardResetDevice() {
-    this.APIService.UpdateResetDevice(this.SelectedDevice, this.defaultNameOfDevice, this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
-  }
+ HardResetDeviceName(){
+    console.log(this.defaultNameOfDevice);
+   this.APIService.UpdateResetName(this.Selected,this.defaultNameOfDevice).subscribe(device => this.Device.push(device));
+ }
+
+ HardResetDevicePassword(){
+  console.log(this.defaultPasswordOfDevice);
+ this.APIService.UpdateResetPassword(this.Selected,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
+}
+
+ HardResetData(){
+  console.log(this.Temperature);
+  console.log(this.Humidity);
+  console.log(this.Moisture);
+  this.APIService.UpdateReset2(this.Selected,this.Temperature,this.Humidity,this.Moisture).subscribe(data => this.Data.push(data));
+ }
+
+ HardResetEverything(){
+   this.HardResetDeviceName();
+   this.HardResetDevicePassword();
+   this.HardResetData();  
+ }
 }

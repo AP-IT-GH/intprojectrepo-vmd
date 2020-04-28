@@ -1,17 +1,16 @@
 p{
-    margin-left: 50px;
     font-size: large;
 }
 
 ion-card-title{
     text-align: center;
 }
+ion-card{
+    text-align: center;
+}
 .data{
     
      display: inline-block;
-}
-.data>p{
-    margin-left: 10px;
 }
 .types{
     display: inline-block;
@@ -23,6 +22,7 @@ ion-card-title{
     background-color: #f90;
     border-radius: 50%;
     box-shadow: #000 0 -1px 7px 1px, inset #600 0 -1px 9px, #F00 0 2px 12px;
+    margin-bottom: 9px;
 }
 
 .online {
@@ -31,6 +31,7 @@ ion-card-title{
     background-color: #690;
     border-radius: 50%;
     box-shadow: #000 0 -1px 7px 1px, inset #460 0 -1px 9px, #7D0 0 2px 12px;
+    margin-bottom: 9px;
 }
 
 .sleepmodus {
@@ -39,9 +40,4 @@ ion-card-title{
     background-color: #4AB;
     border-radius: 50%;
     box-shadow: #000 0 -1px 7px 1px, inset #006 0 -1px 9px, #06F 0 2px 14px;
-}
-
-table{
-    text-align: center;
-    margin-left: 40%;
 }
