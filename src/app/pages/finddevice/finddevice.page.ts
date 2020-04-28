@@ -3,6 +3,7 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { BLE } from '@ionic-native/ble/ngx';
 import { async } from '@angular/core/testing';
 import { SubjectSubscriber } from 'rxjs/internal/Subject';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-finddevice',
@@ -91,5 +92,6 @@ export class FinddevicePage implements OnInit {
   async disconnect() {
     this.bluetoothSerial.disconnect();
   }
-}
+  
+ }
 

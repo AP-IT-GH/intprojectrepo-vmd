@@ -132,7 +132,7 @@ export class HumidityPage implements OnInit {
   GetLatestData() {
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
       this.DataDevice = DataDevice;
-      if (this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
+      if (this.DataDevice.Temperature == this.rangeCount && this.DataDevice.Date != this.lastSavedDate
       ) {
 
         this.newHumidEntry.temperature = this.DataDevice.Temperature;
@@ -144,7 +144,7 @@ export class HumidityPage implements OnInit {
         //* Notification
         var message = {
           app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
-          contents: { "en": "The humidity level of '" + DataDevice.Name + "' is higher than your given humidity level! The humidity level is now " + DataDevice.Humidity },
+          contents: { "en": "The humidity level of '" + DataDevice.Name + "' has reached the limit! The humidity level is now " + DataDevice.Humidity + "." },
           included_segments: ["All"]
         };
 

@@ -193,7 +193,7 @@ export class TemperaturePage implements OnInit {
   GetLatestData() {
     this.APIService.GetLatestSingleDeviceInfo(1).subscribe(DataDevice => {
       this.DataDevice = DataDevice;
-      if (this.DataDevice.Temperature > this.rangeCount && this.DataDevice.Date != this.lastSavedDate
+      if (this.DataDevice.Temperature == this.rangeCount && this.DataDevice.Date != this.lastSavedDate
       ) {
 
         this.newTempEntry.temperature = this.DataDevice.Temperature;
@@ -205,7 +205,7 @@ export class TemperaturePage implements OnInit {
         //* Notification
         var message = {
           app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
-          contents: { "en": "The temperature of '" + DataDevice.Name + "' is higher than your given temperature! The temperature value is now " + DataDevice.Temperature },
+          contents: { "en": "The temperature of '" + DataDevice.Name + "' has reached the limit! The temperature value is now " + DataDevice.Temperature + "." },
           included_segments: ["All"]
         };
 
