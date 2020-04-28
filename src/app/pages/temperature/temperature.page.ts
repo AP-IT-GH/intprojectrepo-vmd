@@ -20,7 +20,14 @@ export class TemperaturePage implements OnInit {
   rangeCountEntry: IexeedEntry = <IexeedEntry>{};
   chartData: ChartDataSets[] = [{ data: [], label: 'Temperature', fill: false }];
   chartLabels: String[];
+  tempArray: number[] = [];
+  hourArray: String[];
+  gemiddeldeArray: number[] = [];
+  dataHours: String[] = [];
+  BatLowerFlag: boolean = false;
   metric: String = "celcius";
+  tempAantal: number = 0;
+  totalTempValue: number = 0;
 
   DataDevice: IAllDeviceData;
   DataDeviceArray: IAllDeviceData[];
@@ -54,6 +61,7 @@ export class TemperaturePage implements OnInit {
   };
   chartType = 'line';
   showLegend = false;
+  showHourView = false;
 
   constructor(public toastController: ToastController,
     private plt: Platform,
@@ -90,20 +98,60 @@ export class TemperaturePage implements OnInit {
 
   GetAllInfoDevice(metric: String) {
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
-      console.log('Res: ', res)
+      //console.log('Res: ', res)
 
       this.chartData[0].data = [];
       this.chartLabels = [];
 
       for (let entry of res) {
-        this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
+        //console.log(entry.Time);
+        if (!this.showHourView) {
+          this.chartLabels.push(this.datepipe.transform(entry.Date, 'd/MM/y'));
+          //gets double digit hour out of time object
+          this.hourArray = (entry.Time.toString().split(":", 1));
+          this.dataHours.push(this.hourArray[0]);
+          //console.log(this.hourArray[0]);
+        }
+        
         if (metric == "celcius") {
           this.chartData[0].data.push(entry['Temperature']);
+          this.tempArray.push(entry['Temperature']);
         }
         else {
           this.chartData[0].data.push((entry['Temperature'] * 1.8) + 32);
         }
       }
+      
+      //removes zero's before single digit hours
+      for (let i = 0; i < this.dataHours.length; i++) {
+        if(this.dataHours[i].slice(0,1) == "0"){
+        this.dataHours[i] = this.dataHours[i].slice(1,2);
+        }
+      }
+
+      for (let i = 0; i < 24; i++) {
+        for (let y = 0; y < this.tempArray.length; y++) {
+          if (this.dataHours[y] == i.toString()) {
+            this.tempAantal++;
+            this.totalTempValue += this.tempArray[y];
+          }
+          
+        }
+        this.gemiddeldeArray.push(this.totalTempValue / this.tempAantal);
+          this.tempAantal = 0;
+          this.totalTempValue = 0;
+        
+      }
+      console.log(this.gemiddeldeArray);
+      
+      this.chartData[0].data = [];
+      this.chartLabels = [];
+    for (let i = 0; i < this.gemiddeldeArray.length; i++) {
+      this.chartData[0].data.push(this.gemiddeldeArray[i]);
+      
+      this.chartLabels.push(this.dataHours[i] + "h")
+    }
+
     });
   }
 
@@ -155,6 +203,27 @@ export class TemperaturePage implements OnInit {
           err => {
             alert(err);
           });
+      }
+      if (DataDevice.Battery > 20) {
+        this.BatLowerFlag = false;
+      }
+      if (DataDevice.Battery < 20 && this.BatLowerFlag == false) {
+        this.BatLowerFlag = true;
+                //* Notification
+                var message = {
+                  app_id: "b16686d2-04a8-468a-8658-7b411f0a777b",
+                  contents: { "en": "The Battery level of '" + DataDevice.Name + "' is under 20%" },
+                  included_segments: ["All"]
+                };
+        
+                this.APIService.SendNotification(message).subscribe(data => {
+                  console.log('Notification sent');
+                  console.log(data);
+                },
+                  err => {
+                    alert(err);
+                  });
+        
       }
     });
   }
