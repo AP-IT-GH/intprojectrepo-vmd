@@ -3,6 +3,7 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { BLE } from '@ionic-native/ble/ngx';
 import { async } from '@angular/core/testing';
 import { SubjectSubscriber } from 'rxjs/internal/Subject';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-finddevice',
@@ -91,5 +92,37 @@ export class FinddevicePage implements OnInit {
   async disconnect() {
     this.bluetoothSerial.disconnect();
   }
-}
+  
+  deviceConnected() {
+    this.bluetoothSerial.isConnected().then(success => {
+      alert('Connected Successfullly');
+      this.bluetoothSerial.write('hello world');
+    }, error => {
+      alert('error' + JSON.stringify(error));
+    });
+  }
+  
+  async disconnect() {
+    const alert = await this.alertController.create({
+      header: 'Disconnect?',
+      message: 'Do you want to Disconnect?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Disconnect',
+          handler: () => {
+            this.bluetoothSerial.disconnect();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+ }
 
