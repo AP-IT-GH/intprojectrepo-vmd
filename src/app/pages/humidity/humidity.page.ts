@@ -107,7 +107,7 @@ export class HumidityPage implements OnInit {
 
   GetAllInfoDevice() {
     this.APIService.GetDeviceDataSingle(1).subscribe(res => {
-      console.log('Res: ', res)
+      //console.log('Res: ', res)
 
       this.chartData[0].data = [];
       this.chartLabels = [];

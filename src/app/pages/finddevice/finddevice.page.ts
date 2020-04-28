@@ -20,12 +20,13 @@ export class FinddevicePage implements OnInit {
   public pairedDeviceID: number = 0;
   private datasend: string ="";
   constructor(private bluetoothSerial: BluetoothSerial, private ble: BLE, private ngZone: NgZone) {
-    this.checkBluetoothEnabled();
+    //this.checkBluetoothEnabled();
 
   }
 
   ngOnInit() {
-
+    this.bluetoothSerial.enable();
+    this.listpairedDevices();
     //this.getAllBluetoothDevices();
   }
 
@@ -72,8 +73,8 @@ export class FinddevicePage implements OnInit {
   
     deviceConnected(){
       this.bluetoothSerial.subscribe('\n').subscribe(success => {
-        alert(success);
-        alert("Device Connected!");
+        //alert(success);
+        //alert("Device Connected!");
         //toast, connected successfully
       }, error => {
         alert(error);
@@ -88,8 +89,8 @@ export class FinddevicePage implements OnInit {
     sendData(data){
       //this.datasend+='\n';
       this.bluetoothSerial.write(data).then(succes =>{
-        alert(succes);
-        alert("Data Sent!");
+        //alert(succes);
+        //alert("Data Sent!");
       }, error => {
         alert(error);
       });
