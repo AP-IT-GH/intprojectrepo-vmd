@@ -53,7 +53,10 @@ module.exports = app => {
 
   // Update factory settings data from device
   app.put("/data/:deviceId", data.updateDeviceFactory2);
-  
+
+  // delete data from device
+  app.delete("/data/:deviceId", data.updateDeviceFactory2);
+
   // get password of a device
   app.get("/device/:deviceId/password", device.getDevicePass);
 };
