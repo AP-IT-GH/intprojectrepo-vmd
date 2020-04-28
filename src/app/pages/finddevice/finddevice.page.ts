@@ -13,102 +13,83 @@ export class FinddevicePage implements OnInit {
 
   password: string;
   ssid: string;
-  BluetoothDevices: string[];
-  SelectedBluetoothDevice: any;
 
+  //bluetooth variables
+  BluetoothDevice:any;
   public FoundDevices: any = [];
-  public pairedDeviceID: number = 0;
-  private datasend: string ="";
-  constructor(private bluetoothSerial: BluetoothSerial, private ble: BLE, private ngZone: NgZone) {
-    //this.checkBluetoothEnabled();
 
+  pairedDevices: any;
+  unpairedDevices: any;
+  gettingDevices: boolean;
+
+  constructor(private bluetoothSerial: BluetoothSerial, private ble: BLE, private ngZone: NgZone) {
   }
 
   ngOnInit() {
     this.bluetoothSerial.enable();
-    this.listpairedDevices();
-    //this.getAllBluetoothDevices();
+    this.startScanning();
   }
 
-  checkBluetoothEnabled() {
-    this.bluetoothSerial.isEnabled().then(success => {
-      //this.FoundDevices();
-      this.listpairedDevices();
+  startScanning() {
+    this.pairedDevices = null;
+    this.unpairedDevices = null;
+    this.gettingDevices = true;
+    const unPair = [];
+    this.bluetoothSerial.discoverUnpaired().then((success) => {
+      success.forEach((value, key) => {
+        var exists = false;
+        unPair.forEach((val2, i) => {
+          if (value.id === val2.id) {
+            exists = true;
+          }
+        });
+        if (exists === false && value.id !== '') {
+          unPair.push(value);
+        }
+      });
+      this.unpairedDevices = unPair;
+      this.gettingDevices = false;
+    },
+      (err) => {
+        console.log(err);
+      });
+
+    this.bluetoothSerial.list().then((success) => {
+      this.pairedDevices = success;
+    },
+      (err) => {
+
+      });
+  }
+
+  success = (data) => {
+    this.deviceConnected();
+  }
+  fail = (error) => {
+    alert(error);
+  }
+
+  async selectDevice(id: any) {
+    this.bluetoothSerial.connect(id).subscribe(this.success, this.fail);
+  }
+
+  //connecting + sending data
+  deviceConnected() {
+    this.bluetoothSerial.isConnected().then(success => {
+      
+      if(this.password && this.ssid)
+      {
+        this.bluetoothSerial.write("ssid " + this.ssid);
+        this.bluetoothSerial.write("pin " + this.password);
+      } else { alert("Ssid or password cannot be blank!") }
+      
     }, error => {
-      alert("Please Enable Bluetooth");
+      alert('error' + JSON.stringify(error));
     });
   }
 
-    //add paired devices to list
-    listpairedDevices(){
-      this.bluetoothSerial.list().then(success =>{
-        success.forEach(element => {
-          this.FoundDevices.push(element)
-        });
-      }, error => {
-        alert("Please enable bluetooth!");     
-      });
-    }
-
-    selectDevice(){
-      let connectedDevice = this.FoundDevices[this.pairedDeviceID];
-      if(!connectedDevice.address){
-        alert("Select a device to connect.");
-        return;
-      }
-      let address = connectedDevice.address;
-      let name = connectedDevice.name;
-  
-      this.connect(address)
-    }
-  
-    //create connection
-    connect(address){
-      this.bluetoothSerial.connect(address).subscribe(success =>{
-        this.deviceConnected();
-      }, error =>{
-        alert("Error: Connection to device." + error);//showtoast?
-      });
-    }
-  
-    deviceConnected(){
-      this.bluetoothSerial.subscribe('\n').subscribe(success => {
-        //alert(success);
-        //alert("Device Connected!");
-        //toast, connected successfully
-      }, error => {
-        alert(error);
-      });
-    }
-  
-    deviceDisconnected(){
-      this.bluetoothSerial.disconnect();
-      alert("Device Disconnected");
-    }
-  
-    sendData(data){
-      //this.datasend+='\n';
-      this.bluetoothSerial.write(data).then(succes =>{
-        //alert(succes);
-        //alert("Data Sent!");
-      }, error => {
-        alert(error);
-      });
-    }
-
-
-    //SEND DATA
-  async SendCredentials() {
-
-    //make a connection first
-    await this.connect(this.SelectedBluetoothDevice);
-
-     if (!this.password || !this.ssid) {
-       return alert("Incorrect input!");
-     } else {
-       await this.sendData(this.password);
-       await this.sendData(this.ssid);
-     }
+  async disconnect() {
+    this.bluetoothSerial.disconnect();
   }
 }
 

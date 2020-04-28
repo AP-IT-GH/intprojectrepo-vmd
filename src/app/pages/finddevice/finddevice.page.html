@@ -4,6 +4,7 @@
   </ion-buttons>
   <ion-toolbar>
     <ion-title>Find Device</ion-title>
+    <ion-button (click)="startScanning()" slot="end"><ion-icon name="Bluetooth"></ion-icon>Refresh</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -25,11 +26,21 @@
       </ion-list-header>
     
       <ion-item>
-        <ion-label>Devices</ion-label>
+        <ion-label>Paired Devices:</ion-label>
 
-        <ion-select cancelText="Cancel" okText="Confirm" [(ngModel)]="SelectedBluetoothDevice">
-          <ion-select-option value="{{chosendevice.id}}" *ngFor="let chosendevice of FoundDevices" >{{chosendevice.name || 'Unnamed'}} {{chosendevice.id}}</ion-select-option>
+        <ion-select cancelText="Cancel" okText="Confirm" [(ngModel)]="BluetoothDevice">
+          <ion-select-option value="{{chosendevice.id}}" *ngFor="let chosendevice of pairedDevices" >{{chosendevice.name || 'Unnamed'}}</ion-select-option>
         </ion-select>
+
+      </ion-item>
+      <br>
+      <ion-item>
+        <ion-label>Unpaired Devices:</ion-label>
+        <ion-select cancelText="Cancel" okText="Confirm" [(ngModel)]="BluetoothDevice">
+          <ion-select-option value="{{chosenUnPaireddevice.id}}" *ngFor="let chosenUnPaireddevice of unpairedDevices" >{{chosenUnPaireddevice.name || 'Unnamed'}} {{chosenUnPaireddevice.address}}</ion-select-option>          
+        </ion-select>
+        <ion-spinner name="crescent"
+        *ngIf="gettingDevices"></ion-spinner>
       </ion-item>
     </ion-list>
 
@@ -44,11 +55,40 @@
     <ion-card-subtitle>Change ssid and password</ion-card-subtitle>
   </ion-card-header>
   <ion-card-content>
-    <p *ngIf="SelectedBluetoothDevice">Selected device: <strong>{{SelectedBluetoothDevice}}</strong></p>
     <ion-input clearInput placeholder="SSID" type="text" [(ngModel)]="ssid"></ion-input>
     <ion-input clearInput placeholder="Password" type="password" [(ngModel)]="password"></ion-input>
-    <ion-button color="dark" (click)="SendCredentials()">Apply Settings</ion-button>
+   <ion-button color="dark" (click)='selectDevice(BluetoothDevice)'>Send data to device</ion-button>
+   <ion-button color="dark" (click)='disconnect()'>Disconnect from device</ion-button>
   </ion-card-content>
 </ion-card>
 
+
+<!--
+<ion-card>
+  <ion-list padding>
+    <ion-button expand="block"
+                (click)="startScanning()">scan</ion-button>
+    <ion-list-header>
+        Paired Devices
+    </ion-list-header>
+    <ion-item *ngFor="let device of pairedDevices">
+      <span (click)="selectDevice(device.id)">
+        {{device.name}} {{device.address}}
+      </span>
+    </ion-item>
+    <ion-button expand="block"
+                (click)="disconnect()">Disconnect</ion-button>
+    <ion-list-header>
+        availlable Devices
+    </ion-list-header>
+    <ion-item *ngFor='let device of unpairedDevices'>
+        <span (click)="selectDevice(device.id)">
+            {{device.name || device.address}}
+        </span>
+    </ion-item>
+    <ion-spinner name="crescent"
+                 *ngIf="gettingDevices"></ion-spinner>
+</ion-list>
+</ion-card>
+-->
 </ion-content>
