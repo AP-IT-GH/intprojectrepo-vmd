@@ -59,8 +59,8 @@ Data.findLatestById = (deviceId, result) => {
   });
 };
 
-Data.updateNameById = (deviceId, deviceName, result) => {
-  sql.query(`UPDATE vmdDB1.Device SET Name = '${deviceName}' WHERE (ID = '${deviceId}');`,(err, res) => {
+Data.updateFactorySettings2 = (dataId, data, result) => {
+  sql.query(`UPDATE vmdDB1.Data SET Temperature = '${data.Temperature}', Humidity ='${data.Humidity}', Moisture ='${data.Moisture}' WHERE (Device_ID = '${dataId}');`,(err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -73,10 +73,13 @@ Data.updateNameById = (deviceId, deviceName, result) => {
         return;
       }
 
-      console.log("updated Device: ", { id: deviceId, ...deviceName });
-      result(null, { id: deviceId, ...deviceName });
+      console.log("updated Data: ", { id: deviceId, ...data.Temperature, ...data.Humidity, ...data.Moisture });
+      console.log(data.Temperature);
+      console.log(data.Humidity);
+      console.log(data.Moisture)
+      result(null, { id: dataId, ...data.Temperature, ...data.Humidity, ...data.Moisture });
     }
   );
 };
 
-  module.exports = Data;
+module.exports = Data;
