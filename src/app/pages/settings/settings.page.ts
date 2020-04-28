@@ -15,11 +15,13 @@ export class SettingsPage implements OnInit {
   public AutoRequestToDataBase:boolean = true;
   DeviceNameChange: IDevice;
   Device: IDevice[];
+  DeviceAll: IDevice[];
   Data: IDeviceData[]
 
   SelectedDevice: number;
   SelectedDeviceName: string;
-  Selected: string;
+  Selected: number;
+  SelectedName: string;
   newNameforDevice: string;
   oldPassword: string;
   oldPasswordInDB: IPassword;
@@ -88,14 +90,14 @@ export class SettingsPage implements OnInit {
  HardResetDevice(){
     console.log(this.defaultNameOfDevice);
     console.log(this.defaultPasswordOfDevice);
-   this.APIService.UpdateReset1(this.SelectedDevice,this.defaultNameOfDevice,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
+   this.APIService.UpdateReset1(this.Selected,this.defaultNameOfDevice,this.defaultPasswordOfDevice).subscribe(device => this.Device.push(device));
  }
 
  HardResetData(){
   console.log(this.Temperature);
   console.log(this.Humidity);
   console.log(this.Moisture);
-  this.APIService.UpdateReset2(this.SelectedDevice,this.Temperature,this.Humidity,this.Moisture).subscribe(data => this.Data.push(data));
+  this.APIService.UpdateReset2(this.Selected,this.Temperature,this.Humidity,this.Moisture).subscribe(data => this.Data.push(data));
  }
 
  HardResetEverything(){
