@@ -28,7 +28,7 @@ export class AppComponent {
       this.splashScreen.hide();
       if (isCordovaAvailable()) {
         this.oneSignal.startInit('b16686d2-04a8-468a-8658-7b411f0a777b', '403617415079');
-        this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+        this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
         this.oneSignal.handleNotificationReceived().subscribe(data => this.onPushReceived(data.payload));
         this.oneSignal.handleNotificationOpened().subscribe(data => this.onPushOpened(data.notification.payload));
         this.oneSignal.endInit();
